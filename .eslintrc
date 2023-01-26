@@ -1,0 +1,41 @@
+{
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+        "@typescript-eslint",
+        "prettier"
+    ],
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:prettier/recommended"
+    ],
+    "overrides": [
+        {
+          "files": ["*.ts, *.tsx"],
+          "excludedFiles": "*.js*"
+        }
+    ],
+    "rules": {
+        "@typescript-eslint/no-restricted-imports": [
+            "warn",
+            {
+                "name": "react-redux",
+                "importNames": ["useSelector", "useDispatch"],
+                "message": "Use typed hooks `useAppDispatch` and `useAppSelector` instead."
+            }
+        ],
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": [
+            "warn",
+            {
+                "argsIgnorePattern": "^_",
+                "varsIgnorePattern": "^_",
+                "caughtErrorsIgnorePattern": "^_"
+            }
+        ],
+        "@typescript-eslint/consistent-type-definitions": ["warn", "type"],
+        "@typescript-eslint/no-explicit-any": "warn"
+    }
+}
