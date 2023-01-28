@@ -9,14 +9,14 @@ export enum MapStyles_old {
     "Navigation Night" = "mapbox://styles/mapbox/navigation-night-v1?optimize=true",
 }
 
-export enum MapStylesMode {
-    Dark = "mapbox://styles/mapbox/dark-v10?optimize=true",
-    Light = "mapbox://styles/mapbox/light-v10?optimize=true",
-}
-
 export enum MapStyles {
     Monochrome = "MONOCHROME_FLAG",
     Satellite = "mapbox://styles/mapbox/satellite-v9?optimize=true",
+}
+
+export enum MapStylesMonochrome {
+    Dark = "mapbox://styles/mapbox/dark-v10?optimize=true",
+    Light = "mapbox://styles/mapbox/light-v10?optimize=true",
 }
 
 export enum MapProjections {

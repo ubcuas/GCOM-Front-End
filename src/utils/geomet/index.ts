@@ -1,7 +1,7 @@
-const fetchedCapabilities = require("./capabilities.json"); // eslint-disable-line @typescript-eslint/no-var-requires
+import fetchedCapabilities from "./capabilities.json";
 
 export const GEOMET_URL = "https://geo.weather.gc.ca/geomet";
-export const GEOMET_CAPABILITIES: GeometCapabilities = fetchedCapabilities;
+export const GEOMET_CAPABILITIES: GeometCapabilities = fetchedCapabilities as GeometCapabilities;
 
 export type GeometCapabilities = {
     title: string;
