@@ -21,7 +21,7 @@ const PlaceMarkerIcon: React.FC<PlaceMarkerIconProps> = ({ label, color = "prima
 
     const getIconWithLabel = () => (
         <>
-            <Box // TODO switch flex display to Stack
+            <Box
                 sx={{
                     borderRadius: "50%",
                     position: "absolute",
