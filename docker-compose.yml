@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+    gcom_frontend:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      container_name: gcom_frontend
+      ports:
+        - "5173:5173"
+      volumes:
+        - "./:/gcom_frontend"
+        - "/gcom_frontend/node_modules"

@@ -1,9 +1,11 @@
-# Name
+# GCOM Frontend
 
 ## TO-DO
 ### Priority
 - [ ] Migration to Vite
-- [ ] Dockerize
+- [ ] Documentation
+- [x] Dockerize
+- [ ] Dockerize dev with hot reload
 
 ### Bugs
 - [ ]
