@@ -1,4 +1,4 @@
-import { useTheme } from "@mui/material/styles";
+import { useTheme } from "@mui/material";
 import { Position } from "geojson";
 import { Layer, LayerProps, Source, SourceProps } from "react-map-gl";
 import TileUtility from "../../../../utils/TileUtility";

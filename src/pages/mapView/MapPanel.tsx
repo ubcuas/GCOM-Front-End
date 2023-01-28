@@ -38,7 +38,6 @@ const MapPanel: React.FC = () => {
             onMove={(e) => dispatch(updateMapViewState(e.viewState))}
             onLoad={handleFirstSymbolLayer}
             onStyleData={handleFirstSymbolLayer}
-            style={{ height: "80vh" }}
             styleDiffing={false}
             reuseMaps
         >

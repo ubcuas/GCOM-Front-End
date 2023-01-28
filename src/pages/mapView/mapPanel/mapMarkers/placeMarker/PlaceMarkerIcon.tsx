@@ -2,7 +2,7 @@ import PlaceIcon from "@mui/icons-material/Place";
 import SvgIcon from "@mui/material/SvgIcon";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import useTheme from "@mui/material/styles/useTheme";
+import { useTheme } from "@mui/material";
 import { PaletteColor } from "@mui/material";
 import { ColorPalette } from "../../../../../types/Theming";
 

@@ -4,7 +4,7 @@ import { Marker } from "react-map-gl";
 import { Route } from "../../../../types/Route";
 import { Waypoint } from "../../../../types/Waypoint";
 import WaypointUtility from "../../../../utils/WaypointUtility";
-import { useTheme } from "@mui/material/styles";
+import { useTheme } from "@mui/material";
 import { MapStyles } from "../../../../utils/constants/enums/map";
 import { useAppSelector } from "../../../../store";
 import { selectMapStyle } from "../../../../store/slices/mapSlice";

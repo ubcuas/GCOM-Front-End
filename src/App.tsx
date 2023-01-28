@@ -9,6 +9,8 @@ import Navigation from "./components/Navigation";
 import Home from "./pages/Home";
 import MapView from "./pages/MapView";
 
+import "mapbox-gl/dist/mapbox-gl.css";
+
 const App: React.FC = () => {
     const { mode } = useAppSelector(selectTheme);
     const [theme, setTheme] = useState(createTheme({ palette: { mode: mode } }));

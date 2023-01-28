@@ -22,6 +22,8 @@ Mapbox access token
 
 ### UI/Design
 - [ ] Navigation component
+- [ ] Fix drawers
+- [ ] Redo drag and drop for Geomet layers in framer-motion (can remove useHover, react-beautiful-dnd, react-merge-refs)
 
 ### Code clarity/cleanup
 - [ ] WmsTile component
@@ -35,3 +37,4 @@ Mapbox access token
 - [ ] Place marker size adjustments
 - [ ] Route path size adjustments
 - [ ] More map themes (requires refactoring for current handling of satellite style)
+- [ ] Map resizing on drawer open
