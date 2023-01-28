@@ -13,7 +13,7 @@ type RouteLayerProps = {
 };
 
 const RouteLayer: React.FC<RouteLayerProps> = ({ dividerId }) => {
-    const { palette } = useTheme();
+    const theme = useTheme();
     const waypoints = useAppSelector(selectWaypoints);
     const routes = useAppSelector(selectRoutes);
     const isSatelliteStyle = useAppSelector(selectMapStyle) === MapStyles.Satellite;
@@ -41,7 +41,7 @@ const RouteLayer: React.FC<RouteLayerProps> = ({ dividerId }) => {
             id: `${tileId}-stroke-${i}`,
             type: "line",
             paint: {
-                "line-color": palette.common.black,
+                "line-color": theme.palette.common.black,
                 "line-gap-width": routeWidth + i,
             },
             layout: { "line-cap": "round" },
@@ -53,7 +53,7 @@ const RouteLayer: React.FC<RouteLayerProps> = ({ dividerId }) => {
         id: tileId,
         type: "line",
         paint: {
-            "line-color": isSatelliteStyle ? palette.common.white : palette.text.primary,
+            "line-color": isSatelliteStyle ? theme.palette.common.white : theme.palette.text.primary,
             "line-width": routeWidth,
         },
         layout: { "line-cap": "round" },

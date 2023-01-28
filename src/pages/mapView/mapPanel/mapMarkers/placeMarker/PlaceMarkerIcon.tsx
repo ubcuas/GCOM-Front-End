@@ -15,7 +15,8 @@ type PlaceMarkerIconProps = {
 const PlaceMarkerIcon: React.FC<PlaceMarkerIconProps> = ({ label, color = "primary", isObstacle }) => {
     color = isObstacle ? "error" : color;
 
-    const { palette } = useTheme();
+    const theme = useTheme();
+    const palette = theme.palette;
     const themeColor = palette[color as keyof typeof palette] as PaletteColor;
 
     const getIconWithLabel = () => (

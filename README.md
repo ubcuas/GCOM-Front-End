@@ -27,6 +27,7 @@ Mapbox access token
 - [ ] WmsTile component
 - [ ] RouteLayer component
 - [ ] useNextLoadedTile hook
+- [ ] PlaceMarkerIcon component (switch flex display to Stack?)
 
 ### Future features
 - [ ] User options & peristance
