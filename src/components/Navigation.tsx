@@ -1,11 +1,22 @@
-import { Link } from "wouter";
+import { Divider, Link, Stack, useTheme } from "@mui/material";
+
+import { Link as WouterLink } from "wouter";
 
 const Navigation: React.FC = () => {
+    const theme = useTheme();
+
     return (
-        <div>
-            <Link href="/">Home</Link>
-            <Link href="/map">Map</Link>
-        </div>
+        <>
+            <Stack direction="row" gap={theme.spacing(2)} padding={theme.spacing(1)}>
+                <Link component={WouterLink} href="/">
+                    Home
+                </Link>
+                <Link component={WouterLink} href="/map">
+                    Map
+                </Link>
+            </Stack>
+            <Divider />
+        </>
     );
 };
 
