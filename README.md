@@ -21,15 +21,18 @@ Mapbox access token
 - [ ] Map zoom being 10+, changing to globe doesn't render a globe? - submit bug report to package
 
 ### UI/Design
+- [ ] Logo (.svg possible?)
 - [ ] Navigation component
-- [ ] Fix drawers
+- [x] Fix drawers
 - [ ] Redo drag and drop for Geomet layers in framer-motion (can remove useHover, react-beautiful-dnd, react-merge-refs)
+- [ ] Tooltip on hover when text overflows
 
 ### Code clarity/cleanup
 - [ ] WmsTile component
 - [ ] RouteLayer component
 - [ ] useNextLoadedTile hook
 - [ ] PlaceMarkerIcon component (switch flex display to Stack?)
+- [ ] GeometLayerToggle component (maybe switch animations to framer-motion?)
 
 ### Future features
 - [ ] User options & peristance

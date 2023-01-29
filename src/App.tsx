@@ -1,6 +1,6 @@
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { Switch, Route } from "wouter";
+import { Switch, Route, useLocation } from "wouter";
 import { MapProvider } from "react-map-gl";
 import { useAppSelector } from "./store";
 import { selectTheme } from "./store/slices/userOptionsSlice";

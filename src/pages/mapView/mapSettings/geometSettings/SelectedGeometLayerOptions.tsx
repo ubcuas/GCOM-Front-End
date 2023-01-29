@@ -1,17 +1,22 @@
 import Collapse from "@mui/material/Collapse";
 import Stack from "@mui/material/Stack";
 import { useTheme } from "@mui/material/styles";
+import { ReactElement } from "react";
 import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
 import { TransitionGroup } from "react-transition-group";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { reorderGeometLayer, selectGeometLayerStates } from "../../../../store/slices/mapLayersSlice";
 import GeometLayerOption from "./selectedGeometLayerOptions/GeometLayerOption";
 
-const SelectedGeometLayerOptions: React.FC = () => {
+type SelectedGeometLayerOptionsProps = {
+    displayOnEmpty?: ReactElement;
+};
+
+const SelectedGeometLayerOptions: React.FC<SelectedGeometLayerOptionsProps> = ({ displayOnEmpty }) => {
     const geometLayerStates = useAppSelector(selectGeometLayerStates);
 
     if (geometLayerStates.length === 0) {
-        return <></>;
+        return displayOnEmpty ?? <></>;
     }
 
     const dispatch = useAppDispatch();

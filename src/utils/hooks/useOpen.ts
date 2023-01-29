@@ -3,17 +3,17 @@ import { useState } from "react";
 const useOpen = (initial = false) => {
     const [isOpen, setIsOpen] = useState(initial);
 
-    const open = () => {
+    const handleOpen = () => {
         setIsOpen(true);
     };
-    const close = () => {
+    const handleClose = () => {
         setIsOpen(false);
     };
     const toggleOpen = () => {
         setIsOpen(!isOpen);
     };
 
-    return { isOpen, open, close, toggleOpen };
+    return { isOpen, handleOpen, handleClose, toggleOpen };
 };
 
 export default useOpen;
