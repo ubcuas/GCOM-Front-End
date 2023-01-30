@@ -31,7 +31,11 @@ const MapDrawer: React.FC<PropsWithChildren<MapDrawerProps>> & {
             animate={{ x: isOpen ? 0 : width }}
             transition={{ bounce: 0 }}
         >
-            <Box sx={{ borderLeft: `1px solid ${theme.palette.divider}`, height: "100%", overflowY: "auto" }}>
+            <Box
+                sx={{ borderLeft: `1px solid ${theme.palette.divider}`, height: "100%", overflowY: "auto" }}
+                component={motion.div}
+                layoutScroll
+            >
                 <Box sx={{ padding: theme.spacing(1) }}>
                     <IconButton onClick={handleClose}>
                         <ChevronRightIcon />
@@ -67,7 +71,7 @@ const MapDrawerText: React.FC<PropsWithChildren<MapDrawerTextProps>> = ({ sx, ch
     const theme = useTheme();
 
     return (
-        <Typography variant="body2" sx={{ margin: theme.spacing(0, 2, 2, 2), ...sx }}>
+        <Typography variant="body2" sx={{ margin: theme.spacing(0, 2, 2, 2), ...sx }} component="div">
             {children}
         </Typography>
     );

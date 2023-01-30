@@ -46,6 +46,9 @@ export const mapLayersSlice = createSlice({
                 layerState.obj.id === action.payload.obj.id ? action.payload : layerState
             );
         },
+        updateGeometLayerStates: (state, action: PayloadAction<GeometLayerState[]>) => {
+            state.geometLayers = action.payload;
+        },
         reorderGeometLayer: (state, action: PayloadAction<[number, number]>) => {
             const [oldIndex, newIndex] = action.payload;
             const [movedLayer] = state.geometLayers.splice(oldIndex, 1);
@@ -59,8 +62,14 @@ export const selectGeometLayers = (state: RootState) =>
     state.mapLayers.geometLayers.map((layerState: GeometLayerState) => layerState.obj);
 export const selectGeometLayerStates = (state: RootState) => state.mapLayers.geometLayers;
 
-export const { updateFirstSymbolLayer, addGeometLayer, removeGeometLayer, updateGeometLayerState, reorderGeometLayer } =
-    mapLayersSlice.actions;
+export const {
+    updateFirstSymbolLayer,
+    addGeometLayer,
+    removeGeometLayer,
+    updateGeometLayerState,
+    updateGeometLayerStates,
+    reorderGeometLayer,
+} = mapLayersSlice.actions;
 
 const mapLayersReducer = mapLayersSlice.reducer;
 export default mapLayersReducer;
