@@ -1,4 +1,4 @@
-import { IconButton, useTheme } from "@mui/material";
+import { IconButton, Typography, useTheme } from "@mui/material";
 import { Box } from "@mui/system";
 import MapDrawer from "../../../components/MapDrawer";
 import PlusIcon from "../../../components/PlusIcon";
@@ -23,7 +23,21 @@ const GeometSettings: React.FC = () => {
                     <PlusIcon />
                 </IconButton>
                 <MapDrawer.Header>Geomet Layers</MapDrawer.Header>
-                <SelectedGeometLayerOptions displayOnEmpty={<MapDrawer.Text>No layers selected.</MapDrawer.Text>} />
+                <SelectedGeometLayerOptions
+                    displayOnEmpty={
+                        <Typography
+                            variant="overline"
+                            sx={{
+                                margin: theme.spacing(0, 4),
+                                paddingTop: theme.spacing(2),
+                                color: theme.palette.text.secondary,
+                                opacity: 0.5,
+                            }}
+                        >
+                            No layers selected.
+                        </Typography>
+                    }
+                />
             </Box>
             <MapDrawer isOpen={isOpen} handleClose={handleClose} width="50vw">
                 <MapDrawer.Header variant="h5" sx={{ fontWeight: 500 }}>

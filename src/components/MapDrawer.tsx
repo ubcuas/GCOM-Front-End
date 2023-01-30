@@ -64,14 +64,22 @@ const MapDrawerHeader: React.FC<PropsWithChildren<MapDrawerHeaderProps>> = ({ va
 };
 
 type MapDrawerTextProps = {
+    variant?: TypographyVariant;
     sx?: SxProps<Theme>;
+    noBottomMargin?: boolean;
 };
 
-const MapDrawerText: React.FC<PropsWithChildren<MapDrawerTextProps>> = ({ sx, children }) => {
+const MapDrawerText: React.FC<PropsWithChildren<MapDrawerTextProps>> = ({
+    variant = "body2",
+    sx,
+    noBottomMargin,
+    children,
+}) => {
     const theme = useTheme();
+    const margin = theme.spacing(0, 2, noBottomMargin ? 0 : 2, 2);
 
     return (
-        <Typography variant="body2" sx={{ margin: theme.spacing(0, 2, 2, 2), ...sx }} component="div">
+        <Typography variant={variant} sx={{ margin: margin, ...sx }} component="div">
             {children}
         </Typography>
     );

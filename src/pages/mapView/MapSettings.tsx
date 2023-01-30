@@ -3,7 +3,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import useOpen from "../../utils/hooks/useOpen";
 import MapDrawer from "../../components/MapDrawer";
 import GeometSettings from "./mapSettings/GeometSettings";
-import { useTheme } from "@mui/material";
+import { Divider, useTheme } from "@mui/material";
 
 const MapSettings: React.FC = () => {
     const { isOpen, handleOpen, handleClose } = useOpen();
@@ -20,6 +20,7 @@ const MapSettings: React.FC = () => {
             </IconButton>
             <MapDrawer isOpen={isOpen} handleClose={handleClose} width="30vw">
                 <GeometSettings />
+                <Divider />
             </MapDrawer>
         </>
     );
