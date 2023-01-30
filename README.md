@@ -24,8 +24,9 @@ Mapbox access token
 - [ ] Logo (.svg possible?)
 - [ ] Navigation component
 - [x] Fix drawers
-- [ ] Redo drag and drop for Geomet layers in framer-motion (can remove useHover, react-beautiful-dnd, react-merge-refs)
+- [x] Redo drag and drop for Geomet layers in framer-motion (can remove useHover, react-beautiful-dnd, react-merge-refs)
 - [ ] Tooltip on hover when text overflows
+- [ ] Transition on opacity icon and slider when layer visibility is toggled
 
 ### Code clarity/cleanup
 - [ ] WmsTile component
