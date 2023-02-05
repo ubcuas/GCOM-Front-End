@@ -19,7 +19,7 @@ const RouteLayer: React.FC<RouteLayerProps> = ({ dividerId }) => {
     const isSatelliteStyle = useAppSelector(selectMapStyle) === MapStyles.Satellite;
     const tileId = "route";
     const strokeWidth = 1;
-    const routeWidth = 1;
+    const routeWidth = 2;
 
     const coordinates: Position[][] = routes.map((route) => WaypointUtility.getRouteCoordinates(route, waypoints));
 

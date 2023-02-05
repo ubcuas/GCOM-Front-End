@@ -19,7 +19,7 @@ type ReorderableGeometLayerOptionProps = {
     onRelease?: () => void;
 };
 
-const ReorderableGeometLayerOption: React.FC<ReorderableGeometLayerOptionsProps> = ({ layerState, onRelease }) => {
+const ReorderableGeometLayerOption: React.FC<ReorderableGeometLayerOptionProps> = ({ layerState, onRelease }) => {
     const dragControls = useDragControls();
     const theme = useTheme();
     const [isClicked, setIsClicked] = useState(false);

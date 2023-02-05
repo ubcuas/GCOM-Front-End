@@ -1,6 +1,7 @@
 import { useTheme } from "@mui/material";
-import { Position } from "geojson";
 import { Layer, LayerProps, Source, SourceProps } from "react-map-gl";
+import { useAppSelector } from "../../../../store";
+import { selectObstacles } from "../../../../store/slices/dataSlice";
 import TileUtility from "../../../../utils/TileUtility";
 
 type ObstacleLayerProps = {
@@ -8,18 +9,11 @@ type ObstacleLayerProps = {
 };
 
 const ObstacleLayer: React.FC<ObstacleLayerProps> = ({ dividerId }) => {
+    const obstacles = useAppSelector(selectObstacles);
     const theme = useTheme();
     const tileId = "obstacle";
 
-    const coordinates: Position[][] = [
-        [
-            [-123.26, 49.25],
-            [-123.25, 49.23],
-            [-123.247, 49.28],
-        ],
-    ];
-
-    const preparedCoordinates = coordinates.map((arr) => [...arr, arr[0]]);
+    const preparedCoordinates = obstacles.map((obstacleArray) => [...obstacleArray, obstacleArray[0]]);
 
     const sourceProps: SourceProps = {
         id: TileUtility.getSourceIdFromTileId(tileId),
@@ -35,7 +29,7 @@ const ObstacleLayer: React.FC<ObstacleLayerProps> = ({ dividerId }) => {
         type: "line",
         paint: {
             "line-color": theme.palette.error.main,
-            "line-width": 1,
+            "line-width": 2,
         },
         layout: { "line-cap": "round" },
         beforeId: dividerId,

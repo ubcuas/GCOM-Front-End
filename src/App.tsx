@@ -1,23 +1,19 @@
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import { Switch, Route, useLocation } from "wouter";
+import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import { Switch, Route } from "wouter";
 import { MapProvider } from "react-map-gl";
 import { useAppSelector } from "./store";
-import { selectTheme } from "./store/slices/userOptionsSlice";
-import { useEffect, useState } from "react";
+import { selectThemeOptions } from "./store/slices/userOptionsSlice";
 import Navigation from "./components/Navigation";
 import Home from "./pages/Home";
 import MapView from "./pages/MapView";
-
-import "mapbox-gl/dist/mapbox-gl.css";
+import Settings from "./pages/Settings";
 
 const App: React.FC = () => {
-    const { mode } = useAppSelector(selectTheme);
-    const [theme, setTheme] = useState(createTheme({ palette: { mode: mode } }));
-
-    useEffect(() => {
-        setTheme(createTheme({ palette: { mode: mode } }));
-    }, [mode]);
+    const themeOptions = useAppSelector(selectThemeOptions);
+    const theme = createTheme({
+        ...themeOptions,
+        typography: { h4: { fontWeight: 500 } },
+    });
 
     return (
         <ThemeProvider theme={theme}>
@@ -27,6 +23,7 @@ const App: React.FC = () => {
                 <Switch>
                     <Route path="/" component={Home} />
                     <Route path="/map" component={MapView} />
+                    <Route path="/settings" component={Settings} />
                     <Route>404 Not Found</Route>
                 </Switch>
             </MapProvider>

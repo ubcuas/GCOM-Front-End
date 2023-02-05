@@ -1,8 +1,8 @@
+import { css } from "@emotion/react";
 import { AnimatePresence, motion, Reorder } from "framer-motion";
 import { ReactElement, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { selectGeometLayerStates, updateGeometLayerStates } from "../../../../store/slices/mapLayersSlice";
-import { css } from "@emotion/react";
 import ReorderableGeometLayerOption from "./selectedGeometLayerOptions/ReorderableGeometLayerOption";
 
 type SelectedGeometLayerOptionsProps = {
@@ -11,8 +11,8 @@ type SelectedGeometLayerOptionsProps = {
 
 const SelectedGeometLayerOptions: React.FC<SelectedGeometLayerOptionsProps> = ({ displayOnEmpty }) => {
     const geometLayerStates = useAppSelector(selectGeometLayerStates);
+    const [layerStates, setLayerStates] = useState(geometLayerStates); // TODO: EXPLAIN WHY
     const dispatch = useAppDispatch();
-    const [layerStates, setLayerStates] = useState(geometLayerStates);
 
     useEffect(() => {
         setLayerStates(geometLayerStates);
@@ -26,6 +26,8 @@ const SelectedGeometLayerOptions: React.FC<SelectedGeometLayerOptionsProps> = ({
             css={css`
                 min-height: 46px;
             `}
+            layout
+            layoutRoot
         >
             <AnimatePresence>
                 {geometLayerStates.length === 0 && displayOnEmpty && (
@@ -43,6 +45,7 @@ const SelectedGeometLayerOptions: React.FC<SelectedGeometLayerOptionsProps> = ({
                         </motion.div>
                     </motion.div>
                 )}
+
                 {layerStates.map((layerState) => (
                     <ReorderableGeometLayerOption
                         layerState={layerState}

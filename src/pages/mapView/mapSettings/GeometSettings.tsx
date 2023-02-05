@@ -15,7 +15,7 @@ const GeometSettings: React.FC = () => {
 
     return (
         <>
-            <Box position="relative">
+            <Box position="relative" zIndex="999">
                 <IconButton
                     onClick={handleOpen}
                     sx={{ position: "absolute", top: theme.spacing(0.5), right: theme.spacing(0.5) }}
@@ -31,7 +31,6 @@ const GeometSettings: React.FC = () => {
                                 margin: theme.spacing(0, 4),
                                 paddingTop: theme.spacing(2),
                                 color: theme.palette.text.secondary,
-                                opacity: 0.5,
                             }}
                         >
                             No layers selected.

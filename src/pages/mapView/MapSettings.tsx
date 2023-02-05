@@ -4,6 +4,7 @@ import useOpen from "../../utils/hooks/useOpen";
 import MapDrawer from "../../components/MapDrawer";
 import GeometSettings from "./mapSettings/GeometSettings";
 import { Divider, useTheme } from "@mui/material";
+import MapSelections from "./mapSettings/MapSelections";
 
 const MapSettings: React.FC = () => {
     const { isOpen, handleOpen, handleClose } = useOpen();
@@ -21,6 +22,8 @@ const MapSettings: React.FC = () => {
             <MapDrawer isOpen={isOpen} handleClose={handleClose} width="30vw">
                 <GeometSettings />
                 <Divider />
+                <MapDrawer.Header>Map Settings</MapDrawer.Header>
+                <MapSelections />
             </MapDrawer>
         </>
     );

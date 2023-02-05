@@ -26,21 +26,14 @@ const WmsTile: React.FC<WmsTileProps> = ({
 }) => {
     const defaultParams = "?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&BBOX={bbox-epsg-3857}&SRS=EPSG:3857";
     const formatParams = `&FORMAT=image/${opaque ? "jpeg" : "png&TRANSPARENCY=true"}`;
-
-    const getSizeParams = (size: number) => {
-        return `&WIDTH=${size}&HEIGHT=${size}`;
-    };
-
-    const getStyleParams = (style: string) => {
-        return style ? `&STYLE=${style}` : undefined;
-    };
+    const sizeParams = `&WIDTH=${size}&HEIGHT=${size}`;
+    const styleParams = layerStyle ? `&STYLE=${layerStyle}` : undefined;
+    const layerParams = `&LAYERS=${layer}`;
 
     const sourceProps: SourceProps = {
         id: TileUtility.getSourceIdFromTileId(id),
         type: "raster",
-        tiles: [
-            `${url}${defaultParams}${getSizeParams(size)}&LAYERS=${layer}${formatParams}${getStyleParams(layerStyle)}`,
-        ],
+        tiles: [`${url}${defaultParams}${sizeParams}${layerParams}${formatParams}${styleParams}`],
         tileSize: size,
     };
 

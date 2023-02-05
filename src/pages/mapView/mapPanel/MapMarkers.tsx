@@ -17,7 +17,7 @@ const MapMarkers: React.FC = () => {
     const waypointMarkers = useMemo(
         () =>
             waypoints.map((waypoint) => {
-                return <PlaceMarker key={waypoint.id} waypoint={waypoint} />;
+                return <PlaceMarker key={waypoint.id} waypoint={waypoint} usePopup />;
             }),
         [waypoints]
     );

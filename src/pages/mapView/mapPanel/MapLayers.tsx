@@ -1,7 +1,7 @@
 import React from "react";
 import { useAppSelector } from "../../../store";
 import { selectFirstSymbolLayer } from "../../../store/slices/mapLayersSlice";
-import DividerTile from "./mapLayers/DividerTile";
+import DividerTile from "../../../components/DividerTile";
 import GeometLayers from "./mapLayers/GeometLayers";
 import ObstacleLayer from "./mapLayers/ObstacleLayer";
 import RouteLayer from "./mapLayers/RouteLayer";
