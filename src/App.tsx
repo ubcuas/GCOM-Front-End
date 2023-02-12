@@ -1,4 +1,4 @@
-import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import { CssBaseline, ThemeProvider, createTheme, Box } from "@mui/material";
 import { Switch, Route } from "wouter";
 import { MapProvider } from "react-map-gl";
 import { useAppSelector } from "./store";
@@ -20,12 +20,14 @@ const App: React.FC = () => {
             <MapProvider>
                 <CssBaseline />
                 <Navigation />
-                <Switch>
-                    <Route path="/" component={Home} />
-                    <Route path="/map" component={MapView} />
-                    <Route path="/settings" component={Settings} />
-                    <Route>404 Not Found</Route>
-                </Switch>
+                <Box paddingTop="75px" height="100vh">
+                    <Switch>
+                        <Route path="/" component={Home} />
+                        <Route path="/map" component={MapView} />
+                        <Route path="/settings" component={Settings} />
+                        <Route>404 Not Found</Route>
+                    </Switch>
+                </Box>
             </MapProvider>
         </ThemeProvider>
     );

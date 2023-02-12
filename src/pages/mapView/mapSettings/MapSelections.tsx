@@ -9,12 +9,7 @@ const MapSelections: React.FC = () => {
     const mapStyle = useAppSelector(selectMapStyle);
 
     return (
-        <Dropdown<MapStyles>
-            id="map-style"
-            label="Style"
-            value={mapStyle}
-            onChange={(value) => dispatch(updateMapStyle(value))}
-        >
+        <Dropdown id="map-style" label="Style" value={mapStyle} onChange={(value) => dispatch(updateMapStyle(value))}>
             {Object.keys(MapStyles).map((style) => (
                 <MenuItem value={MapStyles[style as keyof typeof MapStyles]} key={style}>
                     {style}

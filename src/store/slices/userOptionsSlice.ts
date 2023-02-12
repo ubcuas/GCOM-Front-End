@@ -14,7 +14,7 @@ type UserOptionsState = {
 };
 
 const initialThemeMode = ThemeMode.Dark;
-const initialThemeColor = ThemeColor.Pink;
+const initialThemeColor = ThemeColor.Blue;
 
 const initialState: UserOptionsState = {
     themeOptions: {

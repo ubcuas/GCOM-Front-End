@@ -1,10 +1,10 @@
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
+import ChevronIcon from "../../../../components/ChevronIcon";
 import MapDrawer from "../../../../components/MapDrawer";
 import PlusIcon from "../../../../components/PlusIcon";
 import { useAppSelector, useAppDispatch } from "../../../../store";
@@ -68,12 +68,10 @@ const GeometLayerToggle: React.FC<GeometLayerToggleProps> = ({ layer, isMainCate
                 }}
             >
                 <IconButton size={size} disableRipple>
-                    <ChevronLeftIcon
-                        fontSize={size}
+                    <ChevronIcon
+                        isOpen={isOpen}
                         sx={{
                             marginLeft: theme.spacing(level * 3),
-                            transform: `rotate(${isOpen ? "90deg" : "-90deg"})`,
-                            transition: theme.transitions.create("transform"),
                         }}
                     />
                 </IconButton>

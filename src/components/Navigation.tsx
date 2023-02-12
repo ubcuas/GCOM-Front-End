@@ -10,8 +10,9 @@ const Navigation: React.FC = () => {
             gap={theme.spacing(5)}
             padding={theme.spacing(1, 4)}
             alignItems="center"
-            height="10vh"
-            sx={{ borderBottom: `1px solid ${theme.palette.divider}` }}
+            height="75px"
+            width="100%"
+            sx={{ borderBottom: `1px solid ${theme.palette.divider}`, position: "absolute" }}
         >
             <Link component={WouterLink} href="/">
                 Home

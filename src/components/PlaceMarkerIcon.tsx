@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material";
 import { PaletteColor } from "@mui/material";
-import { ColorPalette } from "../../../../../types/Theming";
+import { ColorPalette } from "../types/Theming";
 
 type PlaceMarkerIconProps = {
     label?: string;

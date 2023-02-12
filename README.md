@@ -35,8 +35,12 @@ A [Mapbox access token](https://account.mapbox.com/access-tokens/) is required f
 ### Code clarity/cleanup
 - [x] WmsTile component
 - [ ] useNextLoadedTile hook?
-- [ ] PlaceMarkerIcon component (switch flex display to Stack?)
+- [ ] PlaceMarker/PlaceMarkerIcon components (+ switch flex display to Stack?)
 - [ ] GeometLayerToggle component (maybe switch animations to framer-motion?)
+- [ ] Component for `<b>Text:</b> data<br />`?
+- [ ] Deep merge on `sx` objects? (in CollapsibleTable, etc.) Or objects in general?
+- [ ] Figure out better way to handle nav height
+- [ ] Figure out if there are `theme.spacing` calls where unneeded?
 
 ### Future features
 - [ ] User options & peristance + settings page

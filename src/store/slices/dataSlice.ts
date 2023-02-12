@@ -18,6 +18,7 @@ const initialState: DataState = {
             longitude: -123.245,
             latitude: 49.25,
             altitude: 23.5,
+            remarks: "waypoint remark",
         },
         {
             id: 2,

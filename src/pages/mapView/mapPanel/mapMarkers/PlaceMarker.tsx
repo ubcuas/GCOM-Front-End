@@ -5,7 +5,7 @@ import { Marker, Popup } from "react-map-gl";
 import PlusIcon from "../../../../components/PlusIcon";
 import { ColorPalette } from "../../../../types/Theming";
 import { Waypoint } from "../../../../types/Waypoint";
-import PlaceMarkerIcon from "./placeMarker/PlaceMarkerIcon";
+import PlaceMarkerIcon from "../../../../components/PlaceMarkerIcon";
 
 type PlaceMarkerProps = {
     waypoint: Waypoint;
@@ -18,7 +18,7 @@ const PlaceMarker: React.FC<PlaceMarkerProps> = ({ waypoint, isObstacle, color, 
     const theme = useTheme();
     const [showPopup, setShowPopup] = useState(false);
 
-    const { longitude, latitude, name, id, altitude } = waypoint;
+    const { longitude, latitude, name, id, altitude, remarks } = waypoint;
     const label = name.charAt(0);
     const markerProps = { longitude, latitude };
     const iconProps = { label, isObstacle, color };
@@ -67,6 +67,12 @@ const PlaceMarker: React.FC<PlaceMarkerProps> = ({ waypoint, isObstacle, color, 
                         <b>Longitude:</b> {longitude}
                         <br />
                         <b>Altitude:</b> {altitude}
+                        {!!remarks && (
+                            <>
+                                <br />
+                                <b>Remarks:</b> {remarks}
+                            </>
+                        )}
                     </Box>
                 </Popup>
             )}

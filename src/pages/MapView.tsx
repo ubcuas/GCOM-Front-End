@@ -6,7 +6,7 @@ import MapSettings from "./mapView/MapSettings";
 const MapView: React.FC = () => {
     return (
         <>
-            <Box sx={{ height: "90vh", width: "100%", position: "relative", overflow: "hidden" }}>
+            <Box sx={{ height: "100%", width: "100%", position: "relative", overflow: "hidden" }}>
                 <Box sx={{ height: "100%", width: "70%", position: "absolute" }}>
                     <MapPanel />
                 </Box>

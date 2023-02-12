@@ -5,9 +5,19 @@ export default class WaypointUtility {
     public static getById = (id: number, waypoints: Waypoint[]) => {
         return waypoints.find((wp) => wp.id === id);
     };
+
+    public static getNameById = (id: number, waypoints: Waypoint[]) => {
+        return WaypointUtility.getById(id, waypoints)?.name;
+    };
+
+    public static getLetterById = (id: number, waypoints: Waypoint[]) => {
+        return WaypointUtility.getNameById(id, waypoints)?.charAt(0);
+    };
+
     public static getCoordinates = (wp?: Waypoint) => {
         return wp ? [wp.longitude, wp.latitude] : [];
     };
+
     public static getRouteCoordinates = (route: Route, waypoints: Waypoint[]) => {
         const startWaypoint = WaypointUtility.getById(route.start_waypoint, waypoints);
 
