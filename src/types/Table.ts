@@ -1,16 +1,15 @@
-import { SxProps, Theme } from "@mui/material";
+import { SvgIconProps, SxProps, Theme } from "@mui/material";
+import { ComponentType } from "react";
 
 export type TableColumn<T> = {
     title?: TableCellContent;
-    type?: TableColumnType;
-    noStretch?: boolean;
-    cellSx?: SxProps<Theme>;
-    accessor: (row: T) => TableCellContent;
-};
+    icon?: ComponentType<SvgIconProps> | boolean;
+    accessor?: (row: T) => TableCellContent;
 
-export enum TableColumnType {
-    Info = "info",
-}
+    noStretch?: boolean;
+    fadeOnOpen?: boolean;
+    sx?: SxProps<Theme>;
+};
 
 export type TableCellContent = string | number | React.ReactNode;
 

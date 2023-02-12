@@ -1,5 +1,4 @@
-import { Stack, useTheme } from "@mui/material";
-import MapDrawer from "../../components/MapDrawer";
+import { Stack, Typography, useTheme } from "@mui/material";
 import RouteTable from "./mapData/RouteTable";
 import WaypointTable from "./mapData/WaypointTable";
 
@@ -11,10 +10,14 @@ const MapData: React.FC = () => {
             direction="column"
             sx={{ height: "100%", width: "100%", borderLeft: `1px solid ${theme.palette.divider}`, overflowY: "auto" }}
         >
-            <MapDrawer.Header>Routes</MapDrawer.Header>
+            <Typography variant="h5" margin={theme.spacing(2)}>
+                Routes
+            </Typography>
             <RouteTable />
-            <br />
-            <MapDrawer.Header>Waypoints</MapDrawer.Header>
+
+            <Typography variant="h5" margin={theme.spacing(2)}>
+                Waypoints
+            </Typography>
             <WaypointTable />
         </Stack>
     );

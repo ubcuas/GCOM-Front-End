@@ -12,7 +12,7 @@ const App: React.FC = () => {
     const themeOptions = useAppSelector(selectThemeOptions);
     const theme = createTheme({
         ...themeOptions,
-        typography: { h4: { fontWeight: 500 } },
+        typography: { h4: { fontWeight: 500 }, h5: { fontWeight: 500 } },
     });
 
     return (

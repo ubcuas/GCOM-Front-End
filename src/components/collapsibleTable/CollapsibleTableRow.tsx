@@ -1,4 +1,4 @@
-import { Box, Collapse, IconButton, TableCell, TableRow, useTheme } from "@mui/material";
+import { Box, Collapse, IconButton, TableCell, TableRow, Typography, useTheme } from "@mui/material";
 import { Children, ComponentType } from "react";
 import { TableColumn, TableExpansionProps } from "../../types/Table";
 import useOpen from "../../utils/hooks/useOpen";
@@ -13,13 +13,21 @@ type CollapsibleTableRowProps<T> = {
 
 const CollapsibleTableRow = <T,>({ columns, row, expansion: Expansion }: CollapsibleTableRowProps<T>) => {
     const theme = useTheme();
-    const { isOpen, toggleOpen } = useOpen();
+    let isOpen = false;
+    let toggleOpen;
 
-    const rowSx = Expansion ? { "& td": { borderBottom: "unset" } } : undefined;
+    if (Expansion) {
+        const openHook = useOpen();
+        isOpen = openHook.isOpen;
+        toggleOpen = openHook.toggleOpen;
+    }
+
+    const border = { borderBottomColor: theme.palette.divider };
+    const borderSx = Expansion ? { borderBottom: "unset" } : border;
 
     return (
         <>
-            <TableRow sx={{ height: "41px", ...rowSx }}>
+            <TableRow sx={{ height: "41px", "& td": borderSx }}>
                 {!!Expansion && (
                     <TableCell width="28px" sx={{ paddingLeft: 0.5, paddingRight: 0 }}>
                         <IconButton size="small" onClick={toggleOpen}>
@@ -30,22 +38,21 @@ const CollapsibleTableRow = <T,>({ columns, row, expansion: Expansion }: Collaps
                 {Children.toArray(
                     columns.map((column) => (
                         <CollapsibleTableCell
-                            type={column.type}
-                            isOpen={isOpen}
-                            data={column.accessor(row)}
-                            sx={column.cellSx}
+                            {...column}
+                            data={column.accessor ? column.accessor(row) : undefined}
                             width={column.noStretch ? "1px" : undefined}
+                            isOpen={isOpen}
                         />
                     ))
                 )}
             </TableRow>
             {!!Expansion && (
-                <TableRow>
+                <TableRow sx={{ "& td": border }}>
                     <TableCell colSpan={columns.length + 1} sx={{ padding: 0 }}>
                         <Collapse in={isOpen}>
-                            <Box sx={{ padding: theme.spacing(0, 2, 1, 2) }}>
+                            <Typography variant="body2" component={Box} sx={{ padding: theme.spacing(0, 2, 1, 2) }}>
                                 <Expansion data={row} />
-                            </Box>
+                            </Typography>
                         </Collapse>
                     </TableCell>
                 </TableRow>

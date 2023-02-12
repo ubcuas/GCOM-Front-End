@@ -1,19 +1,19 @@
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { SxProps, Theme, useTheme } from "@mui/material";
+import { SvgIconProps, useTheme } from "@mui/material";
 
-type ChevronIconProps = {
+type ChevronIconProps = SvgIconProps & {
     isOpen: boolean;
-    sx?: SxProps<Theme>;
 };
 
-const ChevronIcon: React.FC<ChevronIconProps> = ({ isOpen, sx }) => {
+const ChevronIcon: React.FC<ChevronIconProps> = ({ isOpen, ...svgIconProps }) => {
     const theme = useTheme();
 
     return (
         <ChevronLeftIcon
             fontSize="inherit"
+            {...svgIconProps}
             sx={{
-                ...sx,
+                ...svgIconProps.sx,
                 transform: `rotate(${isOpen ? "90deg" : "-90deg"})`,
                 transition: theme.transitions.create("transform"),
             }}

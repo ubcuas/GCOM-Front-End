@@ -17,7 +17,10 @@ const CollapsibleTable = <T,>({ columns, rows, expansion }: CollapsibleTableProp
                     {!!expansion && <TableCell />}
                     {Children.toArray(
                         columns.map((column) => (
-                            <TableCell width={column.noStretch ? "1px" : undefined} sx={column.cellSx}>
+                            <TableCell
+                                width={column.noStretch ? "1px" : undefined}
+                                sx={{ fontWeight: 700, ...column.sx }}
+                            >
                                 {column.title}
                             </TableCell>
                         ))

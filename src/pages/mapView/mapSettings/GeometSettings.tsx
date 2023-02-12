@@ -22,6 +22,7 @@ const GeometSettings: React.FC = () => {
                 >
                     <PlusIcon />
                 </IconButton>
+
                 <MapDrawer.Header>Geomet Layers</MapDrawer.Header>
                 <SelectedGeometLayerOptions
                     displayOnEmpty={
@@ -38,10 +39,9 @@ const GeometSettings: React.FC = () => {
                     }
                 />
             </Box>
+
             <MapDrawer isOpen={isOpen} handleClose={handleClose} width="50vw">
-                <MapDrawer.Header variant="h5" sx={{ fontWeight: 500 }}>
-                    {title}
-                </MapDrawer.Header>
+                <MapDrawer.Header variant="h5">{title}</MapDrawer.Header>
                 <MapDrawer.Text>{desc}</MapDrawer.Text>
                 <Box>
                     {layers.map((layer) => (

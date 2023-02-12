@@ -3,7 +3,7 @@ import CollapsibleTable from "../../../components/CollapsibleTable";
 import { useAppSelector } from "../../../store";
 import { selectRoutes, selectWaypoints } from "../../../store/slices/dataSlice";
 import { Route } from "../../../types/Route";
-import { TableColumn, TableColumnType, TableExpansionProps } from "../../../types/Table";
+import { TableColumn, TableExpansionProps } from "../../../types/Table";
 import WaypointUtility from "../../../utils/WaypointUtility";
 
 const RouteTable: React.FC = () => {
@@ -12,34 +12,35 @@ const RouteTable: React.FC = () => {
 
     const columns: TableColumn<Route>[] = [
         {
-            noStretch: true,
             accessor: (route) => route.order,
+            noStretch: true,
         },
         {
             title: "Start",
-            noStretch: true,
-            cellSx: { textAlign: "right", paddingRight: 1 },
             accessor: (route) => WaypointUtility.getNameById(route.start_waypoint, waypoints),
+            noStretch: true,
+            sx: { textAlign: "right", paddingRight: 1 },
         },
         {
             noStretch: true,
-            cellSx: { paddingLeft: 0, paddingRight: 0 },
-            accessor: () => <ArrowRightAltIcon fontSize="inherit" sx={{ margin: "2px 0 -2px 0" }} />,
+            accessor: () => <ArrowRightAltIcon fontSize="inherit" sx={{ marginTop: "2px", marginBottom: "-2px" }} />,
+            sx: { paddingLeft: 0, paddingRight: 0 },
         },
         {
             title: "End",
-            noStretch: true,
-            cellSx: { paddingLeft: 1 },
             accessor: (route) => WaypointUtility.getNameById(route.end_waypoint, waypoints),
+            noStretch: true,
+            sx: { paddingLeft: 1 },
         },
         {
             title: "Value",
             accessor: (route) => route.value,
         },
         {
-            type: TableColumnType.Info,
-            cellSx: { paddingLeft: 0, textAlign: "right" },
+            icon: true,
             accessor: (route) => route.remarks,
+            fadeOnOpen: true,
+            sx: { paddingLeft: 0, textAlign: "right" },
         },
     ];
 

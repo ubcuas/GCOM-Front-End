@@ -1,7 +1,7 @@
 import CollapsibleTable from "../../../components/CollapsibleTable";
 import { useAppSelector } from "../../../store";
 import { selectWaypoints } from "../../../store/slices/dataSlice";
-import { TableColumn, TableColumnType, TableExpansionProps } from "../../../types/Table";
+import { TableColumn } from "../../../types/Table";
 import { Waypoint } from "../../../types/Waypoint";
 
 const WaypointTable: React.FC = () => {
@@ -10,8 +10,8 @@ const WaypointTable: React.FC = () => {
     const columns: TableColumn<Waypoint>[] = [
         {
             title: "ID",
-            noStretch: true,
             accessor: (waypoint) => waypoint.id,
+            noStretch: true,
         },
         {
             title: "Name",
@@ -30,9 +30,9 @@ const WaypointTable: React.FC = () => {
             accessor: (waypoint) => waypoint.altitude,
         },
         {
-            type: TableColumnType.Info,
-            cellSx: { paddingLeft: 0, textAlign: "right" },
+            icon: true,
             accessor: (waypoint) => waypoint.remarks,
+            sx: { paddingLeft: 0, textAlign: "right" },
         },
     ];
 

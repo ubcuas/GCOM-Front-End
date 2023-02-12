@@ -38,7 +38,7 @@ export enum ThemeColor {
     Orange = "orange",
 }
 
-// colors taken from MUI Color Tool as the auto-generated colours were not as nice
+// light & dark colors taken from MUI Color Tool as the auto-generated colours were not as nice
 //   https://m2.material.io/resources/color
 export const ThemeColorFamily: { [key in ThemeColor]: { [key in ThemeMode]: SimplePaletteColorOptions } } = {
     [ThemeColor.Pink]: {
@@ -56,7 +56,7 @@ export const ThemeColorFamily: { [key in ThemeColor]: { [key in ThemeMode]: Simp
     [ThemeColor.Purple]: {
         [ThemeMode.Light]: {
             main: purple[500],
-            light: "d05ce3",
+            light: "#d05ce3",
             dark: "#6a0080",
         },
         [ThemeMode.Dark]: {
@@ -69,12 +69,12 @@ export const ThemeColorFamily: { [key in ThemeColor]: { [key in ThemeMode]: Simp
         [ThemeMode.Light]: {
             main: deepPurple[600],
             light: "#9162e4",
-            dark: "#9162e4",
+            dark: "#280680",
         },
         [ThemeMode.Dark]: {
             main: deepPurple[500],
-            light: "#9162e4",
-            dark: "#9162e4",
+            light: "#9a67ea",
+            dark: "#320b86",
         },
     },
     [ThemeColor.Indigo]: {
@@ -165,7 +165,7 @@ export const ThemeColorFamily: { [key in ThemeColor]: { [key in ThemeMode]: Simp
         [ThemeMode.Light]: {
             main: lime[600],
             light: "#f5fd67",
-            dark: "#f5fd67",
+            dark: "#8c9900",
         },
         [ThemeMode.Dark]: {
             main: lime[500],
