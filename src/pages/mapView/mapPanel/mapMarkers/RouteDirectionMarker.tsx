@@ -2,7 +2,7 @@ import { useTheme } from "@mui/material";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import bearing from "@turf/bearing";
 import { Marker } from "react-map-gl";
-import { Route } from "../../../../types/Route";
+import { AEACRoute } from "../../../../types/AEAC";
 import { Waypoint } from "../../../../types/Waypoint";
 import WaypointUtility from "../../../../utils/WaypointUtility";
 import { MapStyles } from "../../../../utils/constants/enums/map";
@@ -10,7 +10,7 @@ import { useAppSelector } from "../../../../store";
 import { selectMapStyle } from "../../../../store/slices/mapSlice";
 
 type RouteDirectionMarkerProps = {
-    route: Route;
+    route: AEACRoute;
     waypoints: Waypoint[];
 };
 

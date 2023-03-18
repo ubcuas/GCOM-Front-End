@@ -1,18 +1,14 @@
-import { Marker } from "react-map-gl";
-import FlightIcon from "@mui/icons-material/Flight";
 import PlaceMarker from "./mapMarkers/PlaceMarker";
 import { useAppSelector } from "../../../store";
 import { selectRoutes, selectWaypoints } from "../../../store/slices/dataSlice";
 import RouteDirectionMarker from "./mapMarkers/RouteDirectionMarker";
 import { useMemo } from "react";
-import { useTheme } from "@mui/material";
-import { ThemeMode } from "../../../utils/constants/enums/theme";
 import ColorUtility from "../../../utils/ColorUtility";
 import useThemeMode from "../../../utils/hooks/useThemeMode";
 import WaypointUtility from "../../../utils/WaypointUtility";
+import AircraftMarker from "./mapMarkers/AircraftMarker";
 
 const MapMarkers: React.FC = () => {
-    const theme = useTheme();
     const waypoints = useAppSelector(selectWaypoints);
     const routes = useAppSelector(selectRoutes);
     const { themeMode } = useThemeMode();
@@ -40,14 +36,7 @@ const MapMarkers: React.FC = () => {
     return (
         <>
             {routeDirectionMarkers}
-            <Marker longitude={-123.25} latitude={49.262} anchor="center" rotationAlignment="map">
-                <FlightIcon
-                    fontSize="large"
-                    htmlColor={
-                        theme.palette.mode === ThemeMode.Dark ? theme.palette.primary.light : theme.palette.primary.dark
-                    }
-                />
-            </Marker>
+            <AircraftMarker />
             {waypointMarkers}
         </>
     );

@@ -3,7 +3,7 @@ import CollapsibleTable from "../../../components/CollapsibleTable";
 import PlaceIconForTable from "../../../icons/PlaceIconForTable";
 import { useAppSelector } from "../../../store";
 import { selectRoutes, selectWaypoints } from "../../../store/slices/dataSlice";
-import { Route } from "../../../types/Route";
+import { AEACRoute } from "../../../types/AEAC";
 import { TableColumn, TableExpansionProps } from "../../../types/Table";
 import WaypointUtility from "../../../utils/WaypointUtility";
 
@@ -11,18 +11,20 @@ const RouteTable: React.FC = () => {
     const waypoints = useAppSelector(selectWaypoints);
     const routes = useAppSelector(selectRoutes);
 
-    const columns: TableColumn<Route>[] = [
+    const columns: TableColumn<AEACRoute>[] = [
         {
             accessor: (route) => route.order,
             noStretch: true,
         },
         {
             title: "Start",
-            accessor: (route) => WaypointUtility.getNameById(route.start_waypoint, waypoints),
+            accessor: (route) => route.start_waypoint,
             sx: { textAlign: "right", paddingRight: 0.5 },
         },
         {
-            accessor: (route) => <PlaceIconForTable waypointId={route.start_waypoint} />,
+            accessor: (route) => (
+                <PlaceIconForTable waypointId={WaypointUtility.getId(route.start_waypoint, waypoints)} />
+            ),
             noStretch: true,
             sx: { paddingLeft: 0, paddingRight: 0 },
         },
@@ -32,13 +34,15 @@ const RouteTable: React.FC = () => {
             sx: { paddingLeft: 0.5, paddingRight: 0.5 },
         },
         {
-            accessor: (route) => <PlaceIconForTable waypointId={route.end_waypoint} />,
+            accessor: (route) => (
+                <PlaceIconForTable waypointId={WaypointUtility.getId(route.end_waypoint, waypoints)} />
+            ),
             noStretch: true,
             sx: { paddingLeft: 0, paddingRight: 0 },
         },
         {
             title: "End",
-            accessor: (route) => WaypointUtility.getNameById(route.end_waypoint, waypoints),
+            accessor: (route) => route.end_waypoint,
             sx: { paddingLeft: 0.5 },
         },
         {
@@ -58,7 +62,7 @@ const RouteTable: React.FC = () => {
     return <CollapsibleTable columns={columns} rows={routes} expansion={RouteExpansion} />;
 };
 
-const RouteExpansion: React.FC<TableExpansionProps<Route>> = ({ data: route }) => {
+const RouteExpansion: React.FC<TableExpansionProps<AEACRoute>> = ({ data: route }) => {
     return (
         <>
             <b>ID:</b> {route.id}
@@ -67,7 +71,13 @@ const RouteExpansion: React.FC<TableExpansionProps<Route>> = ({ data: route }) =
             <br />
             <b>Passengers:</b> {route.passengers}
             <br />
-            <b>Remarks:</b> {route.remarks}
+            <b>Max vehicle weight:</b> {route.max_vehicle_weight}kg
+            {!!route.remarks && (
+                <>
+                    <br />
+                    <b>Remarks:</b> {route.remarks}
+                </>
+            )}
         </>
     );
 };
