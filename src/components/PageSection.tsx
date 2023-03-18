@@ -34,18 +34,20 @@ const PageSectionHeader: React.FC<PropsWithChildren<PageSectionHeaderProps>> = (
 
 type PageSectionSubheaderProps = {
     variant?: TypographyVariant;
+    topMargin?: boolean;
     sx?: SxProps<Theme>;
 };
 
 const PageSectionSubheader: React.FC<PropsWithChildren<PageSectionSubheaderProps>> = ({
     variant = "h6",
+    topMargin,
     sx,
     children,
 }) => {
     const theme = useTheme();
 
     return (
-        <Typography variant={variant} sx={sx} padding={theme.spacing(0, 0, 1, 0)}>
+        <Typography marginTop={topMargin ? 2 : undefined} variant={variant} sx={sx} padding={theme.spacing(0, 0, 1, 0)}>
             {children}
         </Typography>
     );

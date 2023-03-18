@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, Select } from "@mui/material";
+import { FormControl, InputLabel, Select, SxProps, Theme } from "@mui/material";
 import { PropsWithChildren } from "react";
 
 type DropdownProps<T> = {
@@ -6,12 +6,13 @@ type DropdownProps<T> = {
     label: string;
     value: T;
     onChange: (value: T) => void;
+    sx?: SxProps<Theme>;
 };
 
-const Dropdown = <T,>({ id, label, value, onChange, children }: PropsWithChildren<DropdownProps<T>>) => {
+const Dropdown = <T,>({ id, label, value, onChange, sx, children }: PropsWithChildren<DropdownProps<T>>) => {
     const labelId = `${id}-label`;
     return (
-        <FormControl>
+        <FormControl sx={sx}>
             <InputLabel id={labelId}>{label}</InputLabel>
             <Select
                 label-id={labelId}

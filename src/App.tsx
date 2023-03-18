@@ -7,6 +7,7 @@ import Navigation from "./components/Navigation";
 import Home from "./pages/Home";
 import MapView from "./pages/MapView";
 import Settings from "./pages/Settings";
+import Scanner from "./pages/Scanner";
 
 const App: React.FC = () => {
     const themeOptions = useAppSelector(selectThemeOptions);
@@ -24,6 +25,7 @@ const App: React.FC = () => {
                     <Switch>
                         <Route path="/" component={Home} />
                         <Route path="/map" component={MapView} />
+                        <Route path="/scanner" component={Scanner} />
                         <Route path="/settings" component={Settings} />
                         <Route>404 Not Found</Route>
                     </Switch>

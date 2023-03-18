@@ -4,10 +4,11 @@ import { ThemeMode } from "../constants/enums/theme";
 const useThemeMode = () => {
     const theme = useTheme();
 
-    const isLightMode = () => theme.palette.mode === ThemeMode.Light;
-    const isDarkMode = () => theme.palette.mode === ThemeMode.Dark;
+    const themeMode = theme.palette.mode;
+    const isLightMode = themeMode === ThemeMode.Light;
+    const isDarkMode = themeMode === ThemeMode.Dark;
 
-    return { isLightMode, isDarkMode };
+    return { themeMode, isLightMode, isDarkMode };
 };
 
 export default useThemeMode;

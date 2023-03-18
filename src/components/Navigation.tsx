@@ -1,5 +1,6 @@
-import { Link, Stack, useTheme } from "@mui/material";
-import { Link as WouterLink } from "wouter";
+import { Stack, useTheme } from "@mui/material";
+import InternalLink from "./InternalLink";
+import Logo from "./Logo";
 
 const Navigation: React.FC = () => {
     const theme = useTheme();
@@ -7,22 +8,21 @@ const Navigation: React.FC = () => {
     return (
         <Stack
             direction="row"
-            gap={theme.spacing(5)}
-            padding={theme.spacing(1, 4)}
+            padding={2}
             alignItems="center"
+            justifyContent="space-between"
             height="75px"
             width="100%"
             sx={{ borderBottom: `1px solid ${theme.palette.divider}`, position: "absolute" }}
         >
-            <Link component={WouterLink} href="/">
-                Home
-            </Link>
-            <Link component={WouterLink} href="/map">
-                Map
-            </Link>
-            <Link component={WouterLink} href="/settings">
-                Settings
-            </Link>
+            <InternalLink href="/">
+                <Logo height="44px" inheritColor />
+            </InternalLink>
+            <Stack direction="row" gap={5} paddingRight={2}>
+                <InternalLink href="/map">Map</InternalLink>
+                <InternalLink href="/scanner">Scanner</InternalLink>
+                <InternalLink href="/settings">Settings</InternalLink>
+            </Stack>
         </Stack>
     );
 };

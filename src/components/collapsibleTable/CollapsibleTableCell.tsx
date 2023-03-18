@@ -32,7 +32,7 @@ const CollapsibleTableCell: React.FC<CollapsibleTableCellProps> = ({
             if (typeof Icon === "boolean") Icon = InfoIcon;
             return (
                 <Tooltip title={data} placement="left" arrow>
-                    <Icon fontSize="inherit" sx={{ marginTop: "2px", marginBottom: "-2px", cursor: "pointer" }} />
+                    <Icon fontSize="inherit" sx={{ marginTop: "2px", marginBottom: "-2px" }} />
                 </Tooltip>
             );
         }

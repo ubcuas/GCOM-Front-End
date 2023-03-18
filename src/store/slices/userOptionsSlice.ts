@@ -11,6 +11,7 @@ type UserOptionsState = {
         };
     };
     themeColor: ThemeColor;
+    scannerTimer: number;
 };
 
 const initialThemeMode = ThemeMode.Dark;
@@ -24,6 +25,7 @@ const initialState: UserOptionsState = {
         },
     },
     themeColor: initialThemeColor,
+    scannerTimer: 5,
 };
 
 const userOptionsSlice = createSlice({
@@ -38,13 +40,17 @@ const userOptionsSlice = createSlice({
             state.themeColor = action.payload;
             state.themeOptions.palette.primary = ThemeColorFamily[action.payload][state.themeOptions.palette.mode];
         },
+        updateScannerTimer: (state, action: PayloadAction<number>) => {
+            if (!Number.isNaN(action.payload)) state.scannerTimer = action.payload;
+        },
     },
 });
 
 export const selectThemeOptions = (state: RootState) => state.userOptions.themeOptions;
 export const selectThemeColor = (state: RootState) => state.userOptions.themeColor;
+export const selectScannerTimer = (state: RootState) => state.userOptions.scannerTimer;
 
-export const { updateThemeMode, updateThemeColor } = userOptionsSlice.actions;
+export const { updateThemeMode, updateThemeColor, updateScannerTimer } = userOptionsSlice.actions;
 
 const userOptionsReducer = userOptionsSlice.reducer;
 export default userOptionsReducer;

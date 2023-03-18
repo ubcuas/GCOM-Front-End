@@ -14,7 +14,7 @@ const MapPanel: React.FC = () => {
 
     const getMapStyle = () =>
         mapStyle === MapStyles.Monochrome
-            ? isDarkMode()
+            ? isDarkMode
                 ? MapStylesMonochrome.Dark
                 : MapStylesMonochrome.Light
             : mapStyle;

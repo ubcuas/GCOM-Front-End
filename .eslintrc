@@ -21,9 +21,16 @@
         "@typescript-eslint/no-restricted-imports": [
             "warn",
             {
-                "name": "react-redux",
-                "importNames": ["useSelector", "useDispatch"],
-                "message": "Use typed hooks `useAppDispatch` and `useAppSelector` instead."
+                "paths": [{
+                    "name": "react-redux",
+                    "importNames": ["useSelector", "useDispatch"],
+                    "message": "Use typed hooks `useAppDispatch` and `useAppSelector` instead."
+                }],
+                "patterns": [{
+                    "name": "mui-import-levels",
+                    "group": ["@mui/material/*"],
+                    "message": "Import from `@mui/material` instead as Vite manages the bundle size."
+                }]
             }
         ],
         "no-unused-vars": "off",

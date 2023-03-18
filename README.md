@@ -9,9 +9,13 @@ A [Mapbox access token](https://account.mapbox.com/access-tokens/) is required f
 ### Running
 
 ## Redux Store
+ - just dimmed? still label?
+ - color-wise, main waypoints have the colour and not in use are neutral?
+ - only show current waypoints in the table? setting to change that?
 
 ## TO-DO
 ### Priority
+- [ ] 2023 AEAC Waypoints, script to fetch and parse from the map?
 - [x] Migration to Vite
 - [ ] Documentation
 - [x] Dockerize
@@ -22,7 +26,7 @@ A [Mapbox access token](https://account.mapbox.com/access-tokens/) is required f
 - [x] Move obstacle positions into store
 
 ### Bugs
-- [ ] Map zoom being 10+, changing to globe doesn't render a globe? - submit bug report to package
+- [x] ~~Map zoom being 10+, changing to globe doesn't render a globe? - submit bug report to package~~ No longer an issue
 
 ### UI/Design
 - [ ] Logo (.svg possible?)

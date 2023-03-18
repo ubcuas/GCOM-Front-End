@@ -1,32 +1,40 @@
-import { css } from "@emotion/react";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, css, IconButton, Typography, useTheme } from "@mui/material";
 import { useState } from "react";
 import { Marker, Popup } from "react-map-gl";
-import PlusIcon from "../../../../components/PlusIcon";
+import PlusIcon from "../../../../icons/PlusIcon";
 import { ColorPalette } from "../../../../types/Theming";
 import { Waypoint } from "../../../../types/Waypoint";
-import PlaceMarkerIcon from "../../../../components/PlaceMarkerIcon";
+import PlaceMarkerIcon from "../../../../icons/PlaceMarkerIcon";
 
 type PlaceMarkerProps = {
     waypoint: Waypoint;
     isObstacle?: boolean;
     color?: ColorPalette;
+    htmlColor?: string;
+    isInRoute?: boolean;
     usePopup?: boolean;
 };
 
-const PlaceMarker: React.FC<PlaceMarkerProps> = ({ waypoint, isObstacle, color, usePopup }) => {
+const PlaceMarker: React.FC<PlaceMarkerProps> = ({
+    waypoint,
+    isObstacle,
+    color,
+    htmlColor,
+    isInRoute = true,
+    usePopup,
+}) => {
     const theme = useTheme();
     const [showPopup, setShowPopup] = useState(false);
 
-    const { longitude, latitude, name, id, altitude, remarks } = waypoint;
+    const { longitude, latitude, name, id, altitude } = waypoint;
     const label = name.charAt(0);
     const markerProps = { longitude, latitude };
-    const iconProps = { label, isObstacle, color };
+    const iconProps = { label, isObstacle, color, htmlColor };
 
     return (
         <>
             <Marker anchor="bottom" offset={[0, 9]} {...markerProps} onClick={() => setShowPopup(true)}>
-                <PlaceMarkerIcon {...iconProps} />
+                <PlaceMarkerIcon {...iconProps} sx={{ opacity: isInRoute ? 1 : 0.2 }} />
             </Marker>
             {usePopup && showPopup && (
                 <Popup
@@ -38,7 +46,7 @@ const PlaceMarker: React.FC<PlaceMarkerProps> = ({ waypoint, isObstacle, color, 
                         }
                         .mapboxgl-popup-content {
                             background-color: ${theme.palette.background.default};
-                            border-radius: ${theme.shape.borderRadius * 1}px;
+                            border-radius: ${theme.shape.borderRadius}px;
                             box-shadow: ${theme.shadows[3]};
                         }
                     `}
@@ -65,12 +73,10 @@ const PlaceMarker: React.FC<PlaceMarkerProps> = ({ waypoint, isObstacle, color, 
                         <b>Latitude:</b> {latitude}
                         <br />
                         <b>Longitude:</b> {longitude}
-                        <br />
-                        <b>Altitude:</b> {altitude}
-                        {!!remarks && (
+                        {!!altitude && (
                             <>
                                 <br />
-                                <b>Remarks:</b> {remarks}
+                                <b>Altitude:</b> {altitude}
                             </>
                         )}
                     </Box>

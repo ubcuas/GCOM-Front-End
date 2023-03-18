@@ -1,5 +1,6 @@
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import CollapsibleTable from "../../../components/CollapsibleTable";
+import PlaceIconForTable from "../../../icons/PlaceIconForTable";
 import { useAppSelector } from "../../../store";
 import { selectRoutes, selectWaypoints } from "../../../store/slices/dataSlice";
 import { Route } from "../../../types/Route";
@@ -18,29 +19,39 @@ const RouteTable: React.FC = () => {
         {
             title: "Start",
             accessor: (route) => WaypointUtility.getNameById(route.start_waypoint, waypoints),
-            noStretch: true,
-            sx: { textAlign: "right", paddingRight: 1 },
+            sx: { textAlign: "right", paddingRight: 0.5 },
         },
         {
+            accessor: (route) => <PlaceIconForTable waypointId={route.start_waypoint} />,
             noStretch: true,
-            accessor: () => <ArrowRightAltIcon fontSize="inherit" sx={{ marginTop: "2px", marginBottom: "-2px" }} />,
+            sx: { paddingLeft: 0, paddingRight: 0 },
+        },
+        {
+            accessor: () => <ArrowRightAltIcon fontSize="inherit" sx={{ marginTop: "3px", marginBottom: "-3px" }} />,
+            noStretch: true,
+            sx: { paddingLeft: 0.5, paddingRight: 0.5 },
+        },
+        {
+            accessor: (route) => <PlaceIconForTable waypointId={route.end_waypoint} />,
+            noStretch: true,
             sx: { paddingLeft: 0, paddingRight: 0 },
         },
         {
             title: "End",
             accessor: (route) => WaypointUtility.getNameById(route.end_waypoint, waypoints),
-            noStretch: true,
-            sx: { paddingLeft: 1 },
+            sx: { paddingLeft: 0.5 },
         },
         {
             title: "Value",
-            accessor: (route) => route.value,
+            accessor: (route) => `$${route.value.toFixed(2)}`,
+            sx: { textAlign: "right" },
         },
         {
             icon: true,
             accessor: (route) => route.remarks,
+            noStretch: true,
             fadeOnOpen: true,
-            sx: { paddingLeft: 0, textAlign: "right" },
+            sx: { paddingLeft: 0 },
         },
     ];
 

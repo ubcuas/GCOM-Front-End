@@ -6,7 +6,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Stack, IconButton, Typography, Slider, useTheme } from "@mui/material";
 import { useDragControls, Reorder, motion } from "framer-motion";
 import { useState } from "react";
-import PlusIcon from "../../../../../components/PlusIcon";
+import PlusIcon from "../../../../../icons/PlusIcon";
 import { useAppDispatch } from "../../../../../store";
 import {
     GeometLayerState,

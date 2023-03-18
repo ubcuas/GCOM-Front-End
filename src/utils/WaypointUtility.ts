@@ -25,4 +25,9 @@ export default class WaypointUtility {
 
         return [WaypointUtility.getCoordinates(startWaypoint), WaypointUtility.getCoordinates(endWaypoint)];
     };
+
+    public static isInRoute = (waypoint: Waypoint, routes: Route[]) => {
+        const { id } = waypoint;
+        return !!routes.find(({ start_waypoint, end_waypoint }) => id === start_waypoint || id === end_waypoint);
+    };
 }

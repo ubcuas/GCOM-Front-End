@@ -1,4 +1,4 @@
-import IconButton from "@mui/material/IconButton";
+import { IconButton } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 import useOpen from "../../utils/hooks/useOpen";
 import MapDrawer from "../../components/MapDrawer";
@@ -30,7 +30,9 @@ const MapSettings: React.FC = () => {
                 <GeometSettings />
                 <Divider />
                 <MapDrawer.Header>Map Settings</MapDrawer.Header>
-                <MapSelections />
+                <MapDrawer.Text>
+                    <MapSelections />
+                </MapDrawer.Text>
             </MapDrawer>
         </>
     );

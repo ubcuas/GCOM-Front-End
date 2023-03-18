@@ -1,4 +1,5 @@
 import { SimplePaletteColorOptions } from "@mui/material";
+/* eslint-disable @typescript-eslint/no-restricted-imports */
 import {
     amber,
     blue,
@@ -15,6 +16,7 @@ import {
     teal,
     yellow,
 } from "@mui/material/colors";
+/* eslint-enable */
 
 export enum ThemeMode {
     Light = "light",

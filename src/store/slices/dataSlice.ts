@@ -3,6 +3,7 @@ import { Position } from "geojson";
 import { RootState } from "..";
 import { Route } from "../../types/Route";
 import { Waypoint } from "../../types/Waypoint";
+import { DUMMY_WAYPOINTS } from "../../utils/constants/dummyData";
 
 type DataState = {
     waypoints: Waypoint[];
@@ -11,30 +12,7 @@ type DataState = {
 };
 
 const initialState: DataState = {
-    waypoints: [
-        {
-            id: 1,
-            name: "Alpha",
-            longitude: -123.245,
-            latitude: 49.25,
-            altitude: 23.5,
-            remarks: "waypoint remark",
-        },
-        {
-            id: 2,
-            name: "Beta",
-            longitude: -123.25,
-            latitude: 49.28,
-            altitude: 23.5,
-        },
-        {
-            id: 3,
-            name: "Gamma",
-            longitude: -123.23,
-            latitude: 49.24,
-            altitude: 23.5,
-        },
-    ],
+    waypoints: DUMMY_WAYPOINTS,
     routes: [
         {
             id: 3,

@@ -1,23 +1,23 @@
 import PlaceIcon from "@mui/icons-material/Place";
-import SvgIcon from "@mui/material/SvgIcon";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import { useTheme } from "@mui/material";
+import { Box, SvgIcon, SxProps, Theme, Typography, useTheme } from "@mui/material";
 import { PaletteColor } from "@mui/material";
 import { ColorPalette } from "../types/Theming";
 
 type PlaceMarkerIconProps = {
     label?: string;
     color?: ColorPalette;
-    isObstacle?: boolean;
+    htmlColor?: string;
+    sx?: SxProps<Theme>;
 };
 
-const PlaceMarkerIcon: React.FC<PlaceMarkerIconProps> = ({ label, color = "primary", isObstacle }) => {
-    color = isObstacle ? "error" : color;
-
+const PlaceMarkerIcon: React.FC<PlaceMarkerIconProps> = ({ label, color = "primary", htmlColor, sx }) => {
     const theme = useTheme();
     const palette = theme.palette;
-    const themeColor = palette[color as keyof typeof palette] as PaletteColor;
+
+    const colorProps = htmlColor ? { htmlColor } : { color };
+    const contrastText = htmlColor
+        ? theme.palette.getContrastText(htmlColor)
+        : (palette[colorProps.color as keyof typeof palette] as PaletteColor).contrastText;
 
     const getIconWithLabel = () => (
         <>
@@ -31,20 +31,20 @@ const PlaceMarkerIcon: React.FC<PlaceMarkerIconProps> = ({ label, color = "prima
                     alignItems: "center",
                     justifyContent: "center",
                     top: "7px",
-                    color: themeColor.contrastText,
+                    color: contrastText,
                 }}
             >
                 <Typography variant="button">{label}</Typography>
             </Box>
 
             {/* PlaceIcon svg path edited to remove the hole in the middle */}
-            <SvgIcon fontSize="large" color={color}>
+            <SvgIcon fontSize="large" {...colorProps}>
                 <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
             </SvgIcon>
         </>
     );
 
-    return isObstacle || label ? getIconWithLabel() : <PlaceIcon fontSize="large" color={color} />;
+    return <Box sx={sx}>{label ? getIconWithLabel() : <PlaceIcon fontSize="large" {...colorProps} />}</Box>;
 };
 
 export default PlaceMarkerIcon;

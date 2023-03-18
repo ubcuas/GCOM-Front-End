@@ -1,12 +1,7 @@
-import Box from "@mui/material/Box";
-import Collapse from "@mui/material/Collapse";
-import IconButton from "@mui/material/IconButton";
-import Stack from "@mui/material/Stack";
-import { useTheme } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
+import { Box, Collapse, IconButton, Stack, Typography, useTheme } from "@mui/material";
 import ChevronIcon from "../../../../components/ChevronIcon";
 import MapDrawer from "../../../../components/MapDrawer";
-import PlusIcon from "../../../../components/PlusIcon";
+import PlusIcon from "../../../../icons/PlusIcon";
 import { useAppSelector, useAppDispatch } from "../../../../store";
 import { selectGeometLayers, removeGeometLayer, addGeometLayer } from "../../../../store/slices/mapLayersSlice";
 import { GeometLayer, GeometCategory, isGeometLayer } from "../../../../utils/geomet";

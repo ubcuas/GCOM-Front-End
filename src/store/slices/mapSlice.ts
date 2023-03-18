@@ -26,14 +26,14 @@ const initialState: MapState = {
     },
     viewState: {
         mercator: {
-            longitude: -123.247,
-            latitude: 49.262,
-            zoom: 12,
+            longitude: -71.64686900382074,
+            latitude: 48.51056103673244,
+            zoom: 12.5,
         },
         globe: {
-            longitude: -123.247,
-            latitude: 49.262,
-            zoom: 12,
+            longitude: -71.64686900382074,
+            latitude: 48.51056103673244,
+            zoom: 12.5,
         },
     },
 };

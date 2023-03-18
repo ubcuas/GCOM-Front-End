@@ -1,7 +1,7 @@
 import { IconButton, Typography, useTheme } from "@mui/material";
 import { Box } from "@mui/system";
 import MapDrawer from "../../../components/MapDrawer";
-import PlusIcon from "../../../components/PlusIcon";
+import PlusIcon from "../../../icons/PlusIcon";
 import { GEOMET_CAPABILITIES } from "../../../utils/geomet";
 import useOpen from "../../../utils/hooks/useOpen";
 import GeometLayerToggle from "./geometSettings/GeometLayerToggle";

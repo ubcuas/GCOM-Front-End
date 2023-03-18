@@ -1,5 +1,5 @@
 import ClearIcon from "@mui/icons-material/Clear";
-import { useTheme } from "@mui/material/styles";
+import { useTheme } from "@mui/material";
 
 type PlusIconProps = {
     remove?: boolean;
