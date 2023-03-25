@@ -9,7 +9,7 @@ export type AEACRoute = {
     max_vehicle_weight: number;
     value: number;
     remarks?: string; // TODO: is this nullable?
-    order: number; // order of route completion
+    order: number; // TODO: is this nullable in endpoint/response data?
 };
 
 export type RestrictedArea = {

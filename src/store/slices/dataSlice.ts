@@ -11,6 +11,13 @@ type DataState = {
     waypoints: Waypoint[];
     routes: AEACRoute[];
     restrictedArea?: RestrictedArea;
+    task1: {
+        routes?: AEACRoute[];
+        restrictedArea?: RestrictedArea;
+    };
+    task2: {
+        routes?: AEACRoute[];
+    };
     obstacles: Position[][];
 };
 
@@ -59,6 +66,44 @@ const initialState: DataState = {
             order: 3,
         },
     ],
+    task1: {
+        routes: [
+            {
+                id: 3,
+                number: 6,
+                start_waypoint: "Alpha",
+                end_waypoint: "Echo",
+                passengers: 2,
+                max_vehicle_weight: 15.0,
+                value: 23.5,
+                remarks: "smtn regarding the route",
+                order: 1,
+            },
+            {
+                id: 2,
+                number: 6,
+                start_waypoint: "Echo",
+                end_waypoint: "India",
+                passengers: 2,
+                max_vehicle_weight: 15.0,
+                value: 23.5,
+                remarks: "smtn regarding the route",
+                order: 2,
+            },
+            {
+                id: 5,
+                number: 7,
+                start_waypoint: "India",
+                end_waypoint: "Papa",
+                passengers: 2,
+                max_vehicle_weight: 15.0,
+                value: 23.5,
+                remarks: "smtn regarding the route",
+                order: 3,
+            },
+        ],
+    },
+    task2: {},
     obstacles: [
         [
             [-123.26, 49.25],

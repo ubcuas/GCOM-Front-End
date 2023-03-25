@@ -27,10 +27,11 @@ A [Mapbox access token](https://account.mapbox.com/access-tokens/) is required f
 
 ### Bugs
 - [x] ~~Map zoom being 10+, changing to globe doesn't render a globe? - submit bug report to package~~ No longer an issue
+- [ ] Minor bug on mercator location chaning when trying to zoom immediately after switching from globe
 
 ### UI/Design
-- [ ] Logo (.svg possible?)
-- [ ] Actually nicer navigation component
+- [x] Logo (.svg possible?)
+- [x] Actually nicer navigation component
 - [x] Fix drawers
 - [x] Redo drag and drop for Geomet layers in framer-motion (can remove useHover, react-beautiful-dnd, react-merge-refs)
 - [ ] Tooltip on hover when text overflows
@@ -40,7 +41,7 @@ A [Mapbox access token](https://account.mapbox.com/access-tokens/) is required f
 - [x] WmsTile component
 - [ ] useNextLoadedTile hook?
 - [ ] PlaceMarker/PlaceMarkerIcon components (+ switch flex display to Stack?)
-- [ ] GeometLayerToggle component (maybe switch animations to framer-motion?)
+- [x] GeometLayerToggle component (maybe switch animations to framer-motion?)
 - [ ] Component for `<b>Text:</b> data<br />`?
 - [ ] Deep merge on `sx` objects? (in CollapsibleTable, etc.) Or objects in general?
 - [ ] Figure out better way to handle nav height
@@ -52,4 +53,4 @@ A [Mapbox access token](https://account.mapbox.com/access-tokens/) is required f
 - [ ] Place marker size adjustments
 - [ ] Route path size adjustments
 - [ ] More map themes (requires refactoring for current handling of satellite style)
-- [ ] Map resizing on drawer open
+- [x] ~~Map resizing on drawer open~~ Not particularly needed anymore

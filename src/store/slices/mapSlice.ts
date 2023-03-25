@@ -33,7 +33,7 @@ const initialState: MapState = {
         globe: {
             longitude: -71.64686900382074,
             latitude: 48.51056103673244,
-            zoom: 12.5,
+            zoom: 2,
         },
     },
 };
