@@ -1,6 +1,6 @@
 import PlaceMarker from "./mapMarkers/PlaceMarker";
 import { useAppSelector } from "../../../store";
-import { selectRoutes, selectWaypoints } from "../../../store/slices/dataSlice";
+import { selectCurrentTaskRoutes, selectWaypoints } from "../../../store/slices/dataSlice";
 import RouteDirectionMarker from "./mapMarkers/RouteDirectionMarker";
 import { useMemo } from "react";
 import ColorUtility from "../../../utils/ColorUtility";
@@ -10,7 +10,7 @@ import AircraftMarker from "./mapMarkers/AircraftMarker";
 
 const MapMarkers: React.FC = () => {
     const waypoints = useAppSelector(selectWaypoints);
-    const routes = useAppSelector(selectRoutes);
+    const routes = useAppSelector(selectCurrentTaskRoutes);
     const { themeMode } = useThemeMode();
 
     const routeDirectionMarkers = useMemo(
@@ -30,7 +30,7 @@ const MapMarkers: React.FC = () => {
                     />
                 );
             }),
-        [waypoints]
+        [waypoints, routes]
     );
 
     return (

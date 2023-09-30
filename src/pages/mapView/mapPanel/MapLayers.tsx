@@ -3,7 +3,6 @@ import { useAppSelector } from "../../../store";
 import { selectFirstSymbolLayer } from "../../../store/slices/mapLayersSlice";
 import DividerTile from "../../../components/DividerTile";
 import GeometLayers from "./mapLayers/GeometLayers";
-import ObstacleLayer from "./mapLayers/ObstacleLayer";
 import RouteLayer from "./mapLayers/RouteLayer";
 
 const MapLayers: React.FC = () => {
@@ -12,6 +11,7 @@ const MapLayers: React.FC = () => {
     const dividers: { [key: string]: { id: string; isAfterLabels?: boolean } } = {
         geomet: { id: "geomet-divider" },
         obstacle: { id: "obstacle-divider", isAfterLabels: true },
+        restrictedArea: { id: "restricted-divider", isAfterLabels: true },
         route: { id: "route-divider", isAfterLabels: true },
     };
 
@@ -25,7 +25,6 @@ const MapLayers: React.FC = () => {
                 />
             ))}
             <GeometLayers dividerId={dividers.geomet.id} />
-            <ObstacleLayer dividerId={dividers.obstacle.id} />
             <RouteLayer dividerId={dividers.route.id} />
         </>
     );

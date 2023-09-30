@@ -2,7 +2,7 @@ import { useTheme } from "@mui/material";
 import { Position } from "geojson";
 import { Layer, LayerProps, Source, SourceProps } from "react-map-gl";
 import { useAppSelector } from "../../../../store";
-import { selectRoutes, selectWaypoints } from "../../../../store/slices/dataSlice";
+import { selectCurrentTaskRoutes, selectWaypoints } from "../../../../store/slices/dataSlice";
 import { selectMapStyle } from "../../../../store/slices/mapSlice";
 import { MapStyles } from "../../../../utils/constants/enums/map";
 import TileUtility from "../../../../utils/TileUtility";
@@ -15,7 +15,7 @@ type RouteLayerProps = {
 const RouteLayer: React.FC<RouteLayerProps> = ({ dividerId }) => {
     const theme = useTheme();
     const waypoints = useAppSelector(selectWaypoints);
-    const routes = useAppSelector(selectRoutes);
+    const routes = useAppSelector(selectCurrentTaskRoutes);
     const isSatelliteStyle = useAppSelector(selectMapStyle) === MapStyles.Satellite;
     const tileId = "route";
     const strokeWidth = 1;

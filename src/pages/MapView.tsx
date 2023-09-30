@@ -1,4 +1,5 @@
 import { Box } from "@mui/material";
+import ManualOverride from "./mapView/ManualOverride";
 import MapData from "./mapView/MapData";
 import MapPanel from "./mapView/MapPanel";
 import MapSettings from "./mapView/MapSettings";
@@ -13,6 +14,7 @@ const MapView: React.FC = () => {
                 <Box sx={{ height: "100%", width: "30%", marginLeft: "70%" }}>
                     <MapData />
                 </Box>
+                <ManualOverride />
                 <MapSettings />
             </Box>
         </>

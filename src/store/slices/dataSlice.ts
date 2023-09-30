@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Position } from "geojson";
 import { RootState } from "..";
-import { AEACRoute, RestrictedArea } from "../../types/AEAC";
+import { AEACRoute, AEACTask, RestrictedArea } from "../../types/AEAC";
 import { AircraftStatus } from "../../types/AircraftStatus";
 import { Waypoint } from "../../types/Waypoint";
 import { DUMMY_WAYPOINTS } from "../../utils/constants/dummyData";
@@ -11,14 +10,16 @@ type DataState = {
     waypoints: Waypoint[];
     routes: AEACRoute[];
     restrictedArea?: RestrictedArea;
-    task1: {
-        routes?: AEACRoute[];
-        restrictedArea?: RestrictedArea;
+    aeac: {
+        currentTask: AEACTask;
+        task1: {
+            routes: AEACRoute[];
+            restrictedArea?: RestrictedArea;
+        };
+        task2: {
+            routes: AEACRoute[];
+        };
     };
-    task2: {
-        routes?: AEACRoute[];
-    };
-    obstacles: Position[][];
 };
 
 const initialState: DataState = {
@@ -66,51 +67,49 @@ const initialState: DataState = {
             order: 3,
         },
     ],
-    task1: {
-        routes: [
-            {
-                id: 3,
-                number: 6,
-                start_waypoint: "Alpha",
-                end_waypoint: "Echo",
-                passengers: 2,
-                max_vehicle_weight: 15.0,
-                value: 23.5,
-                remarks: "smtn regarding the route",
-                order: 1,
-            },
-            {
-                id: 2,
-                number: 6,
-                start_waypoint: "Echo",
-                end_waypoint: "India",
-                passengers: 2,
-                max_vehicle_weight: 15.0,
-                value: 23.5,
-                remarks: "smtn regarding the route",
-                order: 2,
-            },
-            {
-                id: 5,
-                number: 7,
-                start_waypoint: "India",
-                end_waypoint: "Papa",
-                passengers: 2,
-                max_vehicle_weight: 15.0,
-                value: 23.5,
-                remarks: "smtn regarding the route",
-                order: 3,
-            },
-        ],
+    aeac: {
+        currentTask: 1,
+        task1: {
+            routes: [
+                {
+                    id: 3,
+                    number: 6,
+                    start_waypoint: "Alpha",
+                    end_waypoint: "Echo",
+                    passengers: 2,
+                    max_vehicle_weight: 15.0,
+                    value: 23.5,
+                    remarks: "smtn regarding the route",
+                    order: 1,
+                },
+                {
+                    id: 2,
+                    number: 6,
+                    start_waypoint: "Echo",
+                    end_waypoint: "India",
+                    passengers: 2,
+                    max_vehicle_weight: 15.0,
+                    value: 23.5,
+                    remarks: "smtn regarding the route",
+                    order: 2,
+                },
+                {
+                    id: 5,
+                    number: 7,
+                    start_waypoint: "India",
+                    end_waypoint: "Papa",
+                    passengers: 2,
+                    max_vehicle_weight: 15.0,
+                    value: 23.5,
+                    remarks: "smtn regarding the route",
+                    order: 3,
+                },
+            ],
+        },
+        task2: {
+            routes: [],
+        },
     },
-    task2: {},
-    obstacles: [
-        [
-            [-123.26, 49.25],
-            [-123.25, 49.23],
-            [-123.247, 49.28],
-        ],
-    ],
 };
 
 const dataSlice = createSlice({
@@ -126,8 +125,17 @@ const dataSlice = createSlice({
         updateRoutes: (state, action: PayloadAction<AEACRoute[]>) => {
             state.routes = action.payload;
         },
-        updateObstacles: (state, action: PayloadAction<Position[][]>) => {
-            state.obstacles = action.payload;
+        updateCurrentTask: (state, action: PayloadAction<AEACTask>) => {
+            state.aeac.currentTask = action.payload;
+        },
+        updateTask1Routes: (state, action: PayloadAction<AEACRoute[]>) => {
+            state.aeac.task1.routes = action.payload;
+        },
+        updateTask1RestrictedArea: (state, action: PayloadAction<RestrictedArea>) => {
+            state.aeac.task1.restrictedArea = action.payload;
+        },
+        updateTask2Routes: (state, action: PayloadAction<AEACRoute[]>) => {
+            state.aeac.task2.routes = action.payload;
         },
     },
 });
@@ -135,9 +143,22 @@ const dataSlice = createSlice({
 export const selectAircraftStatus = (state: RootState) => state.data.aircraftStatus;
 export const selectWaypoints = (state: RootState) => state.data.waypoints;
 export const selectRoutes = (state: RootState) => state.data.routes;
-export const selectObstacles = (state: RootState) => state.data.obstacles;
+export const selectCurrentTask = (state: RootState) => state.data.aeac.currentTask;
+export const selectCurrentTaskRoutes = (state: RootState) =>
+    (state.data.aeac.currentTask === 1 ? selectTask1Routes : selectTask2Routes)(state);
+export const selectTask1Routes = (state: RootState) => state.data.aeac.task1.routes;
+export const selectTask1RestrictedArea = (state: RootState) => state.data.aeac.task1.restrictedArea;
+export const selectTask2Routes = (state: RootState) => state.data.aeac.task2.routes;
 
-export const { updateAircraftStatus, updateWaypoints, updateRoutes, updateObstacles } = dataSlice.actions;
+export const {
+    updateAircraftStatus,
+    updateWaypoints,
+    updateRoutes,
+    updateCurrentTask,
+    updateTask1Routes,
+    updateTask1RestrictedArea,
+    updateTask2Routes,
+} = dataSlice.actions;
 
 const dataReducer = dataSlice.reducer;
 export default dataReducer;

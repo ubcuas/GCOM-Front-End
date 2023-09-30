@@ -1,5 +1,3 @@
-import { Waypoint } from "./Waypoint";
-
 export type AEACRoute = {
     id: number;
     number: number; // provided by competition handlers, not trusted to be unique
@@ -14,6 +12,8 @@ export type AEACRoute = {
 
 export type RestrictedArea = {
     id: number;
-    bounds: Waypoint[]; // TODO: why not just string for waypoint names like above
-    rejoin_at: Waypoint;
+    bounds: string[]; // waypoint names
+    rejoin_at: string;
 };
+
+export type AEACTask = 1 | 2;
