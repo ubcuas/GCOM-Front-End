@@ -1,3 +1,4 @@
+import { Payload } from "./Payload";
 /**
  * Based on the Drone struct in GCOM-2023.
  */
@@ -10,6 +11,7 @@ export type AircraftStatus = {
     verticalSpeed: number;
     speed: number;
     heading: number;
-    // payload is currently TBD on backend
     voltage: number;
+    // payload is currently TBD on backend
+    payload?: Payload[];
 };

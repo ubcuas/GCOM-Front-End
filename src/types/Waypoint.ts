@@ -1,10 +1,9 @@
 /**
  * Based on the Drone struct in GCOM-2023.
- *
- * Is altitude here relative?
  */
 
-enum Designation {
+// maybe not needed idk
+export enum Designation {
     Launch,
     Land,
     Obstacle,
