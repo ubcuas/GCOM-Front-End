@@ -23,6 +23,8 @@ export default function Nav() {
                     position: "sticky",
                     top: 0,
                 }}
+                indicatorColor="primary"
+                textColor="primary"
             >
                 <Tab
                     sx={{

@@ -11,6 +11,30 @@ const fadeIn = keyframes`
     }
 `;
 
+const fadeUp15 = keyframes`
+    from {
+        transform: translateY(15px);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+`;
+
+const fadeUp30 = keyframes`
+    0% {
+        transform: translateY(30px);
+    }
+
+    9% {
+        transform: translateY(30px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+`;
+
 export default function Home() {
     return (
         <Container maxWidth="md">
@@ -34,6 +58,8 @@ export default function Home() {
                     <Typography
                         sx={{
                             fontWeight: "200",
+                            animation: `${fadeUp15} 1s ease-in-out`,
+                            animationIterationCount: 1,
                         }}
                         variant="h4"
                     >
@@ -42,6 +68,8 @@ export default function Home() {
                     <Typography
                         sx={{
                             fontWeight: "200",
+                            animation: `${fadeUp30} 1250ms ease-in-out`,
+                            animationIterationCount: 1,
                         }}
                         variant="h5"
                     >

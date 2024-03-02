@@ -9,7 +9,7 @@ export default function TimeStamp({ time }: { time: number }) {
             }}
             variant="body2"
         >
-            TimeStamp:{"    "}
+            Update Time Stamp:{"    "}
             {new Date(time).toLocaleString("en-CA")}
         </Typography>
     );

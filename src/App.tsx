@@ -12,6 +12,18 @@ function App() {
         () =>
             responsiveFontSizes(
                 createTheme({
+                    components: {
+                        MuiTab: {
+                            styleOverrides: {
+                                root: {
+                                    color: "white",
+                                    "&.Mui-selected": {
+                                        color: "#2DA0DC",
+                                    },
+                                },
+                            },
+                        },
+                    },
                     palette: {
                         mode: prefersDarkMode ? "dark" : "light",
                         background: {

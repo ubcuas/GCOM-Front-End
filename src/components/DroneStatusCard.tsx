@@ -1,15 +1,15 @@
 import { useAppSelector } from "../store/store";
 import { selectAircraftStatus } from "../store/slices/dataSlice";
 import InfoCard from "./InfoCard";
-import PositionSection from "./InfoSections/PositionSection";
-import SpeedSection from "./InfoSections/SpeedSection";
-import TimeStamp from "./InfoSections/TimeStamp";
+import PositionSection from "./DroneStatus/PositionSection";
+import SpeedSection from "./DroneStatus/SpeedSection";
+import TimeStamp from "./DroneStatus/TimeStamp";
 
-export default function DroneStatus() {
+export default function DroneStatusCard() {
     const droneState = useAppSelector(selectAircraftStatus);
 
     return (
-        <InfoCard title="Drone Status">
+        <InfoCard title="Drone">
             <PositionSection
                 latitude={droneState.latitude}
                 longitude={droneState.longitude}

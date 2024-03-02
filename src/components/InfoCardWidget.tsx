@@ -1,14 +1,14 @@
 import { Box, Grid, Paper, Stack, Typography } from "@mui/material";
 import { ReactNode } from "react";
 
-export default function StatWidget({
+export default function InfoCardWidget({
     text,
     data,
     aside,
     gridSpacing,
 }: {
     text: string;
-    data: string | number;
+    data: string | number | JSX.Element;
     aside?: ReactNode;
     gridSpacing?: number;
 }) {
@@ -42,7 +42,6 @@ export default function StatWidget({
                         <Typography variant="h6">{text}</Typography>
                         <Typography
                             sx={{
-                                fontWeight: "bold",
                                 color: (theme) => theme.palette.primary.main,
                             }}
                             variant="h5"

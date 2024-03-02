@@ -1,5 +1,5 @@
 import { Typography, Grid } from "@mui/material";
-import StatWidget from "../StatWidget";
+import InfoCardWidget from "../InfoCardWidget";
 
 export default function SpeedSection({ speed, verticalSpeed }: { verticalSpeed: number; speed: number }) {
     return (
@@ -13,8 +13,8 @@ export default function SpeedSection({ speed, verticalSpeed }: { verticalSpeed: 
                 Speed
             </Typography>
             <Grid container spacing={1}>
-                <StatWidget gridSpacing={6} text="Speed" data={speed} />
-                <StatWidget gridSpacing={6} text="Vertical Speed" data={verticalSpeed} />
+                <InfoCardWidget gridSpacing={6} text="Speed" data={`${speed}m/s`} />
+                <InfoCardWidget gridSpacing={6} text="Vertical Speed" data={`${verticalSpeed}m/s`} />
             </Grid>
         </>
     );

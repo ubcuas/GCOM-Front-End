@@ -1,5 +1,5 @@
 import { Typography, Grid, Box } from "@mui/material";
-import StatWidget from "./../StatWidget";
+import InfoCardWidget from "../InfoCardWidget";
 
 export default function PositionSection({
     latitude,
@@ -23,10 +23,15 @@ export default function PositionSection({
                 Position
             </Typography>
             <Grid container spacing={1}>
-                <StatWidget gridSpacing={6} text="Longitude" data={longitude} />
-                <StatWidget gridSpacing={6} text="Latitude" data={latitude} />
-                <StatWidget gridSpacing={4} text="Altitude" data={altitude} />
-                <StatWidget gridSpacing={8} text="Heading" data={heading} aside={<Compass heading={heading} />} />
+                <InfoCardWidget gridSpacing={6} text="Longitude" data={longitude} />
+                <InfoCardWidget gridSpacing={6} text="Latitude" data={latitude} />
+                <InfoCardWidget gridSpacing={4} text="Altitude" data={`${altitude}m`} />
+                <InfoCardWidget
+                    gridSpacing={8}
+                    text="Heading"
+                    data={<>{heading}&deg;</>}
+                    aside={<Compass heading={heading} />}
+                />
             </Grid>
         </>
     );
