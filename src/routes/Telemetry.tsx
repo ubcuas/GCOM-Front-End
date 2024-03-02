@@ -1,4 +1,4 @@
-import { Card, Grid, Paper } from "@mui/material";
+import { Grid } from "@mui/material";
 import DroneStatus from "../components/DroneStatus";
 import WaypointStatus from "../components/WaypointStatus";
 
@@ -6,8 +6,7 @@ export default function Telemetry() {
     return (
         <Grid
             sx={{
-                height: "100%",
-                padding: "64px",
+                padding: 8,
             }}
             container
             spacing={4}

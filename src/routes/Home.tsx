@@ -21,7 +21,7 @@ export default function Home() {
                     alignItems: "flex-start",
                     justifyContent: "center",
                     height: "100%",
-                    animation: `${fadeIn} 1s`,
+                    animation: `${fadeIn} 1s ease-in-out`,
                     animationIterationCount: 1,
                 }}
             >
@@ -45,7 +45,7 @@ export default function Home() {
                         }}
                         variant="h5"
                     >
-                        Season 2023-24
+                        Season 2023 - 24
                     </Typography>
                 </Box>
             </Box>

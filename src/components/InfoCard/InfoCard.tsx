@@ -10,10 +10,18 @@ export default function InfoCard({ title, children }: { title: string; children?
             <List>
                 <ListItem>
                     <ListItemText>
-                        <Typography variant="h5">{title}</Typography>
+                        <Typography
+                            sx={{
+                                fontWeight: "bold",
+                            }}
+                            variant="h5"
+                        >
+                            {title}
+                        </Typography>
                     </ListItemText>
                 </ListItem>
                 <Divider />
+                {children}
             </List>
         </Paper>
     );
