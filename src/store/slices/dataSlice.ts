@@ -10,7 +10,7 @@ type DataState = {
 
 const initialState: DataState = {
     aircraftStatus: {
-        timestamp: new Date().getUTCSeconds(),
+        timestamp: new Date().getTime(),
         latitude: 51.14557,
         longitude: -114.24515,
         altitude: 1992,

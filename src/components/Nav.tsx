@@ -12,7 +12,7 @@ export default function Nav() {
     };
 
     return (
-        <Paper>
+        <Paper sx={{}}>
             <Tabs
                 orientation="vertical"
                 value={tab}
@@ -20,6 +20,8 @@ export default function Nav() {
                 sx={{
                     borderRight: 1,
                     borderColor: "divider",
+                    position: "sticky",
+                    top: 0,
                 }}
             >
                 <Tab
