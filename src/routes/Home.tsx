@@ -1,15 +1,28 @@
-import { Box, Typography } from "@mui/material";
-import LogoCropped from "@assets/logo_cropped.svg?react";
+import { Box, Container, Typography } from "@mui/material";
+import LogoShort from "@assets/logo_short.svg?react";
 
 export default function Home() {
     return (
-        <>
-            <Box display="flex" justifyContent="center" alignItems="center">
-                <Typography variant="h4" fontWeight="bold">
-                    UBCUAS Ground Communication Software
+        <Container maxWidth="md">
+            <Box
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-start",
+                    justifyContent: "center",
+                    height: "100%",
+                }}
+            >
+                <LogoShort height={100} />
+                <Typography
+                    sx={{
+                        ml: "110px",
+                    }}
+                    variant="h4"
+                >
+                    Ground Communication Software
                 </Typography>
-                <LogoCropped height={50} width={50} />
             </Box>
-        </>
+        </Container>
     );
 }
