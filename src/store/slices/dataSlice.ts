@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AircraftStatus } from "../../types/AircraftStatus";
 import { Route } from "../../types/Route";
+import { RootState } from "../store";
 
 type DataState = {
     aircraftStatus: AircraftStatus;
@@ -40,6 +41,11 @@ const dataSlice = createSlice({
         },
     },
 });
+
+export const { updateAircraftStatus, updateRoute } = dataSlice.actions;
+
+export const selectAircraftStatus = (state: RootState) => state.data.aircraftStatus;
+export const selectRoute = (state: RootState) => state.data.route;
 
 const dataReducer = dataSlice.reducer;
 export default dataReducer;
