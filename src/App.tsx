@@ -13,6 +13,13 @@ function App() {
             createTheme({
                 palette: {
                     mode: prefersDarkMode ? "dark" : "light",
+                    background: {
+                        paper: "#040f16",
+                        default: "#040f16",
+                    },
+                    primary: {
+                        main: "#2DA0DC",
+                    },
                 },
             }),
         [prefersDarkMode],

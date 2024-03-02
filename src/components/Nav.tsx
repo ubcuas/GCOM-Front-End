@@ -1,4 +1,4 @@
-import { Tab, Tabs } from "@mui/material";
+import { Paper, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import FlightIcon from "@mui/icons-material/Flight";
 import Home from "@mui/icons-material/Home";
@@ -12,31 +12,33 @@ export default function Nav() {
     };
 
     return (
-        <Tabs
-            orientation="vertical"
-            value={tab}
-            onChange={handleNav}
-            sx={{
-                borderRight: 1,
-                borderColor: "divider",
-            }}
-        >
-            <Tab
+        <Paper>
+            <Tabs
+                orientation="vertical"
+                value={tab}
+                onChange={handleNav}
                 sx={{
-                    minWidth: 0,
+                    borderRight: 1,
+                    borderColor: "divider",
                 }}
-                label={<Home />}
-                href="/"
-                LinkComponent={Link}
-            />
-            <Tab
-                sx={{
-                    minWidth: 0,
-                }}
-                label={<FlightIcon />}
-                href="/telemetry"
-                LinkComponent={Link}
-            />
-        </Tabs>
+            >
+                <Tab
+                    sx={{
+                        minWidth: 0,
+                    }}
+                    label={<Home />}
+                    href="/"
+                    LinkComponent={Link}
+                />
+                <Tab
+                    sx={{
+                        minWidth: 0,
+                    }}
+                    label={<FlightIcon />}
+                    href="/telemetry"
+                    LinkComponent={Link}
+                />
+            </Tabs>
+        </Paper>
     );
 }
