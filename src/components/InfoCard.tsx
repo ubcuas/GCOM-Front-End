@@ -1,4 +1,4 @@
-import { Box, Divider, List, ListItem, ListItemText, Paper, Typography } from "@mui/material";
+import { Box, Divider, Paper, Typography } from "@mui/material";
 import { Children } from "react";
 
 export default function InfoCard({ title, children }: { title: string; children?: React.ReactNode }) {

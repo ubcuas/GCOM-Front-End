@@ -1,4 +1,4 @@
-import { Box, Grid, Paper, Stack, Typography } from "@mui/material";
+import { Grid, Paper, Stack, Typography } from "@mui/material";
 import { ReactNode } from "react";
 
 export default function InfoCardWidget({
