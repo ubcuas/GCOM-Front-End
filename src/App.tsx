@@ -4,6 +4,7 @@ import Nav from "./components/Nav";
 import Telemetry from "./routes/Telemetry";
 import { Box, CssBaseline, ThemeProvider, createTheme, responsiveFontSizes, useMediaQuery } from "@mui/material";
 import { useMemo } from "react";
+import Settings from "./routes/Settings";
 
 function App() {
     const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
@@ -23,6 +24,20 @@ function App() {
                                 },
                             },
                         },
+                        MuiTextField: {
+                            styleOverrides: {
+                                root: ({ theme }) =>
+                                    theme.unstable_sx({
+                                        "input::-webkit-outer-spin-button, input::-webkit-inner-spin-button": {
+                                            WebkitAppearance: "none",
+                                            margin: 0,
+                                        },
+                                        "input[type=number]": {
+                                            MozAppearance: "textfield",
+                                        },
+                                    }),
+                            },
+                        },
                     },
                     palette: {
                         mode: prefersDarkMode ? "dark" : "light",
@@ -35,6 +50,7 @@ function App() {
                         },
                     },
                     typography: {
+                        fontSize: 12,
                         fontFamily: [
                             '"Inter"',
                             "-apple-system",
@@ -62,12 +78,14 @@ function App() {
                     display: "flex",
                     minwidth: "100vw",
                     minHeight: "100vh",
+                    colorScheme: "dark",
                 }}
             >
                 <Nav />
                 <Switch>
                     <Route path="/" component={Home} />
                     <Route path="/telemetry" component={Telemetry} />
+                    <Route path="/settings" component={Settings} />
                 </Switch>
             </Box>
         </ThemeProvider>

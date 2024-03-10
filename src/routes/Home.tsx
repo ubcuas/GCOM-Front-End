@@ -12,11 +12,11 @@ const fadeIn = keyframes`
 `;
 
 const fadeUp15 = keyframes`
-    from {
+    0% {
         transform: translateY(15px);
     }
 
-    to {
+    100% {
         transform: translateY(0);
     }
 `;

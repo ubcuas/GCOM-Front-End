@@ -2,6 +2,7 @@ import { Paper, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import FlightIcon from "@mui/icons-material/Flight";
 import Home from "@mui/icons-material/Home";
+import Settings from "@mui/icons-material/Settings";
 import { Link } from "wouter";
 
 export default function Nav() {
@@ -40,6 +41,14 @@ export default function Nav() {
                     }}
                     label={<FlightIcon />}
                     href="/telemetry"
+                    LinkComponent={Link}
+                />
+                <Tab
+                    sx={{
+                        minWidth: 0,
+                    }}
+                    label={<Settings />}
+                    href="/settings"
                     LinkComponent={Link}
                 />
             </Tabs>

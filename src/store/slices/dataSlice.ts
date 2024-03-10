@@ -2,10 +2,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AircraftStatus } from "../../types/AircraftStatus";
 import { Route } from "../../types/Route";
 import { RootState } from "../store";
+import { getWaypoints } from "../thunks/dataThunks";
+import { Waypoint } from "../../types/Waypoint";
 
 type DataState = {
     aircraftStatus: AircraftStatus;
     route: Route;
+    queuedWaypoints: Waypoint[];
 };
 
 const initialState: DataState = {
@@ -24,9 +27,10 @@ const initialState: DataState = {
         id: 0,
         waypoints: [
             { id: 0, name: "test", latitude: 0, longitude: 0, altitude: 0 },
-            { id: 1, name: "test", latitude: 0, longitude: 0, altitude: 0 },
+            { id: 1, name: "test", latitude: 20, longitude: 20, altitude: 20 },
         ],
     },
+    queuedWaypoints: [],
 };
 
 const dataSlice = createSlice({
@@ -39,13 +43,30 @@ const dataSlice = createSlice({
         updateRoute: (state, action: PayloadAction<Route>) => {
             state.route = action.payload;
         },
+        addToQueuedWaypoints: (state, action: PayloadAction<Waypoint>) => {
+            state.queuedWaypoints.push(action.payload);
+        },
+        clearQueuedWaypoints: (state) => {
+            state.queuedWaypoints = [];
+        },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(getWaypoints.fulfilled, (state, action) => {
+                state.route.waypoints = action.payload;
+            })
+            .addCase(getWaypoints.rejected, (state, action) => {
+                console.log("rejected", action.error);
+            });
     },
 });
 
-export const { updateAircraftStatus, updateRoute } = dataSlice.actions;
+export const { updateAircraftStatus, updateRoute, addToQueuedWaypoints, clearQueuedWaypoints } = dataSlice.actions;
 
 export const selectAircraftStatus = (state: RootState) => state.data.aircraftStatus;
 export const selectRoute = (state: RootState) => state.data.route;
+export const selectWaypoints = (state: RootState) => state.data.route.waypoints;
+export const selectQueuedWaypoints = (state: RootState) => state.data.queuedWaypoints;
 
 const dataReducer = dataSlice.reducer;
 export default dataReducer;

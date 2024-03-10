@@ -9,7 +9,7 @@ export default function DroneStatusCard() {
     const droneState = useAppSelector(selectAircraftStatus);
 
     return (
-        <InfoCard title="Drone">
+        <InfoCard title="Drone (wip)">
             <PositionSection
                 latitude={droneState.latitude}
                 longitude={droneState.longitude}

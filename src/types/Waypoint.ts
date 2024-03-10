@@ -4,10 +4,10 @@
 
 // maybe not needed idk
 export enum Designation {
-    Launch,
-    Land,
-    Obstacle,
-    Payload,
+    Launch = "launch",
+    Land = "land",
+    Obstacle = "obstacle",
+    Payload = "payload",
 }
 
 export type Waypoint = {
