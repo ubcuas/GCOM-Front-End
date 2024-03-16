@@ -5,11 +5,11 @@ import { useAppDispatch, useAppSelector } from "../store/store";
 import InfoCard from "./InfoCard";
 import WaypointItem from "./WaypointStatus/WaypointItem";
 import { postWaypointsToServer } from "../utils/api";
-import { Designation } from "../types/Waypoint";
+import { Designation, Waypoint } from "../types/Waypoint";
 
 export default function WaypointStatus() {
     const dispatch = useAppDispatch();
-    const waypoints = useAppSelector(selectQueuedWaypoints);
+    const waypointQueue = useAppSelector(selectQueuedWaypoints);
     const [formState, setFormState] = useState({
         latitude: "",
         longitude: "",
@@ -27,19 +27,17 @@ export default function WaypointStatus() {
     };
 
     const handleFormSubmit = () => {
-        console.log("formState", formState);
         if (formState.latitude && formState.longitude && formState.altitude) {
             const waypoint = {
-                latitude: parseFloat(formState.latitude),
-                longitude: parseFloat(formState.longitude),
-                altitude: parseFloat(formState.altitude),
+                lat: parseFloat(formState.latitude),
+                long: parseFloat(formState.longitude),
+                alt: parseFloat(formState.altitude),
                 name: formState.name,
                 radius: parseFloat(formState.radius),
                 remarks: formState.remarks,
-                id: -1,
-            };
+                id: "-1",
+            } as Waypoint;
             dispatch(addToQueuedWaypoints(waypoint));
-            console.log("waypoints", waypoints);
         }
     };
 
@@ -49,14 +47,16 @@ export default function WaypointStatus() {
         }
     };
 
-    const handlePOST = () => {
-        console.log("POST", waypoints);
-        postWaypointsToServer(waypoints);
+    const handlePost = () => {
+        if (waypointQueue.length === 0) {
+            return;
+        }
+        postWaypointsToServer(waypointQueue);
         dispatch(clearQueuedWaypoints());
     };
 
     return (
-        <InfoCard title="Waypoints">
+        <InfoCard title="Waypoints" waypointSubmit={handlePost}>
             <Grid container spacing={2}>
                 <Grid item xs={12} md={6}>
                     <Stack
@@ -66,7 +66,7 @@ export default function WaypointStatus() {
                             overflowY: "auto",
                         }}
                     >
-                        {waypoints.map((waypoint, index) => {
+                        {waypointQueue.map((waypoint, index) => {
                             return <WaypointItem key={index} waypoint={waypoint} />;
                         })}
                     </Stack>
@@ -147,18 +147,6 @@ export default function WaypointStatus() {
                             >
                                 Create Waypoint
                             </Button>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Box
-                                sx={{
-                                    height: "100%",
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    justifyContent: "end",
-                                }}
-                            >
-                                <Button onClick={handlePOST}>POST</Button>
-                            </Box>
                         </Grid>
                     </Grid>
                 </Grid>

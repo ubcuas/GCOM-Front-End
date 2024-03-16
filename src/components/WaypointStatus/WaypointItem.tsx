@@ -1,21 +1,16 @@
 import { Paper, Typography } from "@mui/material";
 import { Waypoint } from "../../types/Waypoint";
 
-interface WaypointItemProps {
+type WaypointItemProps = {
     waypoint: Waypoint;
-}
+};
 
 export default function WaypointItem({ waypoint }: WaypointItemProps) {
     return (
         <Paper elevation={4} sx={{ p: 1 }}>
             <Typography variant="h6">
                 {waypoint.name}{" "}
-                <Typography
-                    component="span"
-                    sx={{
-                        color: "gray",
-                    }}
-                >
+                <Typography component="span" color="grey">
                     ID#{waypoint.id}
                 </Typography>
             </Typography>
@@ -27,7 +22,7 @@ export default function WaypointItem({ waypoint }: WaypointItemProps) {
                         color: (theme) => theme.palette.primary.main,
                     }}
                 >
-                    {waypoint.latitude}
+                    {waypoint.lat}
                 </Typography>
             </Typography>
             <Typography variant="body1">
@@ -38,7 +33,7 @@ export default function WaypointItem({ waypoint }: WaypointItemProps) {
                         color: (theme) => theme.palette.primary.main,
                     }}
                 >
-                    {waypoint.longitude}
+                    {waypoint.long}
                 </Typography>
             </Typography>
             <Typography variant="body1">
@@ -49,10 +44,12 @@ export default function WaypointItem({ waypoint }: WaypointItemProps) {
                         color: (theme) => theme.palette.primary.main,
                     }}
                 >
-                    {waypoint.altitude}
+                    {waypoint.alt}
                 </Typography>
             </Typography>
-            {waypoint.remarks && waypoint.remarks.length > 0 && <Typography>{waypoint.remarks}</Typography>}
+            {waypoint.remarks && waypoint.remarks.length > 0 && (
+                <Typography color="grey">{waypoint.remarks}</Typography>
+            )}
         </Paper>
     );
 }

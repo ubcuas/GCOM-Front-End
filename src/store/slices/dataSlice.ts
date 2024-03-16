@@ -26,8 +26,8 @@ const initialState: DataState = {
     route: {
         id: 0,
         waypoints: [
-            { id: 0, name: "test", latitude: 0, longitude: 0, altitude: 0 },
-            { id: 1, name: "test", latitude: 20, longitude: 20, altitude: 20 },
+            { id: "0", name: "test", lat: 0, long: 0 },
+            { id: "1", name: "test", lat: 20, long: 20 },
         ],
     },
     queuedWaypoints: [],
@@ -55,7 +55,7 @@ const dataSlice = createSlice({
             .addCase(getWaypoints.fulfilled, (state, action) => {
                 state.route.waypoints = action.payload;
             })
-            .addCase(getWaypoints.rejected, (state, action) => {
+            .addCase(getWaypoints.rejected, (_state, action) => {
                 console.log("rejected", action.error);
             });
     },

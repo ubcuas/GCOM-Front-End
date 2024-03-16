@@ -1,7 +1,13 @@
-import { Box, Divider, Paper, Typography } from "@mui/material";
+import { Box, Button, Divider, Paper, Typography } from "@mui/material";
 import { Children } from "react";
 
-export default function InfoCard({ title, children }: { title: string; children?: React.ReactNode }) {
+type InfoCardProps = {
+    title: string;
+    waypointSubmit?: () => void;
+    children?: React.ReactNode;
+};
+
+export default function InfoCard({ title, waypointSubmit, children }: InfoCardProps) {
     const childCount = Children.count(children);
 
     return (
@@ -10,15 +16,27 @@ export default function InfoCard({ title, children }: { title: string; children?
                 height: "100%",
             }}
         >
-            <Typography
+            <Box
                 sx={{
-                    fontWeight: "bold",
-                    p: 2,
+                    display: "flex",
+                    justifyContent: waypointSubmit ? "space-between" : "flex-start",
                 }}
-                variant="h4"
             >
-                {title}
-            </Typography>
+                <Typography
+                    sx={{
+                        fontWeight: "bold",
+                        p: 2,
+                    }}
+                    variant="h4"
+                >
+                    {title}
+                </Typography>
+                {waypointSubmit && (
+                    <Button sx={{ fontSize: 16, fontWeight: "bold", px: 4 }} variant="text" onClick={waypointSubmit}>
+                        post
+                    </Button>
+                )}
+            </Box>
 
             <Divider />
             {Children.map(children, (child, index) => (

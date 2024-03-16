@@ -11,11 +11,11 @@ export enum Designation {
 }
 
 export type Waypoint = {
-    id: number;
-    name: string;
-    latitude: number;
-    longitude: number;
-    altitude: number;
+    id: string;
+    name?: string;
+    lat: number;
+    long: number;
+    alt?: number;
     radius?: number;
     designation?: Designation;
     remarks?: string;
