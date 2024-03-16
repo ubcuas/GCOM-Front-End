@@ -10,7 +10,17 @@ const api = axios.create({
 });
 
 export const postWaypointsToServer = async (waypoints: Waypoint[]) => {
-    api.post("/waypoints", waypoints);
+    try {
+        await api.post("/waypoints", waypoints);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            if (error.response) {
+                throw new Error(error.response.data.message);
+            } else {
+                throw new Error(error.message);
+            }
+        }
+    }
 };
 
 export const getWaypointsFromServer = async () => {

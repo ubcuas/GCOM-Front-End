@@ -49,6 +49,9 @@ const dataSlice = createSlice({
         clearQueuedWaypoints: (state) => {
             state.queuedWaypoints = [];
         },
+        removeOneFromWaypoints: (state, action: PayloadAction<number>) => {
+            state.queuedWaypoints.splice(action.payload, 1);
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -61,7 +64,8 @@ const dataSlice = createSlice({
     },
 });
 
-export const { updateAircraftStatus, updateRoute, addToQueuedWaypoints, clearQueuedWaypoints } = dataSlice.actions;
+export const { updateAircraftStatus, updateRoute, addToQueuedWaypoints, clearQueuedWaypoints, removeOneFromWaypoints } =
+    dataSlice.actions;
 
 export const selectAircraftStatus = (state: RootState) => state.data.aircraftStatus;
 export const selectRoute = (state: RootState) => state.data.route;

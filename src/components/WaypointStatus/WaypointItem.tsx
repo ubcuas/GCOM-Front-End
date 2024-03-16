@@ -1,19 +1,24 @@
-import { Paper, Typography } from "@mui/material";
+import { IconButton, Paper, Stack, Typography } from "@mui/material";
 import { Waypoint } from "../../types/Waypoint";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 type WaypointItemProps = {
     waypoint: Waypoint;
+    handleDelete: () => void;
 };
 
-export default function WaypointItem({ waypoint }: WaypointItemProps) {
+export default function WaypointItem({ waypoint, handleDelete }: WaypointItemProps) {
     return (
         <Paper elevation={4} sx={{ p: 1 }}>
-            <Typography variant="h6">
-                {waypoint.name}{" "}
-                <Typography component="span" color="grey">
-                    ID#{waypoint.id}
-                </Typography>
-            </Typography>
+            <Stack direction="row" alignItems="center" justifyContent="space-between">
+                <Typography variant="h6">{waypoint.name}</Typography>
+                <Stack direction="row" alignItems="center" justifyContent="space-between">
+                    <Typography color="grey">ID#{waypoint.id}</Typography>
+                    <IconButton color="warning" aria-label="close" size="medium" onClick={handleDelete}>
+                        <DeleteIcon fontSize="inherit" />
+                    </IconButton>
+                </Stack>
+            </Stack>
             <Typography variant="body1">
                 Latitude{" "}
                 <Typography

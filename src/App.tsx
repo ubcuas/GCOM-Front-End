@@ -48,6 +48,9 @@ function App() {
                         primary: {
                             main: "#2DA0DC",
                         },
+                        secondary: {
+                            main: "#2CDCA0",
+                        },
                     },
                     typography: {
                         fontSize: 12,

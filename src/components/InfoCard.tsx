@@ -3,11 +3,12 @@ import { Children } from "react";
 
 type InfoCardProps = {
     title: string;
-    waypointSubmit?: () => void;
+    rightButtonHandler?: () => void;
+    rightButtonText?: string;
     children?: React.ReactNode;
 };
 
-export default function InfoCard({ title, waypointSubmit, children }: InfoCardProps) {
+export default function InfoCard({ title, rightButtonHandler, rightButtonText, children }: InfoCardProps) {
     const childCount = Children.count(children);
 
     return (
@@ -19,7 +20,7 @@ export default function InfoCard({ title, waypointSubmit, children }: InfoCardPr
             <Box
                 sx={{
                     display: "flex",
-                    justifyContent: waypointSubmit ? "space-between" : "flex-start",
+                    justifyContent: rightButtonHandler ? "space-between" : "flex-start",
                 }}
             >
                 <Typography
@@ -31,9 +32,13 @@ export default function InfoCard({ title, waypointSubmit, children }: InfoCardPr
                 >
                     {title}
                 </Typography>
-                {waypointSubmit && (
-                    <Button sx={{ fontSize: 16, fontWeight: "bold", px: 4 }} variant="text" onClick={waypointSubmit}>
-                        post
+                {rightButtonHandler && (
+                    <Button
+                        sx={{ fontSize: 16, fontWeight: "bold", px: 4 }}
+                        variant="text"
+                        onClick={rightButtonHandler}
+                    >
+                        {rightButtonText ?? ""}
                     </Button>
                 )}
             </Box>
