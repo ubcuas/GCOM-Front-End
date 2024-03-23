@@ -1,11 +1,11 @@
-import { Box, Button, Grid, Stack, TextField, Typography } from "@mui/material";
+import { Button, Grid, Stack, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { addToQueuedWaypoints, clearQueuedWaypoints, selectQueuedWaypoints } from "../store/slices/dataSlice";
+import { addToQueuedWaypoints, clearQueuedWaypoints, selectQueuedWaypoints } from "../store/slices/appSlice";
 import { useAppDispatch, useAppSelector } from "../store/store";
+import { Waypoint } from "../types/Waypoint";
+import { postWaypointsToServer } from "../utils/api";
 import InfoCard from "./InfoCard";
 import WaypointItem from "./WaypointStatus/WaypointItem";
-import { postWaypointsToServer } from "../utils/api";
-import { Designation, Waypoint } from "../types/Waypoint";
 
 export default function WaypointStatus() {
     const dispatch = useAppDispatch();
@@ -56,7 +56,7 @@ export default function WaypointStatus() {
     };
 
     return (
-        <InfoCard title="Waypoints" waypointSubmit={handlePost}>
+        <InfoCard title="Create Waypoints" waypointSubmit={handlePost}>
             <Grid container spacing={2}>
                 <Grid item xs={12} md={6}>
                     <Stack
@@ -64,6 +64,7 @@ export default function WaypointStatus() {
                         sx={{
                             maxHeight: "540px",
                             overflowY: "auto",
+                            p: 1,
                         }}
                     >
                         {waypointQueue.map((waypoint, index) => {

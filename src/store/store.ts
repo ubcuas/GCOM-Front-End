@@ -2,10 +2,12 @@ import { Action, ThunkAction, configureStore } from "@reduxjs/toolkit";
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
 import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
 import dataReducer from "./slices/dataSlice";
+import appReducer from "./slices/appSlice";
 
 const store = configureStore({
     reducer: {
         data: dataReducer,
+        app: appReducer,
         // more TBD
     },
 });

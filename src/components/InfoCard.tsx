@@ -15,6 +15,7 @@ export default function InfoCard({ title, waypointSubmit, children }: InfoCardPr
             sx={{
                 height: "100%",
             }}
+            elevation={1}
         >
             <Box
                 sx={{
@@ -32,7 +33,11 @@ export default function InfoCard({ title, waypointSubmit, children }: InfoCardPr
                     {title}
                 </Typography>
                 {waypointSubmit && (
-                    <Button sx={{ fontSize: 16, fontWeight: "bold", px: 4 }} variant="text" onClick={waypointSubmit}>
+                    <Button
+                        sx={{ fontSize: 16, fontWeight: "bold", px: 4 }}
+                        variant="outlined"
+                        onClick={waypointSubmit}
+                    >
                         post
                     </Button>
                 )}

@@ -1,5 +1,7 @@
 import { Typography, Grid, Box } from "@mui/material";
 import InfoCardWidget from "../InfoCardWidget";
+import { useAppSelector } from "../../store/store";
+import { selectPreferredTheme } from "../../store/slices/appSlice";
 
 export default function PositionSection({
     latitude,
@@ -38,6 +40,8 @@ export default function PositionSection({
 }
 
 function Compass({ heading }: { heading: number }) {
+    const compassColor = useAppSelector(selectPreferredTheme) === "dark" ? "white" : "black";
+
     return (
         <Box
             sx={{
@@ -56,7 +60,7 @@ function Compass({ heading }: { heading: number }) {
                 <text x="70" y="15" textAnchor="middle" fill="#2DA0DC">
                     N
                 </text>
-                <polygon points="60,70 70,120 80,70" fill="white" />
+                <polygon points="60,70 70,120 80,70" fill={compassColor} />
             </svg>
         </Box>
     );

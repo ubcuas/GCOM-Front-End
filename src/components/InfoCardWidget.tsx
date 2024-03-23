@@ -15,7 +15,7 @@ export default function InfoCardWidget({
     return (
         <Grid item xs={12} lg={gridSpacing ?? 12} alignItems="stretch">
             <Paper
-                elevation={4}
+                elevation={2}
                 sx={{
                     padding: 2,
                     textAlign: "center",

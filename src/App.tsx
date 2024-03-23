@@ -1,13 +1,16 @@
-import { Route, Switch } from "wouter";
-import Home from "./routes/Home";
-import Nav from "./components/Nav";
-import Telemetry from "./routes/Telemetry";
-import { Box, CssBaseline, ThemeProvider, createTheme, responsiveFontSizes, useMediaQuery } from "@mui/material";
+import { Box, CssBaseline, ThemeProvider, createTheme, responsiveFontSizes } from "@mui/material";
 import { useMemo } from "react";
+import { Route, Switch } from "wouter";
+import Nav from "./components/Nav";
+import Home from "./routes/Home";
 import Settings from "./routes/Settings";
+import Telemetry from "./routes/Telemetry";
+import { selectPreferredTheme } from "./store/slices/appSlice";
+import { useAppSelector } from "./store/store";
 
 function App() {
-    const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+    const colorScheme = useAppSelector(selectPreferredTheme);
+    const isDark = colorScheme === "dark";
 
     const theme = useMemo(
         () =>
@@ -17,7 +20,7 @@ function App() {
                         MuiTab: {
                             styleOverrides: {
                                 root: {
-                                    color: "white",
+                                    color: isDark ? "white" : "black",
                                     "&.Mui-selected": {
                                         color: "#2DA0DC",
                                     },
@@ -40,10 +43,10 @@ function App() {
                         },
                     },
                     palette: {
-                        mode: prefersDarkMode ? "dark" : "light",
+                        mode: colorScheme,
                         background: {
-                            paper: "#040f16",
-                            default: "#040f16",
+                            paper: isDark ? "#040f16" : "#eef0f2",
+                            default: isDark ? "#040f16" : "#f1f3f4",
                         },
                         primary: {
                             main: "#2DA0DC",
@@ -67,7 +70,7 @@ function App() {
                     },
                 }),
             ),
-        [prefersDarkMode],
+        [colorScheme],
     );
 
     return (
