@@ -22,6 +22,9 @@ const appSlice = createSlice({
         clearQueuedWaypoints: (state) => {
             state.queuedWaypoints = [];
         },
+        removeOneFromWaypoints: (state, action) => {
+            state.queuedWaypoints.splice(action.payload, 1);
+        },
         setPreferredTheme: (state, action) => {
             localStorage.setItem("theme", action.payload);
             state.preferredTheme = action.payload;
@@ -29,7 +32,8 @@ const appSlice = createSlice({
     },
 });
 
-export const { addToQueuedWaypoints, clearQueuedWaypoints, setPreferredTheme } = appSlice.actions;
+export const { addToQueuedWaypoints, clearQueuedWaypoints, removeOneFromWaypoints, setPreferredTheme } =
+    appSlice.actions;
 
 export const selectQueuedWaypoints = (state: RootState) => state.app.queuedWaypoints;
 export const selectPreferredTheme = (state: RootState) => state.app.preferredTheme;
