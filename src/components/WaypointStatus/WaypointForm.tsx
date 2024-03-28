@@ -164,7 +164,7 @@ export default function WaypointForm() {
                     sx={{
                         width: "100%",
                     }}
-                    variant="contained"
+                    variant="outlined"
                     onClick={handleFormSubmit}
                 >
                     Create Waypoint

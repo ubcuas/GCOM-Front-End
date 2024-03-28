@@ -4,6 +4,7 @@ import InfoCard from "./InfoCard";
 import PositionSection from "./DroneStatus/PositionSection";
 import SpeedSection from "./DroneStatus/SpeedSection";
 import TimeStamp from "./DroneStatus/TimeStamp";
+import MPSControlSection from "./DroneStatus/MPSControlSection";
 
 export default function DroneStatusCard() {
     const droneState = useAppSelector(selectAircraftStatus);
@@ -18,6 +19,7 @@ export default function DroneStatusCard() {
             />
             <SpeedSection speed={droneState.speed} verticalSpeed={droneState.verticalSpeed} />
             <TimeStamp time={droneState.timestamp} />
+            <MPSControlSection />
         </InfoCard>
     );
 }

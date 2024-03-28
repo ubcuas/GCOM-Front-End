@@ -2,11 +2,11 @@ import { Box, Container, Typography, keyframes } from "@mui/material";
 import LogoShort from "@assets/logo_short.svg?react";
 
 const fadeIn = keyframes`
-    from {
+    0% {
         opacity: 0;
     }
 
-    to {
+    100% {
         opacity: 1;
     }
 `;
@@ -47,12 +47,38 @@ export default function Home() {
                     height: "100%",
                     animation: `${fadeIn} 1s ease-in-out`,
                     animationIterationCount: 1,
+                    position: "relative",
                 }}
             >
-                <LogoShort height={100} />
+                <div
+                    style={{
+                        width: 100,
+                        height: 100,
+                        backgroundColor: "#2DA0DC",
+                        borderRadius: "50%",
+                        position: "absolute",
+                        top: "40%",
+                        left: "0",
+                        transform: "translate(0, 0)",
+                        zIndex: 0,
+                        filter: "blur(75px)",
+                        opacity: 0.4,
+                    }}
+                />
+                <LogoShort
+                    style={{
+                        zIndex: 2,
+                        position: "relative",
+                    }}
+                    height={100}
+                />
                 <Box
                     sx={{
                         ml: "110px",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 0.5,
+                        zIndex: 1,
                     }}
                 >
                     <Typography
