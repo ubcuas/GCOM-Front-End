@@ -1,6 +1,7 @@
 import { Alert, Fade, Grid, IconButton, Snackbar, Stack } from "@mui/material";
 import { clearQueuedWaypoints, removeOneFromWaypoints, selectQueuedWaypoints } from "../store/slices/dataSlice";
 import { useAppDispatch, useAppSelector } from "../store/store";
+import { Waypoint } from "../types/Waypoint";
 import { postWaypointsToServer } from "../utils/api";
 import InfoCard from "./InfoCard";
 import WaypointForm from "./WaypointStatus/WaypointForm";
@@ -43,6 +44,7 @@ export default function WaypointStatus() {
                         sx={{
                             maxHeight: "70vh",
                             overflowY: "auto",
+                            p: 1,
                         }}
                     >
                         {waypointQueue.map((waypoint, index) => {

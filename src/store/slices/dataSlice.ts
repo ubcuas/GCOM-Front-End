@@ -5,6 +5,7 @@ import { RootState } from "../store";
 import { getWaypoints } from "../thunks/dataThunks";
 import { Waypoint } from "../../types/Waypoint";
 
+// DataState holds actual information that is supposed to be aligned with backend.
 type DataState = {
     aircraftStatus: AircraftStatus;
     route: Route;
@@ -43,15 +44,6 @@ const dataSlice = createSlice({
         updateRoute: (state, action: PayloadAction<Route>) => {
             state.route = action.payload;
         },
-        addToQueuedWaypoints: (state, action: PayloadAction<Waypoint>) => {
-            state.queuedWaypoints.push(action.payload);
-        },
-        clearQueuedWaypoints: (state) => {
-            state.queuedWaypoints = [];
-        },
-        removeOneFromWaypoints: (state, action: PayloadAction<number>) => {
-            state.queuedWaypoints.splice(action.payload, 1);
-        },
     },
     extraReducers: (builder) => {
         builder
@@ -64,13 +56,11 @@ const dataSlice = createSlice({
     },
 });
 
-export const { updateAircraftStatus, updateRoute, addToQueuedWaypoints, clearQueuedWaypoints, removeOneFromWaypoints } =
-    dataSlice.actions;
+export const { updateAircraftStatus, updateRoute } = dataSlice.actions;
 
 export const selectAircraftStatus = (state: RootState) => state.data.aircraftStatus;
 export const selectRoute = (state: RootState) => state.data.route;
 export const selectWaypoints = (state: RootState) => state.data.route.waypoints;
-export const selectQueuedWaypoints = (state: RootState) => state.data.queuedWaypoints;
 
 const dataReducer = dataSlice.reducer;
 export default dataReducer;

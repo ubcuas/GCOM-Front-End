@@ -16,6 +16,7 @@ export default function InfoCard({ title, rightButtonHandler, rightButtonText, c
             sx={{
                 height: "100%",
             }}
+            elevation={1}
         >
             <Box
                 sx={{
