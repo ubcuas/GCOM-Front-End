@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Paper, Typography } from "@mui/material";
+import { Box, Button, Divider, Paper, Stack, Typography } from "@mui/material";
 import { Children } from "react";
 
 type InfoCardProps = {
@@ -18,46 +18,53 @@ export default function InfoCard({ title, rightButtonHandler, rightButtonText, c
             }}
             elevation={1}
         >
-            <Box
+            <Stack
                 sx={{
-                    display: "flex",
-                    justifyContent: rightButtonHandler ? "space-between" : "flex-start",
+                    height: "100%",
                 }}
             >
-                <Typography
+                <Box
                     sx={{
-                        fontWeight: "bold",
-                        p: 2,
+                        display: "flex",
+                        justifyContent: rightButtonHandler ? "space-between" : "flex-start",
                     }}
-                    variant="h4"
                 >
-                    {title}
-                </Typography>
-                {rightButtonHandler && (
-                    <Button
-                        sx={{ fontSize: 16, fontWeight: "bold", px: 4 }}
-                        variant="text"
-                        onClick={rightButtonHandler}
-                    >
-                        {rightButtonText ?? ""}
-                    </Button>
-                )}
-            </Box>
-
-            <Divider />
-            {Children.map(children, (child, index) => (
-                <>
-                    <Box
+                    <Typography
                         sx={{
+                            fontWeight: "bold",
                             p: 2,
                         }}
-                        key={index}
+                        variant="h4"
                     >
-                        {child}
-                    </Box>
-                    {index != childCount - 1 && <Divider />}
-                </>
-            ))}
+                        {title}
+                    </Typography>
+                    {rightButtonHandler && (
+                        <Button
+                            sx={{ fontSize: 16, fontWeight: "bold", px: 4 }}
+                            variant="text"
+                            onClick={rightButtonHandler}
+                        >
+                            {rightButtonText ?? ""}
+                        </Button>
+                    )}
+                </Box>
+
+                <Divider />
+                {Children.map(children, (child, index) => (
+                    <>
+                        <Box
+                            sx={{
+                                p: 2,
+                                height: childCount == 1 ? "100%" : "auto",
+                            }}
+                            key={index}
+                        >
+                            {child}
+                        </Box>
+                        {index != childCount - 1 && <Divider />}
+                    </>
+                ))}
+            </Stack>
         </Paper>
     );
 }

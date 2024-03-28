@@ -1,13 +1,6 @@
 import axios from "axios";
 import { Waypoint } from "../types/Waypoint";
-
-const api = axios.create({
-    baseURL: "http://localhost:1323/",
-    headers: {
-        "Content-Type": "application/json",
-        // Any other headers?
-    },
-});
+import { api } from "./api";
 
 export const postWaypointsToServer = async (waypoints: Waypoint[]) => {
     try {
@@ -27,5 +20,3 @@ export const getWaypointsFromServer = async () => {
     const res = await api.get("/waypoints");
     return res.data.waypoints as Waypoint[];
 };
-
-export default api;

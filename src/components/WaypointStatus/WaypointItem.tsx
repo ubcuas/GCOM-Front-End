@@ -11,7 +11,7 @@ export default function WaypointItem({ waypoint, handleDelete }: WaypointItemPro
     return (
         <Paper elevation={4} sx={{ p: 1 }}>
             <Stack direction="row" alignItems="center" justifyContent="space-between">
-                <Typography variant="h6">{waypoint.name}</Typography>
+                <Typography variant="h6">{waypoint.name || "No Name"}</Typography>
                 <Stack direction="row" alignItems="center" justifyContent="space-between">
                     <Typography color="grey">ID#{waypoint.id}</Typography>
                     <IconButton color="warning" aria-label="close" size="medium" onClick={handleDelete}>

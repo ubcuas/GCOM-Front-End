@@ -40,7 +40,7 @@ export default function PositionSection({
 }
 
 function Compass({ heading }: { heading: number }) {
-    const compassColor = useAppSelector(selectPreferredTheme) === "dark" ? "white" : "black";
+    const compassColor = useAppSelector(selectPreferredTheme) === "dark" ? "white" : "#aaa";
 
     return (
         <Box

@@ -2,7 +2,7 @@ import { Button, Grid, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { Waypoint } from "../../types/Waypoint";
 import { useAppDispatch } from "../../store/store";
-import { addToQueuedWaypoints } from "../../store/slices/dataSlice";
+import { addToQueuedWaypoints } from "../../store/slices/appSlice";
 
 type FormState = {
     latitude: string;
