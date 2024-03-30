@@ -52,7 +52,7 @@ export default function WaypointForm() {
     const handleFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (
             ["latitude", "longitude", "altitude", "radius"].includes(event.target.id) &&
-            /[^0-9.]/.test(event.target.value)
+            /[^0-9.-]/.test(event.target.value)
         ) {
             return;
         }
@@ -90,20 +90,6 @@ export default function WaypointForm() {
                 <TextField
                     fullWidth
                     required
-                    id="longitude"
-                    type="string"
-                    label="Longitude"
-                    onChange={handleFormChange}
-                    onWheel={preventScroll}
-                    value={formState.longitude}
-                    error={formErrors.longitude}
-                    helperText={formErrors.longitude && "Longitude is required."}
-                />
-            </Grid>
-            <Grid item xs={12} lg={6}>
-                <TextField
-                    fullWidth
-                    required
                     id="latitude"
                     type="string"
                     label="Latitude"
@@ -112,6 +98,20 @@ export default function WaypointForm() {
                     value={formState.latitude}
                     error={formErrors.latitude}
                     helperText={formErrors.latitude && "Latitude is required."}
+                />
+            </Grid>
+            <Grid item xs={12} lg={6}>
+                <TextField
+                    fullWidth
+                    required
+                    id="longitude"
+                    type="string"
+                    label="Longitude"
+                    onChange={handleFormChange}
+                    onWheel={preventScroll}
+                    value={formState.longitude}
+                    error={formErrors.longitude}
+                    helperText={formErrors.longitude && "Longitude is required."}
                 />
             </Grid>
             <Grid item xs={12} lg={6}>

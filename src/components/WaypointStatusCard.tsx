@@ -15,7 +15,7 @@ export default function WaypointCreate() {
 
     const [snackbarState, setSnackbarState] = useState<SnackbarState>({
         message: "",
-        open: false,
+        armed: false,
     });
     const [modalOpen, setModalOpen] = useState(false);
 
@@ -24,12 +24,12 @@ export default function WaypointCreate() {
             return;
         }
         try {
-            await postWaypointsToServer(waypointQueue);
+            await postWaypointsToServer(waypointQueue, true);
             dispatch(clearQueuedWaypoints());
         } catch (error) {
             const message = (error as Error).message;
             console.log(message);
-            setSnackbarState({ message, open: true });
+            setSnackbarState({ message, armed: true });
         }
     };
 
@@ -84,8 +84,8 @@ export default function WaypointCreate() {
             </InfoCard>
             <ErrorSnackbar
                 message={snackbarState.message}
-                open={snackbarState.open}
-                setOpen={(open) => setSnackbarState({ ...snackbarState, open })}
+                open={snackbarState.armed}
+                setOpen={(armed) => setSnackbarState({ ...snackbarState, armed })}
             />
             <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
                 <Paper

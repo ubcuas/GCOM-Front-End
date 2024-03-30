@@ -9,7 +9,8 @@ export type ErrorSnackbarProps = {
 
 export type SnackbarState = {
     message: string;
-    open: boolean;
+    armed: boolean;
+    takeoffAltitude?: number;
 };
 
 export default function ErrorSnackbar({ message, open, setOpen }: ErrorSnackbarProps) {
