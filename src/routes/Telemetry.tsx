@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import DroneStatusCard from "../components/DroneStatusCard";
-import WaypointStatus from "../components/WaypointStatusCard";
+import WaypointStatusCard from "../components/WaypointStatusCard";
 
 export default function Telemetry() {
     return (
@@ -15,7 +15,7 @@ export default function Telemetry() {
                 <DroneStatusCard />
             </Grid>
             <Grid item xs={6} md={8}>
-                <WaypointStatus />
+                <WaypointStatusCard />
             </Grid>
         </Grid>
     );

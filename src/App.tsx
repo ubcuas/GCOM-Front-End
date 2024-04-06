@@ -7,6 +7,7 @@ import Settings from "./routes/Settings";
 import Telemetry from "./routes/Telemetry";
 import { selectPreferredTheme } from "./store/slices/appSlice";
 import { useAppSelector } from "./store/store";
+import ErrorSnackbar from "./components/ErrorSnackbar";
 
 function App() {
     const colorScheme = useAppSelector(selectPreferredTheme);
@@ -94,6 +95,7 @@ function App() {
                     <Route path="/settings" component={Settings} />
                 </Switch>
             </Box>
+            <ErrorSnackbar />
         </ThemeProvider>
     );
 }
