@@ -25,5 +25,3 @@ npm run dev
 - Socket.io Reference - https://socket.io/docs/v4/
 - GCOM Back-End Repository - https://github.com/ubcuas/GCOM-2023
 - React Docs - https://react.dev/reference/react
-- Google - https://www.google.ca/
-- ChatGPT - https://chat.openai.com/
