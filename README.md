@@ -4,6 +4,8 @@ GCOM UI to interact with GCOM Back-End and MissionPlanner Scripts. Built with Vi
 
 CSS is done through inline styling with MUI components. More info can be found [below](#useful-links).
 
+_Project Link: https://github.com/orgs/ubcuas/projects/6/views/5_
+
 ## Development Setup
 Node.js v20 is required for development, download at https://nodejs.org/en/download/current or use `nvm` if you're cool and swag with it.
 ### Steps:
