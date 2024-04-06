@@ -1,22 +1,11 @@
-import axios from "axios";
 import { Waypoint } from "../types/Waypoint";
-import { api } from "./api";
+import { api, postWithTryCatch } from "./api";
 
 const getPluralEndpoint = (path = "") => `/waypoints${path}`;
-const _getEndpoint = (path = "") => `/waypoints${path}`;
+const _getEndpoint = (path = "") => `/waypoints${path}`; // remove _ when needed.
 
-export const postWaypointsToServer = async (waypoints: Waypoint[], postToDrone = false) => {
-    try {
-        await api.post(postToDrone ? "/drone/queue" : getPluralEndpoint(), waypoints);
-    } catch (error) {
-        if (axios.isAxiosError(error)) {
-            if (error.response) {
-                throw new Error(error.response.data.message);
-            } else {
-                throw new Error(error.message);
-            }
-        }
-    }
+export const postWaypointsToServer = async (waypoints: Waypoint[]) => {
+    await postWithTryCatch(getPluralEndpoint(), waypoints);
 };
 
 export const getWaypointsFromServer = async () => {
