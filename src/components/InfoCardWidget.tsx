@@ -15,9 +15,9 @@ export default function InfoCardWidget({
     return (
         <Grid item xs={12} lg={gridSpacing ?? 12} alignItems="stretch">
             <Paper
-                elevation={2}
+                elevation={3}
                 sx={{
-                    padding: 2,
+                    padding: 1,
                     textAlign: "center",
                     width: 1,
                     height: 1,
@@ -36,7 +36,6 @@ export default function InfoCardWidget({
                         sx={{
                             flexGrow: 1,
                             flexBasis: 0,
-                            gap: 1,
                         }}
                     >
                         <Typography variant="h6">{text}</Typography>

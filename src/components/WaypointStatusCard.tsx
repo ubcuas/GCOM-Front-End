@@ -1,13 +1,12 @@
-import CloseIcon from "@mui/icons-material/Close";
-import { Alert, Button, Fade, Grid, IconButton, Modal, Paper, Snackbar, Stack, Typography } from "@mui/material";
+import { Button, Grid, Modal, Paper, Stack, Typography } from "@mui/material";
 import { useState } from "react";
-import { postWaypointsToServer } from "../api/waypointEndpoints";
+import { postWaypointsToDrone } from "../api/droneEndpoints";
 import { clearQueuedWaypoints, removeOneFromWaypoints, selectQueuedWaypoints } from "../store/slices/appSlice";
 import { useAppDispatch, useAppSelector } from "../store/store";
+import ErrorSnackbar, { SnackbarState } from "./ErrorSnackbar";
 import InfoCard from "./InfoCard";
 import WaypointForm from "./WaypointStatus/WaypointForm";
 import WaypointItem from "./WaypointStatus/WaypointItem";
-import ErrorSnackbar, { SnackbarState } from "./ErrorSnackbar";
 
 export default function WaypointCreate() {
     const dispatch = useAppDispatch();
@@ -24,7 +23,7 @@ export default function WaypointCreate() {
             return;
         }
         try {
-            await postWaypointsToServer(waypointQueue, true);
+            await postWaypointsToDrone(waypointQueue);
             dispatch(clearQueuedWaypoints());
         } catch (error) {
             const message = (error as Error).message;

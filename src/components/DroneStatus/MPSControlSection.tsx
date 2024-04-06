@@ -1,6 +1,6 @@
-import { Alert, Button, Grid, IconButton, Snackbar, Stack, TextField } from "@mui/material";
-import { armDrone, disarmDrone, takeoffDrone } from "../../api/droneEndpoints";
+import { Button, Grid, Stack, TextField } from "@mui/material";
 import { useState } from "react";
+import { armDrone, disarmDrone, takeoffDrone } from "../../api/droneEndpoints";
 import ErrorSnackbar, { SnackbarState } from "../ErrorSnackbar";
 
 export default function MPSControlSection() {
@@ -57,26 +57,32 @@ export default function MPSControlSection() {
                             Disarm Drone
                         </Button>
                     </Grid>
+                    <Grid item xs={12} md={6}>
+                        <TextField
+                            fullWidth
+                            size="small"
+                            required
+                            id="takeoffAltitude"
+                            type="number"
+                            label="Take Off Altitude (ft)"
+                            onChange={updateSnackBarState}
+                            value={snackbarState.takeoffAltitude === 0 ? "" : snackbarState.takeoffAltitude}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Button
+                            sx={{ height: "100%" }}
+                            fullWidth
+                            variant="contained"
+                            color="error"
+                            onClick={() => {
+                                handleTakeoff(snackbarState.takeoffAltitude);
+                            }}
+                        >
+                            {"Takeoff"}
+                        </Button>
+                    </Grid>
                 </Grid>
-                <TextField
-                    fullWidth
-                    required
-                    id="takeoffAltitude"
-                    type="number"
-                    label="Take Off Altitude (ft)"
-                    onChange={updateSnackBarState}
-                    value={snackbarState.takeoffAltitude === 0 ? "" : snackbarState.takeoffAltitude}
-                />
-                <Button
-                    fullWidth
-                    variant="contained"
-                    color="error"
-                    onClick={() => {
-                        handleTakeoff(snackbarState.takeoffAltitude);
-                    }}
-                >
-                    {"Takeoff"}
-                </Button>
             </Stack>
             <ErrorSnackbar
                 message={snackbarState.message}
