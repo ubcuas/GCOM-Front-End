@@ -1,27 +1,29 @@
-# React + TypeScript + Vite
+# GCOM Front-End 2024
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+GCOM UI to interact with GCOM Back-End and MissionPlanner Scripts. Built with Vite, React + Redux, MUI, and Typescript. Communication is achieved through axios http and ~~socket.io v4 websockets.~~ (wip)
 
-Currently, two official plugins are available:
+CSS is done through inline styling with MUI components. More info can be found [below](#useful-links).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+## Development Setup
+Node.js v20 is required for development, download at https://nodejs.org/en/download/current or use `nvm` if you're cool and swag with it.
+### Steps:
+1. `git clone` this reponsitory
 ```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+git clone https://github.com/ubcuas/GCOM-Front-End.git
+```
+2. Navigate to project directory and run `npm i` to install required libraries.
+```
+cd GCOM-Front-End
+npm i
+```
+3. `npm run dev` to start the app in development mode.
+```
+npm run dev
+```
+## Useful Links
+- MUI Component Reference - https://mui.com/material-ui/getting-started/
+- Socket.io Reference - https://socket.io/docs/v4/
+- GCOM Back-End Repository - https://github.com/ubcuas/GCOM-2023
+- React Docs - https://react.dev/reference/react
+- Google - https://www.google.ca/
+- ChatGPT - https://chat.openai.com/
