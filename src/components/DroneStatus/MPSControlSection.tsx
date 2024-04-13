@@ -1,14 +1,15 @@
-import { Button, Grid, Stack, TextField } from "@mui/material";
+import { Button, Grid, TextField } from "@mui/material";
 import { useState } from "react";
 import { armDrone, disarmDrone, takeoffDrone } from "../../api/droneEndpoints";
-import ErrorSnackbar, { SnackbarState } from "../ErrorSnackbar";
+import { openSnackbar } from "../../store/slices/appSlice";
+import { useAppDispatch } from "../../store/store";
 
 export default function MPSControlSection() {
-    const [snackbarState, setSnackbarState] = useState<SnackbarState>({
-        message: "",
+    const [controlState, setControlState] = useState({
         armed: false,
         takeoffAltitude: 0,
     });
+    const dispatch = useAppDispatch();
 
     const handleArming = async (arming: boolean) => {
         try {
@@ -16,7 +17,7 @@ export default function MPSControlSection() {
         } catch (error) {
             const message = (error as Error).message;
             console.log(message);
-            setSnackbarState({ message, armed: true });
+            dispatch(openSnackbar(message));
         }
     };
 
@@ -24,71 +25,59 @@ export default function MPSControlSection() {
         if (["altitude"].includes(event.target.id) && /[^0-9.-]/.test(event.target.value)) {
             return;
         }
-        setSnackbarState({
-            ...snackbarState,
-            [event.target.id]: event.target.value,
-        });
+        setControlState({ ...controlState, takeoffAltitude: parseFloat(event.target.value) });
     };
 
     const handleTakeoff = async (altitude?: number) => {
         try {
-            if (!snackbarState.armed) {
+            if (!controlState.armed) {
                 console.log("Please arm the drone.");
             }
             await takeoffDrone(altitude);
         } catch (error) {
             const message = (error as Error).message;
             console.log(message);
-            setSnackbarState({ message, armed: true });
+            openSnackbar(message);
         }
     };
 
     return (
-        <>
-            <Stack spacing={2}>
-                <Grid container direction="row" spacing={1}>
-                    <Grid item xs={12} md={6}>
-                        <Button fullWidth variant="outlined" color="error" onClick={() => handleArming(true)}>
-                            Arm Drone
-                        </Button>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <Button fullWidth variant="outlined" color="success" onClick={() => handleArming(false)}>
-                            Disarm Drone
-                        </Button>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <TextField
-                            fullWidth
-                            size="small"
-                            required
-                            id="takeoffAltitude"
-                            type="number"
-                            label="Take Off Altitude (ft)"
-                            onChange={updateSnackBarState}
-                            value={snackbarState.takeoffAltitude === 0 ? "" : snackbarState.takeoffAltitude}
-                        />
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <Button
-                            sx={{ height: "100%" }}
-                            fullWidth
-                            variant="contained"
-                            color="error"
-                            onClick={() => {
-                                handleTakeoff(snackbarState.takeoffAltitude);
-                            }}
-                        >
-                            {"Takeoff"}
-                        </Button>
-                    </Grid>
-                </Grid>
-            </Stack>
-            <ErrorSnackbar
-                message={snackbarState.message}
-                open={snackbarState.armed}
-                setOpen={(armed) => setSnackbarState({ ...snackbarState, armed })}
-            />
-        </>
+        <Grid container direction="row" spacing={2}>
+            <Grid item xs={12} md={6}>
+                <Button fullWidth variant="outlined" color="error" onClick={() => handleArming(true)}>
+                    Arm Drone
+                </Button>
+            </Grid>
+            <Grid item xs={12} md={6}>
+                <Button fullWidth variant="outlined" color="success" onClick={() => handleArming(false)}>
+                    Disarm Drone
+                </Button>
+            </Grid>
+            <Grid item xs={12} md={6}>
+                <TextField
+                    fullWidth
+                    size="small"
+                    required
+                    id="takeoffAltitude"
+                    type="number"
+                    label="Take Off Altitude (ft)"
+                    onChange={updateSnackBarState}
+                    value={controlState.takeoffAltitude === 0 ? "" : controlState.takeoffAltitude}
+                />
+            </Grid>
+            <Grid item xs={12} md={6}>
+                <Button
+                    sx={{ height: "100%" }}
+                    fullWidth
+                    variant="contained"
+                    color="error"
+                    onClick={() => {
+                        handleTakeoff(controlState.takeoffAltitude);
+                    }}
+                >
+                    Takeoff
+                </Button>
+            </Grid>
+        </Grid>
     );
 }

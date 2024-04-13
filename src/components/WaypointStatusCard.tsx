@@ -1,21 +1,20 @@
 import { Button, Grid, Modal, Paper, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import { postWaypointsToDrone } from "../api/droneEndpoints";
-import { clearQueuedWaypoints, removeOneFromWaypoints, selectQueuedWaypoints } from "../store/slices/appSlice";
+import {
+    clearQueuedWaypoints,
+    openSnackbar,
+    removeOneFromWaypoints,
+    selectQueuedWaypoints,
+} from "../store/slices/appSlice";
 import { useAppDispatch, useAppSelector } from "../store/store";
-import ErrorSnackbar, { SnackbarState } from "./ErrorSnackbar";
 import InfoCard from "./InfoCard";
 import WaypointForm from "./WaypointStatus/WaypointForm";
 import WaypointItem from "./WaypointStatus/WaypointItem";
 
-export default function WaypointCreate() {
+export default function WaypointStatusCard() {
     const dispatch = useAppDispatch();
     const waypointQueue = useAppSelector(selectQueuedWaypoints);
-
-    const [snackbarState, setSnackbarState] = useState<SnackbarState>({
-        message: "",
-        armed: false,
-    });
     const [modalOpen, setModalOpen] = useState(false);
 
     const handlePost = async () => {
@@ -28,7 +27,7 @@ export default function WaypointCreate() {
         } catch (error) {
             const message = (error as Error).message;
             console.log(message);
-            setSnackbarState({ message, armed: true });
+            dispatch(openSnackbar(message));
         }
     };
 
@@ -81,11 +80,6 @@ export default function WaypointCreate() {
                     </Grid>
                 </Grid>
             </InfoCard>
-            <ErrorSnackbar
-                message={snackbarState.message}
-                open={snackbarState.armed}
-                setOpen={(armed) => setSnackbarState({ ...snackbarState, armed })}
-            />
             <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
                 <Paper
                     elevation={2}
