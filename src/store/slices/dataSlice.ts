@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AircraftStatus } from "../../types/AircraftStatus";
 import { Route } from "../../types/Route";
 import { RootState } from "../store";
-import { getWaypoints } from "../thunks/dataThunks";
+import { getMPSQueue, getWaypoints } from "../thunks/dataThunks";
 import { Waypoint } from "../../types/Waypoint";
 
 // DataState holds actual information that is supposed to be aligned with backend.
@@ -27,8 +27,8 @@ const initialState: DataState = {
     route: {
         id: 0,
         waypoints: [
-            { id: "0", name: "test", lat: 0, long: 0 },
-            { id: "1", name: "test", lat: 20, long: 20 },
+            { id: "0", name: "a", lat: 48.5086187, long: -71.6505103 },
+            { id: "1", name: "b", lat: 48.5075187, long: -71.6516103 },
         ],
     },
     queuedWaypoints: [],
@@ -44,6 +44,9 @@ const dataSlice = createSlice({
         updateRoute: (state, action: PayloadAction<Route>) => {
             state.route = action.payload;
         },
+        manualUpdateMPSQueue: (state, action: PayloadAction<Waypoint[]>) => {
+            state.route.waypoints = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -52,11 +55,14 @@ const dataSlice = createSlice({
             })
             .addCase(getWaypoints.rejected, (_state, action) => {
                 console.log("rejected", action.error);
+            })
+            .addCase(getMPSQueue.fulfilled, (state, action) => {
+                state.route.waypoints = action.payload;
             });
     },
 });
 
-export const { updateAircraftStatus, updateRoute } = dataSlice.actions;
+export const { updateAircraftStatus, updateRoute, manualUpdateMPSQueue } = dataSlice.actions;
 
 export const selectAircraftStatus = (state: RootState) => state.data.aircraftStatus;
 export const selectRoute = (state: RootState) => state.data.route;

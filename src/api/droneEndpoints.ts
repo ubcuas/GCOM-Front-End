@@ -1,5 +1,5 @@
 import { Waypoint } from "../types/Waypoint";
-import { postWithTryCatch } from "./api";
+import api, { postWithTryCatch } from "./api";
 
 const getEndpoint = (path = "") => `/drone${path}`;
 
@@ -17,4 +17,8 @@ export const takeoffDrone = async (altitude?: number) => {
 
 export const postWaypointsToDrone = async (waypoints: Waypoint[]) => {
     await postWithTryCatch(getEndpoint("/waypoints"), waypoints);
+};
+
+export const getDroneQueue = async () => {
+    return (await api.get(getEndpoint("/queue"))) as Waypoint[];
 };
