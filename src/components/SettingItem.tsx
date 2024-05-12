@@ -9,7 +9,7 @@ type SettingItemProps = {
 
 export default function SettingItem({ name, type, onChange, checked }: SettingItemProps) {
     return (
-        <Stack direction="row" justifyContent="space-between">
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Typography variant="body1">{name}</Typography>
             {type === "toggle" && <Switch checked={checked} onChange={onChange} />}
         </Stack>
