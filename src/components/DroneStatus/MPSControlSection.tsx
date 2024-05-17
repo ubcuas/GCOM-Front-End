@@ -32,9 +32,9 @@ export default function MPSControlSection() {
 
     const handleTakeoff = async (altitude?: number) => {
         try {
-            if (!controlState.armed) {
-                console.log("Please arm the drone.");
-            }
+            // if (!controlState.armed) {
+            //     console.log("Please arm the drone.");
+            // }
             await takeoffDrone(altitude);
         } catch (error) {
             const message = (error as Error).message;
@@ -80,7 +80,7 @@ export default function MPSControlSection() {
                         fullWidth
                         variant="contained"
                         color="error"
-                        disabled={controlState.armed ? false : true}
+                        // disabled={controlState.armed ? false : true}
                         onClick={() => {
                             handleTakeoff(controlState.takeoffAltitude);
                         }}
