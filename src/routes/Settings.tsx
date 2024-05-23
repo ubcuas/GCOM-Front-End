@@ -2,22 +2,25 @@ import { Box, Paper, SelectChangeEvent, Stack, Typography } from "@mui/material"
 import SettingItem from "../components/SettingItem";
 import {
     selectBypassStatus,
-    selectCenterCoordinates,
     selectPreferredTheme,
     selectSocketStatus,
     setBypassStatus,
-    setCenterCoordinates,
     setPreferredTheme,
     setSocketStatus,
 } from "../store/slices/appSlice";
 import { useAppDispatch, useAppSelector } from "../store/store";
+import { useLocalStorage } from "../utils/useLocalStorage";
+import { defaultCoords } from "../utils/defaultCoords";
 
 export default function Settings() {
     const theme = useAppSelector(selectPreferredTheme);
     const socketStatus = useAppSelector(selectSocketStatus);
     const isBypassed = useAppSelector(selectBypassStatus);
-    const centerCoordinates = useAppSelector(selectCenterCoordinates);
-
+    const [coords, setCoords] = useLocalStorage("coords", defaultCoords);
+    const processedCoords = {
+        long: isNaN(coords.long) || coords.long === null ? "" : String(coords.long),
+        lat: isNaN(coords.lat) || coords.lat === null ? "" : String(coords.lat),
+    };
     const dispatch = useAppDispatch();
 
     const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,21 +36,8 @@ export default function Settings() {
         if (!["latitude", "longitude"].includes(event.target.id) || /[^0-9.-]/.test(event.target.value)) {
             return;
         }
-
-        event.target.id === "longitude" &&
-            dispatch(
-                setCenterCoordinates({
-                    ...centerCoordinates,
-                    long: event.target.value,
-                }),
-            );
-        event.target.id === "latitude" &&
-            dispatch(
-                setCenterCoordinates({
-                    ...centerCoordinates,
-                    lat: event.target.value,
-                }),
-            );
+        event.target.id === "longitude" && setCoords({ ...coords, long: parseFloat(event.target.value) });
+        event.target.id === "latitude" && setCoords({ ...coords, lat: parseFloat(event.target.value) });
     };
 
     return (
@@ -98,14 +88,14 @@ export default function Settings() {
                         id="longitude"
                         type="text"
                         name="Map Default Center Longitude"
-                        value={String(centerCoordinates.long)}
+                        value={processedCoords.long}
                         onChange={handleDefaultCoordChange}
                     />
                     <SettingItem
                         id="latitude"
                         type="text"
                         name="Map Default Center Latitude"
-                        value={String(centerCoordinates.lat)}
+                        value={processedCoords.lat}
                         onChange={handleDefaultCoordChange}
                     />
                 </Stack>

@@ -2,24 +2,34 @@ import { Box } from "@mui/material";
 import Map, { Layer, LayerProps, Marker, Source } from "react-map-gl/maplibre";
 import { useAppSelector } from "../../store/store";
 import { selectWaypoints } from "../../store/slices/dataSlice";
-import { getDefaultCoordinates } from "../../utils/getDefaultCoords";
+import { getStorageValue, setStorageValue } from "../../utils/useLocalStorage";
+import { Coords } from "../../types/Coords";
+import { defaultCoords } from "../../utils/defaultCoords";
 
-function validCoords(coords: { lat: number; long: number }) {
-    return coords.lat <= 90 && coords.lat >= -90 && coords.long <= 180 && coords.long >= -180;
+function validCoords(coords: Coords) {
+    return (
+        coords.lat <= 90 &&
+        coords.lat >= -90 &&
+        coords.long <= 180 &&
+        coords.long >= -180 &&
+        coords.lat !== null &&
+        coords.long !== null
+    );
+}
+
+function getDefaultCoords() {
+    let coords = getStorageValue<Coords>("coords", { long: -9999, lat: -9999 });
+    if (!validCoords(coords)) {
+        setStorageValue("coords", defaultCoords);
+        coords = defaultCoords;
+    }
+    return coords;
 }
 
 export default function MapView() {
     const mpsWaypoints = useAppSelector(selectWaypoints);
-    const { lat, long } = {
-        lat: localStorage.getItem("latitude"),
-        long: localStorage.getItem("longitude"),
-    };
-    let actualCords;
-    if (lat !== null && long !== null && validCoords({ lat: parseFloat(lat), long: parseFloat(long) })) {
-        actualCords = { lat: parseFloat(lat), long: parseFloat(long) };
-    } else {
-        actualCords = getDefaultCoordinates();
-    }
+    const coords = getDefaultCoords();
+
     const routeData: GeoJSON.GeoJSON = {
         type: "LineString",
         coordinates: mpsWaypoints.map((waypoint) => [waypoint.long, waypoint.lat]),
@@ -42,11 +52,11 @@ export default function MapView() {
         >
             <Map
                 initialViewState={{
-                    longitude: actualCords.long,
-                    latitude: actualCords.lat,
+                    longitude: coords.long,
+                    latitude: coords.lat,
                     zoom: 14,
                 }}
-                mapStyle="https://api.maptiler.com/maps/basic-v2/style.json?key=ioE7W2lCif3DO9oj1YJh"
+                mapStyle="./src/mapStyles/osmbright.json"
             >
                 {mpsWaypoints.map((waypoint) => (
                     <Marker latitude={waypoint.lat} longitude={waypoint.long} />
