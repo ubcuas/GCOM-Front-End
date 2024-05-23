@@ -1,8 +1,8 @@
 import { Button, Grid, Modal, Paper, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { armDrone, disarmDrone, takeoffDrone } from "../../api/droneEndpoints";
-import { openSnackbar } from "../../store/slices/appSlice";
-import { useAppDispatch } from "../../store/store";
+import { openSnackbar, selectBypassStatus } from "../../store/slices/appSlice";
+import { useAppDispatch, useAppSelector } from "../../store/store";
 
 export default function MPSControlSection() {
     const [controlState, setControlState] = useState({
@@ -11,6 +11,7 @@ export default function MPSControlSection() {
     });
     const [modalState, setModalState] = useState(false);
     const dispatch = useAppDispatch();
+    const isBypassed = useAppSelector(selectBypassStatus);
 
     const handleArming = async (arming: boolean) => {
         try {
@@ -32,9 +33,11 @@ export default function MPSControlSection() {
 
     const handleTakeoff = async (altitude?: number) => {
         try {
-            // if (!controlState.armed) {
-            //     console.log("Please arm the drone.");
-            // }
+            if (!controlState.armed && !isBypassed) {
+                dispatch(
+                    openSnackbar("Drone must be armed before takeoff! You can disable this option in the settings."),
+                );
+            }
             await takeoffDrone(altitude);
         } catch (error) {
             const message = (error as Error).message;
@@ -80,7 +83,6 @@ export default function MPSControlSection() {
                         fullWidth
                         variant="contained"
                         color="error"
-                        // disabled={controlState.armed ? false : true}
                         onClick={() => {
                             handleTakeoff(controlState.takeoffAltitude);
                         }}

@@ -1,16 +1,16 @@
-import { Paper, Tab, Tabs } from "@mui/material";
-import { useEffect, useState } from "react";
 import FlightIcon from "@mui/icons-material/Flight";
 import Home from "@mui/icons-material/Home";
 import MapIcon from "@mui/icons-material/Map";
 import Settings from "@mui/icons-material/Settings";
+import { Paper, Tab, Tabs } from "@mui/material";
+import { useState } from "react";
 import { Link, useRoute } from "wouter";
 
 const linkMap: Record<string, number> = {
     "": 0,
     telemetry: 1,
-    settings: 2,
-    map: 3,
+    map: 2,
+    settings: 3,
 };
 
 export default function Nav() {
@@ -62,16 +62,16 @@ export default function Nav() {
                     sx={{
                         minWidth: 0,
                     }}
-                    label={<Settings />}
-                    href="/settings"
+                    label={<MapIcon />}
+                    href="/map"
                     LinkComponent={Link}
                 />
                 <Tab
                     sx={{
                         minWidth: 0,
                     }}
-                    label={<MapIcon />}
-                    href="/map"
+                    label={<Settings />}
+                    href="/settings"
                     LinkComponent={Link}
                 />
             </Tabs>

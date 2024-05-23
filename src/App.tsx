@@ -93,8 +93,8 @@ function App() {
                 <Switch>
                     <Route path="/" component={Home} />
                     <Route path="/telemetry" component={Telemetry} />
-                    <Route path="/settings" component={Settings} />
                     <Route path="/map" component={MapRoute} />
+                    <Route path="/settings" component={Settings} />
                 </Switch>
             </Box>
             <ErrorSnackbar />

@@ -51,7 +51,7 @@ export default function WaypointForm() {
 
     const handleFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (
-            ["latitude", "longitude", "altitude", "radius"].includes(event.target.id) &&
+            !["latitude", "longitude", "altitude", "radius"].includes(event.target.id) ||
             /[^0-9.-]/.test(event.target.value)
         ) {
             return;
