@@ -10,7 +10,8 @@ const linkMap: Record<string, number> = {
     "": 0,
     telemetry: 1,
     map: 2,
-    settings: 3,
+    "mps-queue": 3,
+    settings: 4,
 };
 
 export default function Nav() {
@@ -64,6 +65,14 @@ export default function Nav() {
                     }}
                     label={<MapIcon />}
                     href="/map"
+                    LinkComponent={Link}
+                />
+                <Tab
+                    sx={{
+                        minWidth: 0,
+                    }}
+                    label="MPS"
+                    href="/mps-queue"
                     LinkComponent={Link}
                 />
                 <Tab

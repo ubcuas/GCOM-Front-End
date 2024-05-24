@@ -15,14 +15,14 @@ type DataState = {
 const initialState: DataState = {
     aircraftStatus: {
         timestamp: new Date().getTime(),
-        latitude: 51.14557,
-        longitude: -114.24515,
-        altitude: 1992,
-        verticalSpeed: 45,
-        speed: 52,
-        heading: 193,
+        latitude: 12,
+        longitude: -34.567,
+        altitude: 890,
+        verticalSpeed: 123,
+        speed: 45,
+        heading: 67,
         // payload is currently TBD on backend
-        voltage: 21.6,
+        voltage: 8.9,
     },
     route: {
         id: 0,

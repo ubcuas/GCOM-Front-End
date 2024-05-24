@@ -1,10 +1,10 @@
 import { IconButton, Paper, Stack, Typography } from "@mui/material";
-import { Waypoint } from "../../types/Waypoint";
+import { Waypoint } from "../types/Waypoint";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 type WaypointItemProps = {
     waypoint: Waypoint;
-    handleDelete: () => void;
+    handleDelete?: () => void;
 };
 
 export default function WaypointItem({ waypoint, handleDelete }: WaypointItemProps) {
@@ -14,9 +14,11 @@ export default function WaypointItem({ waypoint, handleDelete }: WaypointItemPro
                 <Typography variant="h6">{waypoint.name || "No Name"}</Typography>
                 <Stack direction="row" alignItems="center" justifyContent="space-between">
                     <Typography color="grey">ID#{waypoint.id}</Typography>
-                    <IconButton color="warning" aria-label="close" size="medium" onClick={handleDelete}>
-                        <DeleteIcon fontSize="inherit" />
-                    </IconButton>
+                    {handleDelete && (
+                        <IconButton color="warning" aria-label="close" size="medium" onClick={handleDelete}>
+                            <DeleteIcon fontSize="inherit" />
+                        </IconButton>
+                    )}
                 </Stack>
             </Stack>
             <Typography variant="body1">

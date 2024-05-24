@@ -14,6 +14,7 @@ type AppState = {
     };
     telemetrySockets: boolean;
     bypassArmingRestriction: boolean;
+    autoClearWaypoints: boolean;
 };
 
 const initialState: AppState = {
@@ -25,6 +26,7 @@ const initialState: AppState = {
     },
     telemetrySockets: false,
     bypassArmingRestriction: false,
+    autoClearWaypoints: false,
 };
 
 const appSlice = createSlice({
@@ -64,6 +66,9 @@ const appSlice = createSlice({
         setBypassStatus: (state, action) => {
             state.bypassArmingRestriction = action.payload;
         },
+        setAutoClearWaypoints: (state, action) => {
+            state.autoClearWaypoints = action.payload;
+        },
     },
 });
 
@@ -76,6 +81,7 @@ export const {
     closeSnackbar,
     setSocketStatus,
     setBypassStatus,
+    setAutoClearWaypoints,
 } = appSlice.actions;
 
 export const selectQueuedWaypoints = (state: RootState) => state.app.queuedWaypoints;
@@ -83,6 +89,7 @@ export const selectPreferredTheme = (state: RootState) => state.app.preferredThe
 export const selectSnackbar = (state: RootState) => state.app.globalSnackbar;
 export const selectSocketStatus = (state: RootState) => state.app.telemetrySockets;
 export const selectBypassStatus = (state: RootState) => state.app.bypassArmingRestriction;
+export const selectAutoClearWaypoints = (state: RootState) => state.app.autoClearWaypoints;
 
 const appReducer = appSlice.reducer;
 export default appReducer;

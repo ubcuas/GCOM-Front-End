@@ -5,16 +5,18 @@ import {
     clearQueuedWaypoints,
     openSnackbar,
     removeOneFromWaypoints,
+    selectAutoClearWaypoints,
     selectQueuedWaypoints,
 } from "../store/slices/appSlice";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import InfoCard from "./InfoCard";
 import WaypointForm from "./WaypointStatus/WaypointForm";
-import WaypointItem from "./WaypointStatus/WaypointItem";
+import WaypointItem from "./WaypointItem";
 
 export default function WaypointStatusCard() {
     const dispatch = useAppDispatch();
     const waypointQueue = useAppSelector(selectQueuedWaypoints);
+    const autoClearWaypoints = useAppSelector(selectAutoClearWaypoints);
     const [modalOpen, setModalOpen] = useState(false);
 
     const handlePost = async () => {
@@ -23,7 +25,9 @@ export default function WaypointStatusCard() {
         }
         try {
             await postWaypointsToDrone(waypointQueue);
-            dispatch(clearQueuedWaypoints());
+            if (autoClearWaypoints) {
+                dispatch(clearQueuedWaypoints());
+            }
         } catch (error) {
             const message = (error as Error).message;
             console.log(message);

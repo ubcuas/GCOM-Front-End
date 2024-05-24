@@ -97,9 +97,9 @@ export default function Home() {
                             animation: `${fadeUp30} 1250ms ease-in-out`,
                             animationIterationCount: 1,
                         }}
-                        variant="h5"
+                        variant="h6"
                     >
-                        Season 2023 - 24
+                        Please ensure all settings are configured properly before usage.
                     </Typography>
                 </Box>
             </Box>

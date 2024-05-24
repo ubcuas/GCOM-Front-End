@@ -9,6 +9,7 @@ import { selectPreferredTheme } from "./store/slices/appSlice";
 import { useAppSelector } from "./store/store";
 import ErrorSnackbar from "./components/ErrorSnackbar";
 import MapRoute from "./routes/MapRoute";
+import MPSQueue from "./routes/MPSQueue";
 
 function App() {
     const colorScheme = useAppSelector(selectPreferredTheme);
@@ -95,6 +96,7 @@ function App() {
                     <Route path="/telemetry" component={Telemetry} />
                     <Route path="/map" component={MapRoute} />
                     <Route path="/settings" component={Settings} />
+                    <Route path="/mps-queue" component={MPSQueue} />
                 </Switch>
             </Box>
             <ErrorSnackbar />

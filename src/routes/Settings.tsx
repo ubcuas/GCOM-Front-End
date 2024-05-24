@@ -1,9 +1,11 @@
 import { Box, Paper, SelectChangeEvent, Stack, Typography } from "@mui/material";
 import SettingItem from "../components/SettingItem";
 import {
+    selectAutoClearWaypoints,
     selectBypassStatus,
     selectPreferredTheme,
     selectSocketStatus,
+    setAutoClearWaypoints,
     setBypassStatus,
     setPreferredTheme,
     setSocketStatus,
@@ -16,6 +18,7 @@ export default function Settings() {
     const theme = useAppSelector(selectPreferredTheme);
     const socketStatus = useAppSelector(selectSocketStatus);
     const isBypassed = useAppSelector(selectBypassStatus);
+    const autoClearWaypoints = useAppSelector(selectAutoClearWaypoints);
     const [coords, setCoords] = useLocalStorage("coords", defaultCoords);
     const processedCoords = {
         long: isNaN(coords.long) || coords.long === null ? "" : String(coords.long),
@@ -31,6 +34,9 @@ export default function Settings() {
     };
     const handleBypassChange = (event: SelectChangeEvent<string>) => {
         dispatch(setBypassStatus(event.target.value === "Bypassed"));
+    };
+    const handleAutoClearChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        dispatch(setAutoClearWaypoints(event.target.checked));
     };
     const handleDefaultCoordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (!["latitude", "longitude"].includes(event.target.id) || /[^0-9.-]/.test(event.target.value)) {
@@ -75,6 +81,12 @@ export default function Settings() {
                         name="Socket Telemetry"
                         type="toggle"
                         onChange={handleSocketChange}
+                    />
+                    <SettingItem
+                        type="toggle"
+                        name="Auto-Clear Posted WPs"
+                        checked={autoClearWaypoints}
+                        onChange={handleAutoClearChange}
                     />
                     <SettingItem
                         type="select"

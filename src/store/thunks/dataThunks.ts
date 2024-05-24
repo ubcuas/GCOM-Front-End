@@ -11,7 +11,7 @@ export const getWaypoints = createAsyncThunk("data/getWaypoints", async (_arg, {
     }
 });
 
-export const getMPSQueue = createAsyncThunk("data/getAircraftStatus", async (_arg, { rejectWithValue }) => {
+export const getMPSQueue = createAsyncThunk("data/getMPSQueue", async (_arg, { rejectWithValue }) => {
     try {
         return await getDroneQueue();
     } catch (err) {
