@@ -56,7 +56,11 @@ export default function MapView() {
                     latitude: coords.lat,
                     zoom: 14,
                 }}
-                mapStyle="./src/mapStyles/osmbright.json"
+                mapStyle={
+                    window.navigator.onLine
+                        ? "https://api.maptiler.com/maps/basic-v2/style.json?key=ioE7W2lCif3DO9oj1YJh"
+                        : "./src/mapStyles/osmbright.json"
+                }
             >
                 {mpsWaypoints.map((waypoint) => (
                     <Marker latitude={waypoint.lat} longitude={waypoint.long} />
