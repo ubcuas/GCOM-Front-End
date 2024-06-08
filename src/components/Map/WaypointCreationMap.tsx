@@ -84,6 +84,9 @@ export default function WaypointCreationMap() {
             }
             onClick={createNewWaypoint}
             doubleClickZoom={false}
+            style={{
+                minHeight: "500px",
+            }}
         >
             {clientWPQueue.map((waypoint, i) => {
                 return (

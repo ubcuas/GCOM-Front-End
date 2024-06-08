@@ -1,5 +1,5 @@
 import { Box, Button, Grid, Modal, Paper, Stack, Typography } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { postWaypointsToDrone } from "../api/droneEndpoints";
 import {
     clearQueuedWaypoints,
@@ -12,11 +12,11 @@ import {
     setQueuedWaypoints,
 } from "../store/slices/appSlice";
 import { useAppDispatch, useAppSelector } from "../store/store";
+import { Waypoint } from "../types/Waypoint";
 import InfoCard from "./InfoCard";
 import WaypointCreationMap from "./Map/WaypointCreationMap";
 import WaypointItem from "./WaypointItem";
 import WaypointForm from "./WaypointStatus/WaypointForm";
-import { Waypoint } from "../types/Waypoint";
 
 export default function WaypointStatusCard() {
     const dispatch = useAppDispatch();
