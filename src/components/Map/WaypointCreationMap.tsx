@@ -154,7 +154,18 @@ export default function WaypointCreationMap() {
                             </Box>
                         </Marker>
                         {selectedWaypoints[i] && (
-                            <Marker latitude={waypoint.lat} longitude={waypoint.long}>
+                            <Marker
+                                latitude={
+                                    draggedMarkerData && draggedMarkerData.index === i
+                                        ? draggedMarkerData.lat
+                                        : waypoint.lat
+                                }
+                                longitude={
+                                    draggedMarkerData && draggedMarkerData.index === i
+                                        ? draggedMarkerData.long
+                                        : waypoint.long
+                                }
+                            >
                                 <WaypointItem
                                     sx={{
                                         position: "absolute",

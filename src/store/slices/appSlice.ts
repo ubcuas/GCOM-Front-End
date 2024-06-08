@@ -40,6 +40,9 @@ const appSlice = createSlice({
         addToQueuedWaypoints: (state, action: PayloadAction<Waypoint>) => {
             state.queuedWaypoints.push(action.payload);
         },
+        setQueuedWaypoints: (state, action: PayloadAction<Waypoint[]>) => {
+            state.queuedWaypoints = action.payload;
+        },
         clearQueuedWaypoints: (state) => {
             state.queuedWaypoints = [];
         },
@@ -93,6 +96,7 @@ const appSlice = createSlice({
 
 export const {
     addToQueuedWaypoints,
+    setQueuedWaypoints,
     clearQueuedWaypoints,
     removeOneFromWaypoints,
     editWaypointAtIndex,
