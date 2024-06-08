@@ -12,7 +12,7 @@ import {
 } from "../store/slices/appSlice";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { useLocalStorage } from "../utils/useLocalStorage";
-import { defaultCoords } from "../utils/defaultCoords";
+import { defaultCoords } from "../utils/coords";
 
 export default function Settings() {
     const theme = useAppSelector(selectPreferredTheme);

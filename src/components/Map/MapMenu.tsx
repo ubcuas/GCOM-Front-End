@@ -1,4 +1,5 @@
 import { Box, Paper, Typography } from "@mui/material";
+import DroneStatusCard from "../DroneStatusCard";
 
 export default function MapMenu() {
     return (
@@ -11,21 +12,7 @@ export default function MapMenu() {
                 height: "calc(100% - 128px)", // 128px account for top and bottom margin.
             }}
         >
-            <Paper
-                sx={{
-                    height: "100%",
-                    p: 4,
-                }}
-            >
-                <Typography
-                    variant="h5"
-                    sx={{
-                        fontWeight: "bold",
-                    }}
-                >
-                    Waypoints
-                </Typography>
-            </Paper>
+            <DroneStatusCard />
         </Box>
     );
 }

@@ -1,4 +1,4 @@
-import { Button, Grid, Modal, Paper, Stack, Typography } from "@mui/material";
+import { Box, Button, Grid, Modal, Paper, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import { postWaypointsToDrone } from "../api/droneEndpoints";
 import {
@@ -6,17 +6,21 @@ import {
     openSnackbar,
     removeOneFromWaypoints,
     selectAutoClearWaypoints,
+    selectMapViewOpen,
     selectQueuedWaypoints,
+    setMapViewOpen,
 } from "../store/slices/appSlice";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import InfoCard from "./InfoCard";
-import WaypointForm from "./WaypointStatus/WaypointForm";
+import WaypointCreationMap from "./Map/WaypointCreationMap";
 import WaypointItem from "./WaypointItem";
+import WaypointForm from "./WaypointStatus/WaypointForm";
 
 export default function WaypointStatusCard() {
     const dispatch = useAppDispatch();
     const waypointQueue = useAppSelector(selectQueuedWaypoints);
     const autoClearWaypoints = useAppSelector(selectAutoClearWaypoints);
+    const mapViewOpen = useAppSelector(selectMapViewOpen);
     const [modalOpen, setModalOpen] = useState(false);
 
     const handlePost = async () => {
@@ -39,9 +43,30 @@ export default function WaypointStatusCard() {
         dispatch(removeOneFromWaypoints(index));
     };
 
+    const postButton = (
+        <Box
+            sx={{
+                display: "flex",
+                p: 1,
+                gap: 1,
+            }}
+        >
+            <Button
+                sx={{ fontSize: 16, fontWeight: "bold", px: 4 }}
+                variant="outlined"
+                onClick={() => dispatch(setMapViewOpen(!mapViewOpen))}
+            >
+                Map View
+            </Button>
+            <Button sx={{ fontSize: 16, fontWeight: "bold", px: 4 }} variant="outlined" onClick={handlePost}>
+                POST
+            </Button>
+        </Box>
+    );
+
     return (
         <>
-            <InfoCard title="Create Waypoints" rightButtonHandler={handlePost} rightButtonText="post">
+            <InfoCard title="Create Waypoints" rightNode={postButton}>
                 <Grid
                     container
                     spacing={2}
@@ -50,24 +75,41 @@ export default function WaypointStatusCard() {
                     }}
                 >
                     <Grid item xs={12} md={6}>
-                        <Stack
-                            spacing={2}
-                            sx={{
-                                maxHeight: "73vh", // good enough of a value
-                                overflowY: "auto",
-                                p: 1,
-                            }}
-                        >
-                            {waypointQueue.map((waypoint, index) => {
-                                return (
-                                    <WaypointItem
-                                        key={index}
-                                        waypoint={waypoint}
-                                        handleDelete={() => handleDeleteWaypoint(index)}
-                                    />
-                                );
-                            })}
-                        </Stack>
+                        {mapViewOpen ? (
+                            <WaypointCreationMap />
+                        ) : waypointQueue.length === 0 ? (
+                            <Box
+                                sx={{
+                                    height: "100%",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                <Typography variant="h6" sx={{ textAlign: "center" }}>
+                                    No waypoints queued
+                                </Typography>
+                            </Box>
+                        ) : (
+                            <Stack
+                                spacing={2}
+                                sx={{
+                                    maxHeight: "73vh", // good enough of a value
+                                    overflowY: "auto",
+                                    p: 1,
+                                }}
+                            >
+                                {waypointQueue.map((waypoint, index) => {
+                                    return (
+                                        <WaypointItem
+                                            key={index}
+                                            waypoint={waypoint}
+                                            handleDelete={() => handleDeleteWaypoint(index)}
+                                        />
+                                    );
+                                })}
+                            </Stack>
+                        )}
                     </Grid>
                     <Grid item xs={12} md={6}>
                         <Stack

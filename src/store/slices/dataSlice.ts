@@ -15,8 +15,8 @@ type DataState = {
 const initialState: DataState = {
     aircraftStatus: {
         timestamp: new Date().getTime(),
-        latitude: 12,
-        longitude: -34.567,
+        latitude: 49.2667,
+        longitude: -123.25,
         altitude: 890,
         verticalSpeed: 123,
         speed: 45,
@@ -27,8 +27,8 @@ const initialState: DataState = {
     route: {
         id: 0,
         waypoints: [
-            { id: "0", name: "a", lat: 48.5086187, long: -71.6505103 },
-            { id: "1", name: "b", lat: 48.5075187, long: -71.6516103 },
+            { id: "0", name: "a", lat: 49.26, long: -123.25 },
+            { id: "1", name: "b", lat: 49.36, long: -123.05 },
         ],
     },
     queuedWaypoints: [],
@@ -50,9 +50,9 @@ const dataSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(getWaypoints.fulfilled, (state, action) => {
-                state.route.waypoints = action.payload;
-            })
+            // .addCase(getWaypoints.fulfilled, (state, action) => {
+            //     state.route.waypoints = action.payload;
+            // })
             .addCase(getWaypoints.rejected, (_state, action) => {
                 console.log("rejected", action.error);
             })
@@ -66,7 +66,7 @@ export const { updateAircraftStatus, updateRoute, manualUpdateMPSQueue } = dataS
 
 export const selectAircraftStatus = (state: RootState) => state.data.aircraftStatus;
 export const selectRoute = (state: RootState) => state.data.route;
-export const selectWaypoints = (state: RootState) => state.data.route.waypoints;
+export const selectMPSWaypoints = (state: RootState) => state.data.route.waypoints;
 
 const dataReducer = dataSlice.reducer;
 export default dataReducer;

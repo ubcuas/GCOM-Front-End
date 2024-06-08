@@ -1,17 +1,17 @@
+import { EditLocationAlt } from "@mui/icons-material";
 import FlightIcon from "@mui/icons-material/Flight";
 import Home from "@mui/icons-material/Home";
 import MapIcon from "@mui/icons-material/Map";
 import Settings from "@mui/icons-material/Settings";
-import { Paper, Tab, Tabs } from "@mui/material";
+import { Paper, Tab, Tabs, Typography } from "@mui/material";
 import { useState } from "react";
 import { Link, useRoute } from "wouter";
 
 const linkMap: Record<string, number> = {
     "": 0,
-    telemetry: 1,
-    map: 2,
-    "mps-queue": 3,
-    settings: 4,
+    map: 1,
+    queue: 2,
+    settings: 3,
 };
 
 export default function Nav() {
@@ -51,14 +51,15 @@ export default function Nav() {
                     href="/"
                     LinkComponent={Link}
                 />
-                <Tab
+                {/* <Tab
                     sx={{
                         minWidth: 0,
                     }}
                     label={<FlightIcon />}
                     href="/telemetry"
                     LinkComponent={Link}
-                />
+                /> */}
+
                 <Tab
                     sx={{
                         minWidth: 0,
@@ -67,12 +68,20 @@ export default function Nav() {
                     href="/map"
                     LinkComponent={Link}
                 />
+                {/* <Tab
+                    sx={{
+                        minWidth: 0,
+                    }}
+                    label="MPS Queue"
+                    href="/mps-queue"
+                    LinkComponent={Link}
+                /> */}
                 <Tab
                     sx={{
                         minWidth: 0,
                     }}
-                    label="MPS"
-                    href="/mps-queue"
+                    label={<EditLocationAlt />}
+                    href="/queue"
                     LinkComponent={Link}
                 />
                 <Tab

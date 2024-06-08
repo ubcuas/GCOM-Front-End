@@ -1,56 +1,53 @@
-import { Grid, Paper, Stack, Typography } from "@mui/material";
+import { Box, Paper, SxProps, Typography } from "@mui/material";
 import { ReactNode } from "react";
 
 export default function InfoCardWidget({
     text,
     data,
     aside,
-    gridSpacing,
+    sx,
 }: {
     text: string;
     data: string | number | JSX.Element;
     aside?: ReactNode;
-    gridSpacing?: number;
+    sx?: SxProps;
 }) {
     return (
-        <Grid item xs={12} lg={gridSpacing ?? 12} alignItems="stretch">
-            <Paper
-                elevation={3}
-                sx={{
-                    padding: 1,
-                    textAlign: "center",
-                    width: 1,
-                    height: 1,
-                }}
+        <Paper
+            elevation={3}
+            sx={{
+                ...sx,
+                textAlign: "center",
+                padding: 1,
+                width: "100%",
+                height: "100%",
+            }}
+        >
+            <Box
+                sx={
+                    aside
+                        ? {
+                              display: "flex",
+                              gap: 4,
+                              justifyContent: "center",
+                              alignItems: "center",
+                          }
+                        : undefined
+                }
             >
-                <Stack
-                    direction={aside ? "row" : "column"}
-                    alignItems="center"
-                    sx={{
-                        width: 1,
-                        height: 1,
-                    }}
-                >
-                    <Stack
-                        justifyContent="center"
+                <Box>
+                    <Typography variant="h6">{text}</Typography>
+                    <Typography
                         sx={{
-                            flexGrow: 1,
-                            flexBasis: 0,
+                            color: (theme) => theme.palette.primary.main,
                         }}
+                        variant="h5"
                     >
-                        <Typography variant="h6">{text}</Typography>
-                        <Typography
-                            sx={{
-                                color: (theme) => theme.palette.primary.main,
-                            }}
-                            variant="h5"
-                        >
-                            {data}
-                        </Typography>
-                    </Stack>
-                    {aside}
-                </Stack>
-            </Paper>
-        </Grid>
+                        {data}
+                    </Typography>
+                </Box>
+                <Box>{aside}</Box>
+            </Box>
+        </Paper>
     );
 }

@@ -1,8 +1,9 @@
-import { Button, Grid, Modal, Paper, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+import { Box, Button, Divider, Modal, Paper, Switch, TextField, Typography } from "@mui/material";
+import { useRef, useState } from "react";
 import { armDrone, disarmDrone, takeoffDrone } from "../../api/droneEndpoints";
-import { openSnackbar, selectBypassStatus } from "../../store/slices/appSlice";
+import { openSnackbar, selectBypassStatus, setAllMpsWaypointMapState } from "../../store/slices/appSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store";
+import { getWaypoints } from "../../store/thunks/dataThunks";
 
 export default function MPSControlSection() {
     const [controlState, setControlState] = useState({
@@ -12,6 +13,7 @@ export default function MPSControlSection() {
     const [modalState, setModalState] = useState(false);
     const dispatch = useAppDispatch();
     const isBypassed = useAppSelector(selectBypassStatus);
+    const fetchIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
     const handleArming = async (arming: boolean) => {
         try {
@@ -46,51 +48,107 @@ export default function MPSControlSection() {
         }
     };
 
+    const handleAutoFetch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.checked) {
+            fetchIntervalRef.current = setInterval(fetchFromMPSQueue, 1000);
+        } else if (fetchIntervalRef.current) {
+            clearInterval(fetchIntervalRef.current);
+        }
+    };
+
+    const fetchFromMPSQueue = () => {
+        console.log("Fetching from MPS queue...");
+        dispatch(getWaypoints);
+    };
+
     return (
-        <>
-            <Grid container direction="row" spacing={2}>
-                <Grid item xs={12}>
-                    {controlState.armed ? (
-                        <Button fullWidth variant="outlined" color="success" onClick={() => handleArming(false)}>
-                            Disarm Drone
-                        </Button>
-                    ) : (
-                        <Button fullWidth variant="outlined" color="error" onClick={() => setModalState(true)}>
-                            Arm Drone
-                        </Button>
-                    )}
-                </Grid>
-                {/* <Grid item xs={12} md={6}>
-                <Button fullWidth variant="outlined" color="success" onClick={() => handleArming(false)}>
-                    Disarm Drone
+        <Box
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 2,
+            }}
+        >
+            <Box>
+                {controlState.armed ? (
+                    <Button fullWidth variant="outlined" color="success" onClick={() => handleArming(false)}>
+                        Disarm Drone
+                    </Button>
+                ) : (
+                    <Button fullWidth variant="outlined" color="error" onClick={() => setModalState(true)}>
+                        Arm Drone
+                    </Button>
+                )}
+            </Box>
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "stretch",
+                    gap: 2,
+                }}
+            >
+                <TextField
+                    size="small"
+                    required
+                    id="takeoffAltitude"
+                    type="number"
+                    label="Take Off Altitude (ft)"
+                    onChange={updateSnackBarState}
+                    value={controlState.takeoffAltitude === 0 ? "" : controlState.takeoffAltitude}
+                />
+                <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => {
+                        handleTakeoff(controlState.takeoffAltitude);
+                    }}
+                >
+                    Takeoff
                 </Button>
-            </Grid> */}
-                <Grid item xs={12} md={6}>
-                    <TextField
-                        fullWidth
-                        size="small"
-                        required
-                        id="takeoffAltitude"
-                        type="number"
-                        label="Take Off Altitude (ft)"
-                        onChange={updateSnackBarState}
-                        value={controlState.takeoffAltitude === 0 ? "" : controlState.takeoffAltitude}
-                    />
-                </Grid>
-                <Grid item xs={12} md={6}>
+            </Box>
+            <Divider />
+            <Box
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 1,
+                }}
+            >
+                <Button variant="outlined" onClick={() => dispatch(setAllMpsWaypointMapState(true))}>
+                    Show All Waypoints
+                </Button>
+                <Button variant="outlined" onClick={() => dispatch(setAllMpsWaypointMapState(false))}>
+                    Hide All Waypoints
+                </Button>
+                <Box
+                    sx={{
+                        display: "flex",
+                        gap: 2,
+                        alignItems: "center",
+                    }}
+                >
                     <Button
-                        sx={{ height: "100%" }}
-                        fullWidth
-                        variant="contained"
-                        color="error"
-                        onClick={() => {
-                            handleTakeoff(controlState.takeoffAltitude);
+                        sx={{
+                            flexGrow: 1,
+                        }}
+                        variant="outlined"
+                        color="success"
+                        onClick={() => dispatch(getWaypoints)}
+                    >
+                        Fetch MPS Data
+                    </Button>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            alignItems: "center",
                         }}
                     >
-                        Takeoff
-                    </Button>
-                </Grid>
-            </Grid>
+                        Auto Fetch
+                        <Switch onChange={handleAutoFetch} />
+                    </Box>
+                </Box>
+            </Box>
             <Modal open={modalState} onClose={() => setModalState(false)}>
                 <Paper
                     elevation={2}
@@ -118,6 +176,6 @@ export default function MPSControlSection() {
                     </Button>
                 </Paper>
             </Modal>
-        </>
+        </Box>
     );
 }

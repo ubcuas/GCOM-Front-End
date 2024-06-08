@@ -1,34 +1,27 @@
+import { Flight, Place } from "@mui/icons-material";
 import { Box } from "@mui/material";
+import { Fragment, useEffect } from "react";
 import Map, { Layer, LayerProps, Marker, Source } from "react-map-gl/maplibre";
-import { useAppSelector } from "../../store/store";
-import { selectWaypoints } from "../../store/slices/dataSlice";
-import { getStorageValue, setStorageValue } from "../../utils/useLocalStorage";
-import { Coords } from "../../types/Coords";
-import { defaultCoords } from "../../utils/defaultCoords";
-
-function validCoords(coords: Coords) {
-    return (
-        coords.lat <= 90 &&
-        coords.lat >= -90 &&
-        coords.long <= 180 &&
-        coords.long >= -180 &&
-        coords.lat !== null &&
-        coords.long !== null
-    );
-}
-
-function getDefaultCoords() {
-    let coords = getStorageValue<Coords>("coords", { long: -9999, lat: -9999 });
-    if (!validCoords(coords)) {
-        setStorageValue("coords", defaultCoords);
-        coords = defaultCoords;
-    }
-    return coords;
-}
+import {
+    initializeMpsWaypointMapState,
+    selectMpsWaypointMapState,
+    toggleMpsWaypointMapState,
+} from "../../store/slices/appSlice";
+import { selectAircraftStatus, selectMPSWaypoints } from "../../store/slices/dataSlice";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { getDefaultCoords } from "../../utils/coords";
+import WaypointItem from "../WaypointItem";
 
 export default function MapView() {
-    const mpsWaypoints = useAppSelector(selectWaypoints);
+    const mpsWaypoints = useAppSelector(selectMPSWaypoints);
+    const mpsWaypointMapState = useAppSelector(selectMpsWaypointMapState);
+    const aircraftStatus = useAppSelector(selectAircraftStatus);
     const coords = getDefaultCoords();
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch(initializeMpsWaypointMapState(mpsWaypoints.length));
+    }, []);
 
     const routeData: GeoJSON.GeoJSON = {
         type: "LineString",
@@ -38,7 +31,7 @@ export default function MapView() {
         id: "mps-route",
         type: "line",
         paint: {
-            "line-color": "#ff0000",
+            "line-color": "#ee4455",
             "line-width": 3,
         },
     };
@@ -61,10 +54,51 @@ export default function MapView() {
                         ? "https://api.maptiler.com/maps/basic-v2/style.json?key=ioE7W2lCif3DO9oj1YJh"
                         : "./src/mapStyles/osmbright.json"
                 }
+                doubleClickZoom={false}
             >
-                {mpsWaypoints.map((waypoint) => (
-                    <Marker latitude={waypoint.lat} longitude={waypoint.long} />
+                {mpsWaypoints.map((waypoint, i) => (
+                    <Fragment key={i}>
+                        <Marker
+                            latitude={waypoint.lat}
+                            longitude={waypoint.long}
+                            onClick={() => dispatch(toggleMpsWaypointMapState(i))}
+                            style={{
+                                cursor: "pointer",
+                            }}
+                        >
+                            <Place
+                                sx={{
+                                    color: "#ee4455",
+                                    fontSize: "48px",
+                                    position: "absolute",
+                                    top: "-46px",
+                                    left: "-24px",
+                                }}
+                            />
+                        </Marker>
+                        {mpsWaypointMapState[i] && (
+                            <Marker latitude={waypoint.lat} longitude={waypoint.long}>
+                                <WaypointItem
+                                    sx={{
+                                        position: "absolute",
+                                        width: "180px",
+                                        top: "10px",
+                                    }}
+                                    waypoint={waypoint}
+                                />
+                            </Marker>
+                        )}
+                    </Fragment>
                 ))}
+                <Marker latitude={aircraftStatus.latitude} longitude={aircraftStatus.longitude}>
+                    <Flight
+                        sx={{
+                            color: "primary.main",
+                            rotate: `${aircraftStatus.heading}deg`,
+                            fontSize: "48px",
+                        }}
+                    />
+                </Marker>
                 <Source type="geojson" data={routeData}>
                     <Layer {...routeStyle} />
                 </Source>

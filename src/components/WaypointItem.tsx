@@ -1,15 +1,16 @@
-import { IconButton, Paper, Stack, Typography } from "@mui/material";
+import { IconButton, Paper, Stack, SxProps, Typography } from "@mui/material";
 import { Waypoint } from "../types/Waypoint";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 type WaypointItemProps = {
     waypoint: Waypoint;
+    sx?: SxProps;
     handleDelete?: () => void;
 };
 
-export default function WaypointItem({ waypoint, handleDelete }: WaypointItemProps) {
+export default function WaypointItem({ waypoint, sx, handleDelete }: WaypointItemProps) {
     return (
-        <Paper elevation={4} sx={{ p: 1 }}>
+        <Paper elevation={4} sx={{ ...sx, p: 1 }}>
             <Stack direction="row" alignItems="center" justifyContent="space-between">
                 <Typography variant="h6">{waypoint.name || "No Name"}</Typography>
                 <Stack direction="row" alignItems="center" justifyContent="space-between">

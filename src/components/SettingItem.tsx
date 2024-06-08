@@ -60,7 +60,9 @@ function SelectSettingItem({ name, onChange, options, value, optionColors }: Sel
                 }}
             >
                 {options.map((option) => (
-                    <MenuItem value={option}>{option}</MenuItem>
+                    <MenuItem key={option} value={option}>
+                        {option}
+                    </MenuItem>
                 ))}
             </Select>
         </>

@@ -1,13 +1,13 @@
 import { Box, Button, Paper, Stack, Switch, Typography } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { getWaypoints } from "../store/thunks/dataThunks";
-import { selectWaypoints } from "../store/slices/dataSlice";
+import { selectMPSWaypoints } from "../store/slices/dataSlice";
 import WaypointItem from "../components/WaypointItem";
 import { useRef } from "react";
 
 export default function MPSQueue() {
     const dispatch = useAppDispatch();
-    const mpsQueueWaypoints = useAppSelector(selectWaypoints);
+    const mpsQueueWaypoints = useAppSelector(selectMPSWaypoints);
     const fetchIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
     const handleAutoFetch = (e: React.ChangeEvent<HTMLInputElement>) => {

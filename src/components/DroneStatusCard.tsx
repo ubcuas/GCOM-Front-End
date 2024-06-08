@@ -8,6 +8,7 @@ import MPSControlSection from "./DroneStatus/MPSControlSection";
 import { useEffect } from "react";
 import { socket } from "../api/socket";
 import { AircraftStatus } from "../types/AircraftStatus";
+import { Box, Divider, Paper } from "@mui/material";
 
 const roundValues = (
     data: Omit<AircraftStatus, "verticalSpeed" | "speed"> & { vertical_velocity: number; velocity: number },
@@ -29,25 +30,24 @@ export default function DroneStatusCard() {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        // socket.emit("ping");
-        // socket.on("pong", () => {
-        //     console.log("pong received");
-        // });
         socket.on("fe_response", (data) => {
             console.log(data);
             dispatch(updateAircraftStatus(roundValues(data)));
         });
-        // const interval = setInterval(() => {
-        //     socket.emit("fe_request");
-        // }, 100);
         return () => {
             socket.off("drone_update");
-            // clearInterval(interval);
         };
     }, []);
 
     return (
-        <InfoCard title="Drone (wip)">
+        <Paper
+            sx={{
+                p: 2,
+                display: "flex",
+                flexDirection: "column",
+                gap: 4,
+            }}
+        >
             <PositionSection
                 latitude={droneState.latitude}
                 longitude={droneState.longitude}
@@ -57,6 +57,6 @@ export default function DroneStatusCard() {
             <SpeedSection speed={droneState.speed} verticalSpeed={droneState.verticalSpeed} />
             <TimeStamp time={droneState.timestamp} />
             <MPSControlSection />
-        </InfoCard>
+        </Paper>
     );
 }
