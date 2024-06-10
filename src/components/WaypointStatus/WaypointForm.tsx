@@ -1,8 +1,13 @@
 import { Button, Grid, TextField, Typography } from "@mui/material";
-import { useState } from "react";
-import { Waypoint } from "../../types/Waypoint";
+import { useEffect, useState } from "react";
+import { Waypoint, WaypointEditState } from "../../types/Waypoint";
 import { useAppDispatch } from "../../store/store";
-import { addToQueuedWaypoints } from "../../store/slices/appSlice";
+import { addToQueuedWaypoints, editWaypointAtIndex } from "../../store/slices/appSlice";
+
+type WaypointFormProps = {
+    editState: WaypointEditState;
+    clearEditState: () => void;
+};
 
 type FormState = {
     latitude: string;
@@ -13,6 +18,15 @@ type FormState = {
     remarks: string;
 };
 
+const defaultFormState = {
+    latitude: "",
+    longitude: "",
+    altitude: "",
+    name: "",
+    radius: "",
+    remarks: "",
+};
+
 type FormErrors = {
     latitude: boolean;
     longitude: boolean;
@@ -21,22 +35,40 @@ type FormErrors = {
 
 type FormKeys = keyof FormState & keyof FormErrors;
 
-export default function WaypointForm() {
+export default function WaypointForm({ editState, clearEditState }: WaypointFormProps) {
     const dispatch = useAppDispatch();
 
-    const [formState, setFormState] = useState<FormState>({
-        latitude: "",
-        longitude: "",
-        altitude: "",
-        name: "",
-        radius: "",
-        remarks: "",
-    });
+    const [formState, setFormState] = useState<FormState>(
+        editState.waypoint
+            ? {
+                  latitude: String(editState.waypoint.lat),
+                  longitude: String(editState.waypoint.long),
+                  altitude: String(editState.waypoint.alt),
+                  name: editState.waypoint.name ?? "No name",
+                  radius: String(editState.waypoint.radius),
+                  remarks: editState.waypoint.remarks ?? "",
+              }
+            : defaultFormState,
+    );
+
     const [formErrors, setFormErrors] = useState<FormErrors>({
         latitude: false,
         longitude: false,
         altitude: false,
     });
+
+    useEffect(() => {
+        if (editState.waypoint) {
+            setFormState({
+                latitude: editState.waypoint.lat ? String(editState.waypoint.lat) : "",
+                longitude: editState.waypoint.long ? String(editState.waypoint.long) : "",
+                altitude: editState.waypoint.alt ? String(editState.waypoint.alt) : "",
+                name: editState.waypoint.name ?? "No Name",
+                radius: editState.waypoint.radius ? String(editState.waypoint.radius) : "",
+                remarks: editState.waypoint.remarks ?? "",
+            });
+        }
+    }, [editState.index]);
 
     const checkReqFields = (keys: FormKeys[]): boolean => {
         const newFormErrors = keys.reduce((acc, key) => {
@@ -81,10 +113,34 @@ export default function WaypointForm() {
         }
     };
 
+    const cancelEditing = () => {
+        clearEditState();
+        setFormState(defaultFormState);
+    };
+
+    const handleFinishEditing = () => {
+        const waypoint = {
+            lat: parseFloat(formState.latitude),
+            long: parseFloat(formState.longitude),
+            alt: parseOptionalFloat(formState.altitude),
+            radius: parseOptionalFloat(formState.radius),
+            name: formState.name.trim(),
+            remarks: formState.remarks.trim(),
+            id: "-1",
+        } as Waypoint;
+        dispatch(
+            editWaypointAtIndex({
+                index: editState.index,
+                waypoint,
+            }),
+        );
+        cancelEditing();
+    };
+
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
-                <Typography variant="h6">Create Waypoint</Typography>
+                <Typography variant="h6">{editState.waypoint ? "Edit" : "Create"} Waypoint</Typography>
             </Grid>
             <Grid item xs={12} lg={6}>
                 <TextField
@@ -139,7 +195,7 @@ export default function WaypointForm() {
                     onWheel={preventScroll}
                 />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} lg={6}>
                 <TextField
                     fullWidth
                     id="name"
@@ -149,7 +205,7 @@ export default function WaypointForm() {
                     onChange={handleFormChange}
                 />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} lg={6}>
                 <TextField
                     fullWidth
                     id="remarks"
@@ -159,17 +215,26 @@ export default function WaypointForm() {
                     onChange={handleFormChange}
                 />
             </Grid>
-            <Grid item xs={12}>
-                <Button
-                    sx={{
-                        width: "100%",
-                    }}
-                    variant="outlined"
-                    onClick={handleFormSubmit}
-                >
-                    Create Waypoint
-                </Button>
-            </Grid>
+            {editState.waypoint ? (
+                <>
+                    <Grid item xs={12} lg={6}>
+                        <Button color="secondary" fullWidth variant="outlined" onClick={cancelEditing}>
+                            Cancel
+                        </Button>
+                    </Grid>
+                    <Grid item xs={12} lg={6}>
+                        <Button fullWidth variant="outlined" onClick={handleFinishEditing}>
+                            Edit Waypoint
+                        </Button>
+                    </Grid>
+                </>
+            ) : (
+                <Grid item xs={12}>
+                    <Button fullWidth variant="outlined" onClick={handleFormSubmit}>
+                        Create Waypoint
+                    </Button>
+                </Grid>
+            )}
         </Grid>
     );
 }

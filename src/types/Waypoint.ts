@@ -20,3 +20,8 @@ export type Waypoint = {
     designation?: Designation;
     remarks?: string;
 };
+
+export type WaypointEditState = {
+    index: number;
+    waypoint?: Waypoint;
+};

@@ -3,17 +3,13 @@
 import { Place } from "@mui/icons-material";
 import { Fragment, useState } from "react";
 import { Layer, LayerProps, Map, MapLayerMouseEvent, Marker, Source } from "react-map-gl/maplibre";
-import {
-    addToQueuedWaypoints,
-    editWaypointAtIndex,
-    removeOneFromWaypoints,
-    selectQueuedWaypoints,
-} from "../../store/slices/appSlice";
+import { addToQueuedWaypoints, editWaypointAtIndex, selectQueuedWaypoints } from "../../store/slices/appSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { getDefaultCoords } from "../../utils/coords";
 import WaypointItem from "../WaypointItem";
 import { roundTo } from "../../utils/routeTo";
 import { Box } from "@mui/material";
+import { WaypointEditState } from "../../types/Waypoint";
 
 type DraggedMarker = {
     long: number;
@@ -21,7 +17,13 @@ type DraggedMarker = {
     index: number;
 };
 
-export default function WaypointCreationMap() {
+type CreationMapProps = {
+    handleDelete: (index: number) => void;
+    handleEdit: (index: number) => void;
+    editState: WaypointEditState;
+};
+
+export default function WaypointCreationMap({ handleDelete, handleEdit, editState }: CreationMapProps) {
     const coords = getDefaultCoords();
     const clientWPQueue = useAppSelector(selectQueuedWaypoints);
     const dispatch = useAppDispatch();
@@ -58,15 +60,6 @@ export default function WaypointCreationMap() {
             const newSelected = [...prev];
             newSelected[index] = !newSelected[index];
             return newSelected;
-        });
-    };
-
-    const handleDeleteWaypoint = (index: number) => {
-        console.log("Deleting waypoint at index: ", index);
-        dispatch(removeOneFromWaypoints(index));
-        setSelectedWaypoints((prev) => {
-            prev.splice(index, 1);
-            return prev;
         });
     };
 
@@ -172,11 +165,20 @@ export default function WaypointCreationMap() {
                                 <WaypointItem
                                     sx={{
                                         position: "absolute",
-                                        width: "180px",
+                                        width: "220px",
                                         top: "10px",
+                                        border: "4px solid",
+                                        borderColor: i === editState.index ? "primary.main" : "transparent",
                                     }}
                                     waypoint={waypoint}
-                                    handleDelete={() => handleDeleteWaypoint(i)}
+                                    handleDelete={() => {
+                                        handleDelete(i);
+                                        setSelectedWaypoints((prev) => {
+                                            prev.splice(i, 1);
+                                            return prev;
+                                        });
+                                    }}
+                                    handleEdit={() => handleEdit(i)}
                                 />
                             </Marker>
                         )}

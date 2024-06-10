@@ -12,7 +12,7 @@ import {
     setQueuedWaypoints,
 } from "../store/slices/appSlice";
 import { useAppDispatch, useAppSelector } from "../store/store";
-import { Waypoint } from "../types/Waypoint";
+import { Waypoint, WaypointEditState } from "../types/Waypoint";
 import InfoCard from "./InfoCard";
 import WaypointCreationMap from "./Map/WaypointCreationMap";
 import WaypointItem from "./WaypointItem";
@@ -24,6 +24,10 @@ export default function WaypointStatusCard() {
     const autoClearWaypoints = useAppSelector(selectAutoClearWaypoints);
     const mapViewOpen = useAppSelector(selectMapViewOpen);
     const [modalOpen, setModalOpen] = useState(false);
+    const [editState, setEditState] = useState<WaypointEditState>({
+        index: -1,
+        waypoint: undefined,
+    });
 
     console.log("waypointQueue", waypointQueue);
 
@@ -59,7 +63,21 @@ export default function WaypointStatusCard() {
         dispatch(removeOneFromWaypoints(index));
     };
 
-    const postButton = (
+    const handleEditWaypoint = (index: number) => {
+        setEditState({
+            index,
+            waypoint: waypointQueue[index],
+        });
+    };
+
+    const clearEditState = () => {
+        setEditState({
+            index: -1,
+            waypoint: undefined,
+        });
+    };
+
+    const rightButtons = (
         <Box
             sx={{
                 display: "flex",
@@ -72,7 +90,7 @@ export default function WaypointStatusCard() {
                 variant="outlined"
                 onClick={() => dispatch(setMapViewOpen(!mapViewOpen))}
             >
-                Map View
+                {mapViewOpen ? "List View" : "Map View"}
             </Button>
             <Button sx={{ fontSize: 16, fontWeight: "bold", px: 4 }} variant="outlined" onClick={handlePost}>
                 POST
@@ -82,7 +100,7 @@ export default function WaypointStatusCard() {
 
     return (
         <>
-            <InfoCard title="Create Waypoints" rightNode={postButton}>
+            <InfoCard title="Create Waypoints" rightNode={rightButtons}>
                 <Grid
                     container
                     spacing={2}
@@ -92,7 +110,11 @@ export default function WaypointStatusCard() {
                 >
                     <Grid item xs={12} md={6}>
                         {mapViewOpen ? (
-                            <WaypointCreationMap />
+                            <WaypointCreationMap
+                                handleDelete={handleDeleteWaypoint}
+                                handleEdit={handleEditWaypoint}
+                                editState={editState}
+                            />
                         ) : waypointQueue.length === 0 ? (
                             <Box
                                 sx={{
@@ -120,7 +142,12 @@ export default function WaypointStatusCard() {
                                         <WaypointItem
                                             key={index}
                                             waypoint={waypoint}
+                                            sx={{
+                                                border: "4px solid",
+                                                borderColor: index === editState.index ? "primary.main" : "transparent",
+                                            }}
                                             handleDelete={() => handleDeleteWaypoint(index)}
+                                            handleEdit={() => handleEditWaypoint(index)}
                                         />
                                     );
                                 })}
@@ -134,7 +161,7 @@ export default function WaypointStatusCard() {
                             }}
                             justifyContent={"space-between"}
                         >
-                            <WaypointForm />
+                            <WaypointForm editState={editState} clearEditState={clearEditState} />
                             <Button color="error" variant="outlined" fullWidth onClick={() => setModalOpen(true)}>
                                 Delete ALL Queued Waypoints
                             </Button>
