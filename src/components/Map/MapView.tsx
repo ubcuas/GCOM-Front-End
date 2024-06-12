@@ -75,6 +75,21 @@ export default function MapView() {
                                     left: "-24px",
                                 }}
                             />
+                            <Box
+                                sx={{
+                                    background: "#ee4455",
+                                    height: "18px",
+                                    width: "12px",
+                                    position: "absolute",
+                                    left: "-6px",
+                                    top: "-36px",
+                                    textAlign: "center",
+                                    fontWeight: "bold",
+                                    fontSize: "18px",
+                                }}
+                            >
+                                {i + 1}
+                            </Box>
                         </Marker>
                         {mpsWaypointMapState[i] && (
                             <Marker latitude={waypoint.lat} longitude={waypoint.long}>

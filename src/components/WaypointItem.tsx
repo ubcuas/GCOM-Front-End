@@ -64,9 +64,72 @@ export default function WaypointItem({ waypoint, sx, handleDelete, handleEdit }:
                     {waypoint.alt}
                 </Typography>
             </Typography>
-            {waypoint.remarks && waypoint.remarks.length > 0 && (
-                <Typography color="grey">{waypoint.remarks}</Typography>
+            {waypoint.command && (
+                <Typography variant="body1">
+                    Command{" "}
+                    <Typography
+                        component="span"
+                        sx={{
+                            color: (theme) => theme.palette.primary.main,
+                        }}
+                    >
+                        {waypoint.command}
+                    </Typography>
+                </Typography>
             )}
+            {waypoint.param1 && (
+                <Typography variant="body1">
+                    Param1{" "}
+                    <Typography
+                        component="span"
+                        sx={{
+                            color: (theme) => theme.palette.primary.main,
+                        }}
+                    >
+                        {waypoint.param1}
+                    </Typography>
+                </Typography>
+            )}
+            {waypoint.param2 && (
+                <Typography variant="body1">
+                    Param2{" "}
+                    <Typography
+                        component="span"
+                        sx={{
+                            color: (theme) => theme.palette.primary.main,
+                        }}
+                    >
+                        {waypoint.param2}
+                    </Typography>
+                </Typography>
+            )}
+            {waypoint.param3 && (
+                <Typography variant="body1">
+                    Param3{" "}
+                    <Typography
+                        component="span"
+                        sx={{
+                            color: (theme) => theme.palette.primary.main,
+                        }}
+                    >
+                        {waypoint.param3}
+                    </Typography>
+                </Typography>
+            )}
+            {waypoint.param4 && (
+                <Typography variant="body1">
+                    Param4{" "}
+                    <Typography
+                        component="span"
+                        sx={{
+                            color: (theme) => theme.palette.primary.main,
+                        }}
+                    >
+                        {waypoint.param4}
+                    </Typography>
+                </Typography>
+            )}
+            {waypoint.remarks && <Typography color="grey">Remarks -- {waypoint.remarks}</Typography>}
         </Paper>
     );
 }

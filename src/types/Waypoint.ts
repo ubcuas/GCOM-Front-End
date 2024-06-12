@@ -17,8 +17,12 @@ export type Waypoint = {
     long: number;
     alt?: number;
     radius?: number;
-    designation?: Designation;
     remarks?: string;
+    command?: string;
+    param1?: number;
+    param2?: number;
+    param3?: number;
+    param4?: number;
 };
 
 export type WaypointEditState = {

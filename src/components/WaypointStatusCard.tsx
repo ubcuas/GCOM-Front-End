@@ -17,6 +17,7 @@ import InfoCard from "./InfoCard";
 import WaypointCreationMap from "./Map/WaypointCreationMap";
 import WaypointItem from "./WaypointItem";
 import WaypointForm from "./WaypointStatus/WaypointForm";
+import { ApplicationType } from "../types/PostOpts";
 
 export default function WaypointStatusCard() {
     const dispatch = useAppDispatch();
@@ -43,12 +44,16 @@ export default function WaypointStatusCard() {
         localStorage.setItem("waypointQueue", JSON.stringify(waypointQueue));
     }, [waypointQueue]);
 
-    const handlePost = async () => {
+    const handlePost = async (appType: ApplicationType) => {
         if (waypointQueue.length === 0) {
             return;
         }
         try {
-            await postWaypointsToDrone(waypointQueue);
+            if (appType === ApplicationType.BACKEND) {
+                await postWaypointsToDrone(waypointQueue);
+            } else if (appType === ApplicationType.MISSIONPLANNER) {
+                await postWaypointsToDrone(waypointQueue);
+            }
             if (autoClearWaypoints) {
                 dispatch(clearQueuedWaypoints());
             }
@@ -59,8 +64,17 @@ export default function WaypointStatusCard() {
         }
     };
 
+    const handleGCOMPost = () => {
+        handlePost(ApplicationType.BACKEND);
+    };
+
+    const handleMPSPost = () => {
+        handlePost(ApplicationType.MISSIONPLANNER);
+    };
+
     const handleDeleteWaypoint = (index: number) => {
         dispatch(removeOneFromWaypoints(index));
+        clearEditState();
     };
 
     const handleEditWaypoint = (index: number) => {
@@ -92,8 +106,11 @@ export default function WaypointStatusCard() {
             >
                 {mapViewOpen ? "List View" : "Map View"}
             </Button>
-            <Button sx={{ fontSize: 16, fontWeight: "bold", px: 4 }} variant="outlined" onClick={handlePost}>
-                POST
+            <Button sx={{ fontSize: 16, fontWeight: "bold", px: 4 }} variant="outlined" onClick={handleGCOMPost}>
+                MPS POST
+            </Button>
+            <Button sx={{ fontSize: 16, fontWeight: "bold", px: 4 }} variant="outlined" onClick={handleGCOMPost}>
+                GCOM POST
             </Button>
         </Box>
     );
