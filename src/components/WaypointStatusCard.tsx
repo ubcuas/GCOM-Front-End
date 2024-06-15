@@ -49,11 +49,7 @@ export default function WaypointStatusCard() {
             return;
         }
         try {
-            if (appType === ApplicationType.BACKEND) {
-                await postWaypointsToDrone(waypointQueue);
-            } else if (appType === ApplicationType.MISSIONPLANNER) {
-                await postWaypointsToDrone(waypointQueue);
-            }
+            await postWaypointsToDrone(waypointQueue, appType);
             if (autoClearWaypoints) {
                 dispatch(clearQueuedWaypoints());
             }
@@ -106,7 +102,7 @@ export default function WaypointStatusCard() {
             >
                 {mapViewOpen ? "List View" : "Map View"}
             </Button>
-            <Button sx={{ fontSize: 16, fontWeight: "bold", px: 4 }} variant="outlined" onClick={handleGCOMPost}>
+            <Button sx={{ fontSize: 16, fontWeight: "bold", px: 4 }} variant="outlined" onClick={handleMPSPost}>
                 MPS POST
             </Button>
             <Button sx={{ fontSize: 16, fontWeight: "bold", px: 4 }} variant="outlined" onClick={handleGCOMPost}>
