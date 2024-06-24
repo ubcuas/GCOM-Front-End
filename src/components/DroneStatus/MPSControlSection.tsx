@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { armDrone, disarmDrone, takeoffDrone } from "../../api/droneEndpoints";
 import { openSnackbar, selectBypassStatus, setAllMpsWaypointMapState } from "../../store/slices/appSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { getWaypoints } from "../../store/thunks/dataThunks";
+import { getMPSQueue, getWaypoints } from "../../store/thunks/dataThunks";
 
 export default function MPSControlSection() {
     const [controlState, setControlState] = useState({
@@ -58,7 +58,7 @@ export default function MPSControlSection() {
 
     const fetchFromMPSQueue = () => {
         console.log("Fetching from MPS queue...");
-        dispatch(getWaypoints);
+        dispatch(getMPSQueue);
     };
 
     return (
@@ -134,7 +134,7 @@ export default function MPSControlSection() {
                         }}
                         variant="outlined"
                         color="success"
-                        onClick={() => dispatch(getWaypoints)}
+                        onClick={() => dispatch(getMPSQueue)}
                     >
                         Fetch MPS Data
                     </Button>

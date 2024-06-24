@@ -17,11 +17,11 @@ export const takeoffDrone = async (altitude?: number) => {
 };
 
 export const postWaypointsToDrone = async (waypoints: Waypoint[], appType: ApplicationType) => {
-    await postWithTryCatch(droneEndpoint("/queue"), waypoints, {
+    await postWithTryCatch("/queue", waypoints, {
         selectedApplication: appType,
     });
 };
 
 export const getDroneQueue = async () => {
-    return (await api.get(droneEndpoint("/queue"))) as Waypoint[];
+    return (await api.get("/queue")) as Waypoint[];
 };

@@ -12,7 +12,7 @@ export const api = axios.create({
 export default api;
 
 export const mpsApi = axios.create({
-    baseURL: "http://localhost:9000/",
+    baseURL: "http://10.60.54.14:9000/",
     headers: {
         "Content-Type": "application/json",
         // Any other headers?
@@ -32,6 +32,22 @@ export const postWithTryCatch = async (
         if (opts.selectedApplication === ApplicationType.BACKEND) {
             return await api.post(path, data);
         } else if (opts.selectedApplication === ApplicationType.MISSIONPLANNER) {
+            // convert to MPS format
+            data = data.map((waypoint: any) => {
+                const result: any = {
+                    params: waypoint.params,
+                    latitude: waypoint.lat,
+                    longitude: waypoint.long,
+                    altitude: waypoint.alt,
+                    name: waypoint.name,
+                    id: waypoint.id,
+                };
+                if (waypoint.command != "") {
+                    result.command = waypoint.command;
+                }
+
+                return result;
+            });
             return await mpsApi.post(path, data);
         }
         await api.post(path, data);

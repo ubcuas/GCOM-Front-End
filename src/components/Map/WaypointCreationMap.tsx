@@ -1,7 +1,7 @@
 // Honestly its just easier to have this in a separate file rather than having it be in with MapView.tsx
 
 import { Place } from "@mui/icons-material";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Layer, LayerProps, Map, MapLayerMouseEvent, Marker, Source } from "react-map-gl/maplibre";
 import { addToQueuedWaypoints, editWaypointAtIndex, selectQueuedWaypoints } from "../../store/slices/appSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store";
@@ -50,6 +50,7 @@ export default function WaypointCreationMap({ handleDelete, handleEdit, editStat
                 id: "-1",
                 lat: roundTo(event.lngLat.lat, 7),
                 long: roundTo(event.lngLat.lng, 7),
+                alt: 25,
             }),
         );
         setSelectedWaypoints((prev) => [...prev, false]);
@@ -62,6 +63,25 @@ export default function WaypointCreationMap({ handleDelete, handleEdit, editStat
             return newSelected;
         });
     };
+
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         const url = "http://localhost:9000/queue"; // Replace with your actual endpoint
+    //         try {
+    //             const response = await fetch(url);
+    //             if (!response.ok) {
+    //                 throw new Error(`HTTP error! status: ${response.status}`);
+    //             }
+    //             const data = await response.json();
+    //             console.log(data); // Do something with your data
+    //         } catch (error) {
+    //             console.error("Could not fetch data:", error);
+    //         }
+    //     };
+
+    //     console.log("fetching");
+    //     fetchData();
+    // }, []);
 
     return (
         <Map
