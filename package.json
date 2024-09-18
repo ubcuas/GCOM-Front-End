@@ -41,7 +41,7 @@
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
     "typescript": "^5.0.2",
-    "vite": "^4.5.3",
+    "vite": "^4.5.5",
     "vite-plugin-svgr": "^4.2.0"
   },
   "lint-staged": {
