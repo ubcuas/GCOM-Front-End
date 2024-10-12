@@ -1,29 +1,58 @@
-import { Button, Grid, Modal, Paper, Stack, Typography } from "@mui/material";
-import { useState } from "react";
+import { Box, Button, Grid, Modal, Paper, Stack, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import { postWaypointsToDrone } from "../api/droneEndpoints";
 import {
     clearQueuedWaypoints,
     openSnackbar,
     removeOneFromWaypoints,
+    selectAutoClearWaypoints,
+    selectMapViewOpen,
     selectQueuedWaypoints,
+    setMapViewOpen,
+    setQueuedWaypoints,
 } from "../store/slices/appSlice";
 import { useAppDispatch, useAppSelector } from "../store/store";
+import { Waypoint, WaypointEditState } from "../types/Waypoint";
 import InfoCard from "./InfoCard";
+import WaypointCreationMap from "./Map/WaypointCreationMap";
+import WaypointItem from "./WaypointItem";
 import WaypointForm from "./WaypointStatus/WaypointForm";
-import WaypointItem from "./WaypointStatus/WaypointItem";
+import { ApplicationType } from "../types/PostOpts";
 
 export default function WaypointStatusCard() {
     const dispatch = useAppDispatch();
     const waypointQueue = useAppSelector(selectQueuedWaypoints);
+    const autoClearWaypoints = useAppSelector(selectAutoClearWaypoints);
+    const mapViewOpen = useAppSelector(selectMapViewOpen);
     const [modalOpen, setModalOpen] = useState(false);
+    const [editState, setEditState] = useState<WaypointEditState>({
+        index: -1,
+        waypoint: undefined,
+    });
 
-    const handlePost = async () => {
+    console.log("waypointQueue", waypointQueue);
+
+    useEffect(() => {
+        console.log("WaypointStatusCard useEffect");
+        const storedQueue = localStorage.getItem("waypointQueue");
+        if (storedQueue && storedQueue !== "[]") {
+            dispatch(setQueuedWaypoints(JSON.parse(storedQueue) as Waypoint[]));
+        }
+    }, [dispatch]);
+
+    useEffect(() => {
+        localStorage.setItem("waypointQueue", JSON.stringify(waypointQueue));
+    }, [waypointQueue]);
+
+    const handlePost = async (appType: ApplicationType) => {
         if (waypointQueue.length === 0) {
             return;
         }
         try {
-            await postWaypointsToDrone(waypointQueue);
-            dispatch(clearQueuedWaypoints());
+            await postWaypointsToDrone(waypointQueue, appType);
+            if (autoClearWaypoints) {
+                dispatch(clearQueuedWaypoints());
+            }
         } catch (error) {
             const message = (error as Error).message;
             console.log(message);
@@ -31,13 +60,60 @@ export default function WaypointStatusCard() {
         }
     };
 
+    const handleGCOMPost = () => {
+        handlePost(ApplicationType.BACKEND);
+    };
+
+    const handleMPSPost = () => {
+        handlePost(ApplicationType.MISSIONPLANNER);
+    };
+
     const handleDeleteWaypoint = (index: number) => {
         dispatch(removeOneFromWaypoints(index));
+        clearEditState();
     };
+
+    const handleEditWaypoint = (index: number) => {
+        setEditState({
+            index,
+            waypoint: waypointQueue[index],
+        });
+    };
+
+    const clearEditState = () => {
+        setEditState({
+            index: -1,
+            waypoint: undefined,
+        });
+    };
+
+    const rightButtons = (
+        <Box
+            sx={{
+                display: "flex",
+                p: 1,
+                gap: 1,
+            }}
+        >
+            <Button
+                sx={{ fontSize: 16, fontWeight: "bold", px: 4 }}
+                variant="outlined"
+                onClick={() => dispatch(setMapViewOpen(!mapViewOpen))}
+            >
+                {mapViewOpen ? "List View" : "Map View"}
+            </Button>
+            <Button sx={{ fontSize: 16, fontWeight: "bold", px: 4 }} variant="outlined" onClick={handleMPSPost}>
+                MPS POST
+            </Button>
+            <Button sx={{ fontSize: 16, fontWeight: "bold", px: 4 }} variant="outlined" onClick={handleGCOMPost}>
+                GCOM POST
+            </Button>
+        </Box>
+    );
 
     return (
         <>
-            <InfoCard title="Create Waypoints" rightButtonHandler={handlePost} rightButtonText="post">
+            <InfoCard title="Create Waypoints" rightNode={rightButtons}>
                 <Grid
                     container
                     spacing={2}
@@ -46,24 +122,50 @@ export default function WaypointStatusCard() {
                     }}
                 >
                     <Grid item xs={12} md={6}>
-                        <Stack
-                            spacing={2}
-                            sx={{
-                                maxHeight: "73vh", // good enough of a value
-                                overflowY: "auto",
-                                p: 1,
-                            }}
-                        >
-                            {waypointQueue.map((waypoint, index) => {
-                                return (
-                                    <WaypointItem
-                                        key={index}
-                                        waypoint={waypoint}
-                                        handleDelete={() => handleDeleteWaypoint(index)}
-                                    />
-                                );
-                            })}
-                        </Stack>
+                        {mapViewOpen ? (
+                            <WaypointCreationMap
+                                handleDelete={handleDeleteWaypoint}
+                                handleEdit={handleEditWaypoint}
+                                editState={editState}
+                            />
+                        ) : waypointQueue.length === 0 ? (
+                            <Box
+                                sx={{
+                                    height: "100%",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                <Typography variant="h6" sx={{ textAlign: "center" }}>
+                                    No waypoints queued
+                                </Typography>
+                            </Box>
+                        ) : (
+                            <Stack
+                                spacing={2}
+                                sx={{
+                                    maxHeight: "73vh", // good enough of a value
+                                    overflowY: "auto",
+                                    p: 1,
+                                }}
+                            >
+                                {waypointQueue.map((waypoint, index) => {
+                                    return (
+                                        <WaypointItem
+                                            key={index}
+                                            waypoint={waypoint}
+                                            sx={{
+                                                border: "4px solid",
+                                                borderColor: index === editState.index ? "primary.main" : "transparent",
+                                            }}
+                                            handleDelete={() => handleDeleteWaypoint(index)}
+                                            handleEdit={() => handleEditWaypoint(index)}
+                                        />
+                                    );
+                                })}
+                            </Stack>
+                        )}
                     </Grid>
                     <Grid item xs={12} md={6}>
                         <Stack
@@ -72,7 +174,7 @@ export default function WaypointStatusCard() {
                             }}
                             justifyContent={"space-between"}
                         >
-                            <WaypointForm />
+                            <WaypointForm editState={editState} clearEditState={clearEditState} />
                             <Button color="error" variant="outlined" fullWidth onClick={() => setModalOpen(true)}>
                                 Delete ALL Queued Waypoints
                             </Button>

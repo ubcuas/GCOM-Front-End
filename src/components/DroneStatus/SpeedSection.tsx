@@ -1,21 +1,26 @@
-import { Typography, Grid } from "@mui/material";
+import { Typography, Grid, Box } from "@mui/material";
 import InfoCardWidget from "../InfoCardWidget";
 
 export default function SpeedSection({ speed, verticalSpeed }: { verticalSpeed: number; speed: number }) {
     return (
-        <>
+        <Box>
             <Typography
                 sx={{
-                    pb: 2,
+                    mb: 1,
                 }}
                 variant="h5"
             >
                 Speed
             </Typography>
-            <Grid container spacing={1}>
-                <InfoCardWidget gridSpacing={6} text="Speed" data={`${speed}m/s`} />
-                <InfoCardWidget gridSpacing={6} text="Vertical Speed" data={`${verticalSpeed}m/s`} />
-            </Grid>
-        </>
+            <Box
+                sx={{
+                    display: "flex",
+                    gap: 1,
+                }}
+            >
+                <InfoCardWidget text="Speed" data={`${speed}m/s`} />
+                <InfoCardWidget text="Vertical Speed" data={`${verticalSpeed}m/s`} />
+            </Box>
+        </Box>
     );
 }

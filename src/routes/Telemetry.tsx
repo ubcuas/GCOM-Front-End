@@ -1,22 +1,24 @@
-import { Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import DroneStatusCard from "../components/DroneStatusCard";
-import WaypointStatusCard from "../components/WaypointStatusCard";
 
 export default function Telemetry() {
     return (
-        <Grid
+        <Box
             sx={{
-                padding: 8,
+                p: 8,
+                flexGrow: 1,
             }}
-            container
-            spacing={4}
         >
-            <Grid item xs={6} md={4}>
-                <DroneStatusCard />
+            <Grid
+                container
+                spacing={2}
+                sx={{
+                    height: "100%",
+                }}
+            >
+                <Grid item md={4}></Grid>
+                <Grid item md={8}></Grid>
             </Grid>
-            <Grid item xs={6} md={8}>
-                <WaypointStatusCard />
-            </Grid>
-        </Grid>
+        </Box>
     );
 }

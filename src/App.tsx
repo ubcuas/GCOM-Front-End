@@ -1,13 +1,14 @@
 import { Box, CssBaseline, ThemeProvider, createTheme, responsiveFontSizes } from "@mui/material";
 import { useMemo } from "react";
 import { Route, Switch } from "wouter";
+import ErrorSnackbar from "./components/ErrorSnackbar";
 import Nav from "./components/Nav";
 import Home from "./routes/Home";
+import MapRoute from "./routes/MapRoute";
+import Queue from "./routes/Queue";
 import Settings from "./routes/Settings";
-import Telemetry from "./routes/Telemetry";
 import { selectPreferredTheme } from "./store/slices/appSlice";
 import { useAppSelector } from "./store/store";
-import ErrorSnackbar from "./components/ErrorSnackbar";
 
 function App() {
     const colorScheme = useAppSelector(selectPreferredTheme);
@@ -53,7 +54,7 @@ function App() {
                             main: "#2DA0DC",
                         },
                         secondary: {
-                            main: "#2CDCA0",
+                            main: "#9CACA0",
                         },
                     },
                     typography: {
@@ -91,8 +92,11 @@ function App() {
                 <Nav />
                 <Switch>
                     <Route path="/" component={Home} />
-                    <Route path="/telemetry" component={Telemetry} />
+                    {/* <Route path="/telemetry" component={Telemetry} /> */}
+                    <Route path="/map" component={MapRoute} />
                     <Route path="/settings" component={Settings} />
+                    {/* <Route path="/mps-queue" component={MPSQueue} /> */}
+                    <Route path="/queue" component={Queue} />
                 </Switch>
             </Box>
             <ErrorSnackbar />

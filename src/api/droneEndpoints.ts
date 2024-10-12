@@ -1,20 +1,27 @@
+import { ApplicationType } from "../types/PostOpts";
 import { Waypoint } from "../types/Waypoint";
-import { postWithTryCatch } from "./api";
+import api, { postWithTryCatch } from "./api";
 
-const getEndpoint = (path = "") => `/drone${path}`;
+const droneEndpoint = (path = "") => `/drone${path}`;
 
 export const armDrone = async () => {
-    await postWithTryCatch(getEndpoint("/arm"), { arm: 1 });
+    await postWithTryCatch(droneEndpoint("/arm"), { arm: 1 });
 };
 
 export const disarmDrone = async () => {
-    await postWithTryCatch(getEndpoint("/arm"), { arm: 0 });
+    await postWithTryCatch(droneEndpoint("/arm"), { arm: 0 });
 };
 
 export const takeoffDrone = async (altitude?: number) => {
-    await postWithTryCatch(getEndpoint("/takeoff"), { altitude: Number(altitude) });
+    await postWithTryCatch(droneEndpoint("/takeoff"), { altitude: Number(altitude) });
 };
 
-export const postWaypointsToDrone = async (waypoints: Waypoint[]) => {
-    await postWithTryCatch(getEndpoint("/waypoints"), waypoints);
+export const postWaypointsToDrone = async (waypoints: Waypoint[], appType: ApplicationType) => {
+    await postWithTryCatch(droneEndpoint("/queue"), waypoints, {
+        selectedApplication: appType,
+    });
+};
+
+export const getDroneQueue = async () => {
+    return (await api.get(droneEndpoint("/queue"))) as Waypoint[];
 };
