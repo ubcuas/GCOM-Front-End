@@ -30,8 +30,6 @@ export default function WaypointStatusCard() {
         waypoint: undefined,
     });
 
-    console.log("waypointQueue", waypointQueue);
-
     useEffect(() => {
         console.log("WaypointStatusCard useEffect");
         const storedQueue = localStorage.getItem("waypointQueue");
@@ -44,28 +42,19 @@ export default function WaypointStatusCard() {
         localStorage.setItem("waypointQueue", JSON.stringify(waypointQueue));
     }, [waypointQueue]);
 
-    const handlePost = async (appType: ApplicationType) => {
+    const handlePost = async () => {
         if (waypointQueue.length === 0) {
             return;
         }
         try {
-            await postWaypointsToDrone(waypointQueue, appType);
+            await postWaypointsToDrone(waypointQueue);
             if (autoClearWaypoints) {
                 dispatch(clearQueuedWaypoints());
             }
         } catch (error) {
             const message = (error as Error).message;
-            console.log(message);
             dispatch(openSnackbar(message));
         }
-    };
-
-    const handleGCOMPost = () => {
-        handlePost(ApplicationType.BACKEND);
-    };
-
-    const handleMPSPost = () => {
-        handlePost(ApplicationType.MISSIONPLANNER);
     };
 
     const handleDeleteWaypoint = (index: number) => {
@@ -102,10 +91,7 @@ export default function WaypointStatusCard() {
             >
                 {mapViewOpen ? "List View" : "Map View"}
             </Button>
-            <Button sx={{ fontSize: 16, fontWeight: "bold", px: 4 }} variant="outlined" onClick={handleMPSPost}>
-                MPS POST
-            </Button>
-            <Button sx={{ fontSize: 16, fontWeight: "bold", px: 4 }} variant="outlined" onClick={handleGCOMPost}>
+            <Button sx={{ fontSize: 16, fontWeight: "bold", px: 4 }} variant="outlined" onClick={handlePost}>
                 GCOM POST
             </Button>
         </Box>
