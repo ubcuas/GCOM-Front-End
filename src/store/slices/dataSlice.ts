@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AircraftStatus } from "../../types/AircraftStatus";
 import { Route } from "../../types/Route";
 import { RootState } from "../store";
-import { getMPSQueue, getWaypoints } from "../thunks/dataThunks";
 import { Waypoint } from "../../types/Waypoint";
 
 // DataState holds actual information that is supposed to be aligned with backend.
@@ -20,7 +19,6 @@ const initialState: DataState = {
         verticalSpeed: 100,
         speed: 100,
         heading: 90,
-        // payload is currently TBD on backend
         voltage: 9,
     },
     route: {
@@ -30,7 +28,6 @@ const initialState: DataState = {
             { id: "1", name: "b", lat: -10, long: -10 },
         ],
     },
-    queuedWaypoints: [],
 };
 
 const dataSlice = createSlice({
@@ -46,18 +43,6 @@ const dataSlice = createSlice({
         manualUpdateMPSQueue: (state, action: PayloadAction<Waypoint[]>) => {
             state.route.waypoints = action.payload;
         },
-    },
-    extraReducers: (builder) => {
-        builder
-            // .addCase(getWaypoints.fulfilled, (state, action) => {
-            //     state.route.waypoints = action.payload;
-            // })
-            .addCase(getWaypoints.rejected, (_state, action) => {
-                console.log("rejected", action.error);
-            })
-            .addCase(getMPSQueue.fulfilled, (state, action) => {
-                state.route.waypoints = action.payload;
-            });
     },
 });
 

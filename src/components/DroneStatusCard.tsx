@@ -1,6 +1,5 @@
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { selectAircraftStatus, updateAircraftStatus } from "../store/slices/dataSlice";
-import InfoCard from "./InfoCard";
 import PositionSection from "./DroneStatus/PositionSection";
 import SpeedSection from "./DroneStatus/SpeedSection";
 import TimeStamp from "./DroneStatus/TimeStamp";
@@ -8,7 +7,7 @@ import MPSControlSection from "./DroneStatus/MPSControlSection";
 import { useEffect } from "react";
 import { socket } from "../api/socket";
 import { AircraftStatus } from "../types/AircraftStatus";
-import { Box, Divider, Paper } from "@mui/material";
+import { Paper } from "@mui/material";
 
 const roundValues = (
     data: Omit<AircraftStatus, "verticalSpeed" | "speed"> & { vertical_velocity: number; velocity: number },

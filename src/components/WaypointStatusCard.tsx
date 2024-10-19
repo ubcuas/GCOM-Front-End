@@ -1,6 +1,6 @@
 import { Box, Button, Grid, Modal, Paper, Stack, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import { postWaypointsToDrone } from "../api/droneEndpoints";
+import { useState } from "react";
+import { postWaypointsToDrone } from "../api/endpoints";
 import {
     clearQueuedWaypoints,
     openSnackbar,
@@ -9,15 +9,13 @@ import {
     selectMapViewOpen,
     selectQueuedWaypoints,
     setMapViewOpen,
-    setQueuedWaypoints,
 } from "../store/slices/appSlice";
 import { useAppDispatch, useAppSelector } from "../store/store";
-import { Waypoint, WaypointEditState } from "../types/Waypoint";
+import { WaypointEditState } from "../types/Waypoint";
 import InfoCard from "./InfoCard";
 import WaypointCreationMap from "./Map/WaypointCreationMap";
 import WaypointItem from "./WaypointItem";
 import WaypointForm from "./WaypointStatus/WaypointForm";
-import { ApplicationType } from "../types/PostOpts";
 
 export default function WaypointStatusCard() {
     const dispatch = useAppDispatch();
@@ -29,18 +27,6 @@ export default function WaypointStatusCard() {
         index: -1,
         waypoint: undefined,
     });
-
-    useEffect(() => {
-        console.log("WaypointStatusCard useEffect");
-        const storedQueue = localStorage.getItem("waypointQueue");
-        if (storedQueue && storedQueue !== "[]") {
-            dispatch(setQueuedWaypoints(JSON.parse(storedQueue) as Waypoint[]));
-        }
-    }, [dispatch]);
-
-    useEffect(() => {
-        localStorage.setItem("waypointQueue", JSON.stringify(waypointQueue));
-    }, [waypointQueue]);
 
     const handlePost = async () => {
         if (waypointQueue.length === 0) {

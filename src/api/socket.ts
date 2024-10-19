@@ -1,6 +1,8 @@
 import { io } from "socket.io-client";
 
-export const socket = io("http://localhost:1323", {
+// TODO: Placeholder socket code for now. Implemetation in the future.
+
+export const socket = io("http://localhost:8000", {
     autoConnect: false,
 });
 

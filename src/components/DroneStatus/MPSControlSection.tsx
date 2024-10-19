@@ -1,65 +1,12 @@
-import { Box, Button, Divider, Modal, Paper, Switch, TextField, Typography } from "@mui/material";
-import { useRef, useState } from "react";
-import { armDrone, disarmDrone, takeoffDrone } from "../../api/droneEndpoints";
-import { openSnackbar, selectBypassStatus, setAllMpsWaypointMapState } from "../../store/slices/appSlice";
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import { getWaypoints } from "../../store/thunks/dataThunks";
+import { Box, Button, Modal, Paper, Switch, TextField, Typography } from "@mui/material";
+import { useState } from "react";
 
 export default function MPSControlSection() {
-    const [controlState, setControlState] = useState({
+    const [clientSideState, setClientSideState] = useState({
         armed: false,
         takeoffAltitude: 0,
     });
     const [modalState, setModalState] = useState(false);
-    const dispatch = useAppDispatch();
-    const isBypassed = useAppSelector(selectBypassStatus);
-    const fetchIntervalRef = useRef<NodeJS.Timeout | null>(null);
-
-    const handleArming = async (arming: boolean) => {
-        try {
-            arming ? await armDrone() : await disarmDrone();
-            setControlState({ ...controlState, armed: arming });
-        } catch (error) {
-            const message = (error as Error).message;
-            console.log(message);
-            dispatch(openSnackbar(message));
-        }
-    };
-
-    const updateSnackBarState = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (["altitude"].includes(event.target.id) && /[^0-9.-]/.test(event.target.value)) {
-            return;
-        }
-        setControlState({ ...controlState, takeoffAltitude: parseFloat(event.target.value) });
-    };
-
-    const handleTakeoff = async (altitude?: number) => {
-        try {
-            if (!controlState.armed && !isBypassed) {
-                dispatch(
-                    openSnackbar("Drone must be armed before takeoff! You can disable this option in the settings."),
-                );
-            }
-            await takeoffDrone(altitude);
-        } catch (error) {
-            const message = (error as Error).message;
-            console.log(message);
-            openSnackbar(message);
-        }
-    };
-
-    const handleAutoFetch = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.checked) {
-            fetchIntervalRef.current = setInterval(fetchFromMPSQueue, 1000);
-        } else if (fetchIntervalRef.current) {
-            clearInterval(fetchIntervalRef.current);
-        }
-    };
-
-    const fetchFromMPSQueue = () => {
-        console.log("Fetching from MPS queue...");
-        dispatch(getWaypoints);
-    };
 
     return (
         <Box
@@ -70,12 +17,26 @@ export default function MPSControlSection() {
             }}
         >
             <Box>
-                {controlState.armed ? (
-                    <Button fullWidth variant="outlined" color="success" onClick={() => handleArming(false)}>
+                {clientSideState.armed ? (
+                    <Button
+                        fullWidth
+                        variant="outlined"
+                        color="success"
+                        onClick={() => {
+                            // TODO
+                        }}
+                    >
                         Disarm Drone
                     </Button>
                 ) : (
-                    <Button fullWidth variant="outlined" color="error" onClick={() => setModalState(true)}>
+                    <Button
+                        fullWidth
+                        variant="outlined"
+                        color="error"
+                        onClick={() => {
+                            setModalState(true);
+                        }}
+                    >
                         Arm Drone
                     </Button>
                 )}
@@ -94,20 +55,15 @@ export default function MPSControlSection() {
                     id="takeoffAltitude"
                     type="number"
                     label="Take Off Altitude (ft)"
-                    onChange={updateSnackBarState}
-                    value={controlState.takeoffAltitude === 0 ? "" : controlState.takeoffAltitude}
-                />
-                <Button
-                    variant="contained"
-                    color="error"
-                    onClick={() => {
-                        handleTakeoff(controlState.takeoffAltitude);
+                    onChange={() => {
+                        // TODO: NEW Global Snackbar
                     }}
-                >
+                    value={clientSideState.takeoffAltitude === 0 ? "" : clientSideState.takeoffAltitude}
+                />
+                <Button variant="contained" color="error" onClick={() => {}}>
                     Takeoff
                 </Button>
             </Box>
-            <Divider />
             <Box
                 sx={{
                     display: "flex",
@@ -115,10 +71,10 @@ export default function MPSControlSection() {
                     gap: 1,
                 }}
             >
-                <Button variant="outlined" onClick={() => dispatch(setAllMpsWaypointMapState(true))}>
+                <Button variant="outlined" onClick={() => {}}>
                     Show All Waypoints
                 </Button>
-                <Button variant="outlined" onClick={() => dispatch(setAllMpsWaypointMapState(false))}>
+                <Button variant="outlined" onClick={() => {}}>
                     Hide All Waypoints
                 </Button>
                 <Box
@@ -134,7 +90,9 @@ export default function MPSControlSection() {
                         }}
                         variant="outlined"
                         color="success"
-                        onClick={() => dispatch(getWaypoints)}
+                        onClick={() => {
+                            // TODO
+                        }}
                     >
                         Fetch MPS Data
                     </Button>
@@ -145,7 +103,11 @@ export default function MPSControlSection() {
                         }}
                     >
                         Auto Fetch
-                        <Switch onChange={handleAutoFetch} />
+                        <Switch
+                            onClick={() => {
+                                // TODO
+                            }}
+                        />
                     </Box>
                 </Box>
             </Box>
@@ -168,7 +130,7 @@ export default function MPSControlSection() {
                         variant="contained"
                         color="error"
                         onClick={() => {
-                            handleArming(true);
+                            // handleArming(true);
                             setModalState(false);
                         }}
                     >
