@@ -23,7 +23,7 @@ export default function MPSControlSection() {
                         variant="outlined"
                         color="success"
                         onClick={() => {
-                            // TODO
+                            // TODO: Disarm button handling
                         }}
                     >
                         Disarm Drone
@@ -56,11 +56,17 @@ export default function MPSControlSection() {
                     type="number"
                     label="Take Off Altitude (ft)"
                     onChange={() => {
-                        // TODO: NEW Global Snackbar
+                        // TODO: Take off altitude handling
                     }}
                     value={clientSideState.takeoffAltitude === 0 ? "" : clientSideState.takeoffAltitude}
                 />
-                <Button variant="contained" color="error" onClick={() => {}}>
+                <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => {
+                        // TODO: Takeoff button handling
+                    }}
+                >
                     Takeoff
                 </Button>
             </Box>
@@ -91,12 +97,12 @@ export default function MPSControlSection() {
                         variant="outlined"
                         color="success"
                         onClick={() => {
-                            // TODO
+                            // TODO: Fetch Route Data
                         }}
                     >
                         Fetch MPS Data
                     </Button>
-                    <Box
+                    {/* <Box
                         sx={{
                             display: "flex",
                             alignItems: "center",
@@ -105,10 +111,10 @@ export default function MPSControlSection() {
                         Auto Fetch
                         <Switch
                             onClick={() => {
-                                // TODO
+                                // Functionality to auto fetch the mps queue on an interval, not sure if needed so commented out for now.
                             }}
                         />
-                    </Box>
+                    </Box> */}
                 </Box>
             </Box>
             <Modal open={modalState} onClose={() => setModalState(false)}>
@@ -130,7 +136,7 @@ export default function MPSControlSection() {
                         variant="contained"
                         color="error"
                         onClick={() => {
-                            // handleArming(true);
+                            // TODO: handle arming.
                             setModalState(false);
                         }}
                     >

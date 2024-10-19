@@ -1,8 +1,10 @@
 import { Button, Grid, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Waypoint, WaypointEditState } from "../../types/Waypoint";
+import { WaypointEditState } from "../../types/Waypoint";
 import { useAppDispatch } from "../../store/store";
 import { addToQueuedWaypoints, editWaypointAtIndex } from "../../store/slices/appSlice";
+import { FormErrors, FormKeys, FormState } from "../../types/WaypointForm";
+import parseWaypointForm from "../../utils/parseWaypointForm";
 
 // TODO: Needs a bit of cleaning up, im sure there are better logical flows for this form.
 
@@ -10,8 +12,6 @@ type WaypointFormProps = {
     editState: WaypointEditState;
     clearEditState: () => void;
 };
-
-type FormState = Record<keyof Omit<Waypoint, "id">, string>;
 
 const defaultFormState: FormState = {
     lat: "",
@@ -27,14 +27,6 @@ const defaultFormState: FormState = {
     param4: "",
 };
 
-type FormErrors = {
-    lat: boolean;
-    long: boolean;
-    alt: boolean;
-};
-
-type FormKeys = keyof FormState & keyof FormErrors;
-
 export default function WaypointForm({ editState, clearEditState }: WaypointFormProps) {
     const dispatch = useAppDispatch();
     const [formState, setFormState] = useState<FormState>(defaultFormState);
@@ -47,6 +39,7 @@ export default function WaypointForm({ editState, clearEditState }: WaypointForm
 
     useEffect(() => {
         if (editState.waypoint) {
+            // TODO: bit ugly, could be improved in the future.
             setFormState({
                 lat: editState.waypoint.lat ? String(editState.waypoint.lat) : "",
                 long: editState.waypoint.long ? String(editState.waypoint.long) : "",
@@ -66,6 +59,7 @@ export default function WaypointForm({ editState, clearEditState }: WaypointForm
     }, [editState.index]);
 
     const checkReqFields = (keys: FormKeys[]): boolean => {
+        // TODO: This function (and FormError) can be updated so that it also checks Lat/Long are within correct bounds.
         const newFormErrors = keys.reduce((acc, key) => {
             const hasError = formState[key].trim() === "";
             return { ...acc, [key]: hasError };
@@ -95,20 +89,7 @@ export default function WaypointForm({ editState, clearEditState }: WaypointForm
 
     const handleFormSubmit = () => {
         if (checkReqFields(["lat", "long", "alt"])) {
-            const waypoint = {
-                lat: parseFloat(formState.lat),
-                long: parseFloat(formState.long),
-                alt: parseOptionalFloat(formState.alt),
-                radius: parseOptionalFloat(formState.radius),
-                name: formState.name.trim(),
-                remarks: formState.remarks.trim(),
-                command: formState.command.trim(),
-                param1: parseOptionalFloat(formState.param1),
-                param2: parseOptionalFloat(formState.param2),
-                param3: parseOptionalFloat(formState.param3),
-                param4: parseOptionalFloat(formState.param4),
-                id: "-1",
-            } as Waypoint;
+            const waypoint = parseWaypointForm(formState);
             dispatch(addToQueuedWaypoints(waypoint));
         }
     };
@@ -119,20 +100,7 @@ export default function WaypointForm({ editState, clearEditState }: WaypointForm
     };
 
     const handleFinishEditing = () => {
-        const waypoint = {
-            lat: parseFloat(formState.lat),
-            long: parseFloat(formState.long),
-            alt: parseOptionalFloat(formState.alt),
-            radius: parseOptionalFloat(formState.radius),
-            name: formState.name.trim(),
-            remarks: formState.remarks.trim(),
-            command: formState.command.trim(),
-            param1: parseOptionalFloat(formState.param1),
-            param2: parseOptionalFloat(formState.param2),
-            param3: parseOptionalFloat(formState.param3),
-            param4: parseOptionalFloat(formState.param4),
-            id: "-1",
-        } as Waypoint;
+        const waypoint = parseWaypointForm(formState);
         dispatch(
             editWaypointAtIndex({
                 index: editState.index,
@@ -302,9 +270,4 @@ const preventScroll = (e: React.WheelEvent<HTMLInputElement>) => {
     if (e.target instanceof HTMLElement) {
         e.target.blur();
     }
-};
-
-const parseOptionalFloat = (field: string) => {
-    const parsed = parseFloat(field);
-    return Number.isNaN(parsed) ? undefined : parsed;
 };

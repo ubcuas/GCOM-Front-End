@@ -1,7 +1,7 @@
 import { Waypoint } from "../types/Waypoint";
 import api from "./api";
 
-// TODO: Implement endpoints
+// TODO: Implement new endpoint logic
 
 export const armDrone = async () => {
     return;
