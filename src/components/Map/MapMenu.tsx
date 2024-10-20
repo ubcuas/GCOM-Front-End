@@ -1,4 +1,4 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import DroneStatusCard from "../DroneStatusCard";
 
 export default function MapMenu() {

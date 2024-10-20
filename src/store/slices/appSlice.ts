@@ -21,7 +21,7 @@ type AppState = {
 
 const initialState: AppState = {
     queuedWaypoints: [],
-    preferredTheme: localStorage.getItem("theme") === "dark" ? "dark" : "light",
+    preferredTheme: "dark",
     globalSnackbar: {
         message: "",
         open: false,

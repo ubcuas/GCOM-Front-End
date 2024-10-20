@@ -1,5 +1,5 @@
 import { Box, Paper, SelectChangeEvent, Stack, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SettingItem from "../components/SettingItem";
 import {
     selectAutoClearWaypoints,
@@ -22,21 +22,10 @@ export default function Settings() {
     const isBypassed = useAppSelector(selectBypassStatus);
     const autoClearWaypoints = useAppSelector(selectAutoClearWaypoints);
 
-    const localSavedCoordinates = localStorage.getItem("coords");
-    const defaultCoords: StringCoords = localSavedCoordinates
-        ? JSON.parse(localSavedCoordinates, (key, value) => (value ? value : ""))
-        : { long: String(hardCodeDefault.long), lat: String(hardCodeDefault.lat) };
-    const [coords, setCoords] = useState(defaultCoords);
-
-    useEffect(() => {
-        localStorage.setItem(
-            "coords",
-            JSON.stringify({
-                long: parseFloat(coords.long),
-                lat: parseFloat(coords.lat),
-            }),
-        );
-    }, [coords]);
+    const [coords, setCoords] = useState<StringCoords>({
+        lat: hardCodeDefault.lat.toString(),
+        long: hardCodeDefault.long.toString(),
+    });
 
     const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(setPreferredTheme(event.target.checked ? "dark" : "light"));

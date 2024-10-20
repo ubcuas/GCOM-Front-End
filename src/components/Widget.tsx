@@ -1,7 +1,7 @@
 import { Box, Paper, SxProps, Typography } from "@mui/material";
 import { ReactNode } from "react";
 
-export default function InfoCardWidget({
+export default function Widget({
     text,
     data,
     aside,

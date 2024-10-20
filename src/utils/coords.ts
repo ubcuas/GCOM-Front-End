@@ -9,20 +9,20 @@ export const defaultCoords: Coords = {
 
 function validCoords(coords: Coords) {
     return (
+        coords.lat !== null &&
+        coords.long !== null &&
         coords.lat <= 90 &&
         coords.lat >= -90 &&
         coords.long <= 180 &&
-        coords.long >= -180 &&
-        coords.lat !== null &&
-        coords.long !== null
+        coords.long >= -180
     );
 }
 
 export function getDefaultCoords() {
-    let coords = getStorageValue<Coords>("coords", { long: -9999, lat: -9999 });
-    if (!validCoords(coords)) {
-        setStorageValue("coords", defaultCoords);
-        coords = defaultCoords;
-    }
-    return coords;
+    // let coords = getStorageValue<Coords>("coords", { long: -9999, lat: -9999 });
+    // if (!validCoords(coords)) {
+    //     setStorageValue("coords", defaultCoords);
+    //     coords = defaultCoords;
+    // }
+    return defaultCoords;
 }

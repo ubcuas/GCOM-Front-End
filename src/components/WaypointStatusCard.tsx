@@ -1,6 +1,6 @@
 import { Box, Button, Grid, Modal, Paper, Stack, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import { postWaypointsToDrone } from "../api/droneEndpoints";
+import { useState } from "react";
+import { postWaypointsToDrone } from "../api/endpoints";
 import {
     clearQueuedWaypoints,
     openSnackbar,
@@ -9,15 +9,13 @@ import {
     selectMapViewOpen,
     selectQueuedWaypoints,
     setMapViewOpen,
-    setQueuedWaypoints,
 } from "../store/slices/appSlice";
 import { useAppDispatch, useAppSelector } from "../store/store";
-import { Waypoint, WaypointEditState } from "../types/Waypoint";
+import { WaypointEditState } from "../types/Waypoint";
 import InfoCard from "./InfoCard";
 import WaypointCreationMap from "./Map/WaypointCreationMap";
 import WaypointItem from "./WaypointItem";
 import WaypointForm from "./WaypointStatus/WaypointForm";
-import { ApplicationType } from "../types/PostOpts";
 
 export default function WaypointStatusCard() {
     const dispatch = useAppDispatch();
@@ -30,42 +28,19 @@ export default function WaypointStatusCard() {
         waypoint: undefined,
     });
 
-    console.log("waypointQueue", waypointQueue);
-
-    useEffect(() => {
-        console.log("WaypointStatusCard useEffect");
-        const storedQueue = localStorage.getItem("waypointQueue");
-        if (storedQueue && storedQueue !== "[]") {
-            dispatch(setQueuedWaypoints(JSON.parse(storedQueue) as Waypoint[]));
-        }
-    }, [dispatch]);
-
-    useEffect(() => {
-        localStorage.setItem("waypointQueue", JSON.stringify(waypointQueue));
-    }, [waypointQueue]);
-
-    const handlePost = async (appType: ApplicationType) => {
+    const handlePost = async () => {
         if (waypointQueue.length === 0) {
             return;
         }
         try {
-            await postWaypointsToDrone(waypointQueue, appType);
+            await postWaypointsToDrone(waypointQueue);
             if (autoClearWaypoints) {
                 dispatch(clearQueuedWaypoints());
             }
         } catch (error) {
             const message = (error as Error).message;
-            console.log(message);
             dispatch(openSnackbar(message));
         }
-    };
-
-    const handleGCOMPost = () => {
-        handlePost(ApplicationType.BACKEND);
-    };
-
-    const handleMPSPost = () => {
-        handlePost(ApplicationType.MISSIONPLANNER);
     };
 
     const handleDeleteWaypoint = (index: number) => {
@@ -102,10 +77,7 @@ export default function WaypointStatusCard() {
             >
                 {mapViewOpen ? "List View" : "Map View"}
             </Button>
-            <Button sx={{ fontSize: 16, fontWeight: "bold", px: 4 }} variant="outlined" onClick={handleMPSPost}>
-                MPS POST
-            </Button>
-            <Button sx={{ fontSize: 16, fontWeight: "bold", px: 4 }} variant="outlined" onClick={handleGCOMPost}>
+            <Button sx={{ fontSize: 16, fontWeight: "bold", px: 4 }} variant="outlined" onClick={handlePost}>
                 GCOM POST
             </Button>
         </Box>

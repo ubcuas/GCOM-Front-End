@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { selectPreferredTheme } from "../../store/slices/appSlice";
 import { useAppSelector } from "../../store/store";
-import InfoCardWidget from "../InfoCardWidget";
+import Widget from "../Widget";
 
 export default function PositionSection({
     latitude,
@@ -31,10 +31,10 @@ export default function PositionSection({
                     gridTemplateColumns: "1fr 1fr 1fr",
                 }}
             >
-                <InfoCardWidget text="Longitude" data={longitude} />
-                <InfoCardWidget text="Latitude" data={latitude} />
-                <InfoCardWidget text="Altitude" data={`${altitude}m`} />
-                <InfoCardWidget
+                <Widget text="Longitude" data={longitude} />
+                <Widget text="Latitude" data={latitude} />
+                <Widget text="Altitude" data={`${altitude}m`} />
+                <Widget
                     sx={{
                         gridColumn: "span 3",
                     }}

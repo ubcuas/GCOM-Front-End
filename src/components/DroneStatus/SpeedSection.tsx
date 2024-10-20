@@ -1,5 +1,5 @@
-import { Typography, Grid, Box } from "@mui/material";
-import InfoCardWidget from "../InfoCardWidget";
+import { Typography, Box } from "@mui/material";
+import Widget from "../Widget";
 
 export default function SpeedSection({ speed, verticalSpeed }: { verticalSpeed: number; speed: number }) {
     return (
@@ -18,8 +18,8 @@ export default function SpeedSection({ speed, verticalSpeed }: { verticalSpeed: 
                     gap: 1,
                 }}
             >
-                <InfoCardWidget text="Speed" data={`${speed}m/s`} />
-                <InfoCardWidget text="Vertical Speed" data={`${verticalSpeed}m/s`} />
+                <Widget text="Speed" data={`${speed}m/s`} />
+                <Widget text="Vertical Speed" data={`${verticalSpeed}m/s`} />
             </Box>
         </Box>
     );
