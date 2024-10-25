@@ -1,5 +1,6 @@
 import { Box, Button, Modal, Paper, Switch, TextField, Typography } from "@mui/material";
 import { useState } from "react";
+import api from "../../api/api.ts";
 
 export default function MPSControlSection() {
     const [clientSideState, setClientSideState] = useState({
@@ -23,7 +24,7 @@ export default function MPSControlSection() {
                         variant="outlined"
                         color="success"
                         onClick={() => {
-                            // TODO: Disarm button handling
+                            api.post("/drone/arm").then(() => (clientSideState.armed = false));
                         }}
                     >
                         Disarm Drone
@@ -35,6 +36,7 @@ export default function MPSControlSection() {
                         color="error"
                         onClick={() => {
                             setModalState(true);
+                            api.post("/drone/arm").then(() => (clientSideState.armed = true));
                         }}
                     >
                         Arm Drone
@@ -55,8 +57,11 @@ export default function MPSControlSection() {
                     id="takeoffAltitude"
                     type="number"
                     label="Take Off Altitude (ft)"
-                    onChange={() => {
-                        // TODO: Take off altitude handling
+                    onChange={(e) => {
+                        setClientSideState((prevState) => ({
+                            ...prevState,
+                            takeoffAltitude: parseFloat(e.target.value),
+                        }));
                     }}
                     value={clientSideState.takeoffAltitude === 0 ? "" : clientSideState.takeoffAltitude}
                 />
@@ -64,7 +69,7 @@ export default function MPSControlSection() {
                     variant="contained"
                     color="error"
                     onClick={() => {
-                        // TODO: Takeoff button handling
+                        api.post("/drone/takeoff", { altitude: clientSideState.takeoffAltitude });
                     }}
                 >
                     Takeoff
@@ -97,7 +102,7 @@ export default function MPSControlSection() {
                         variant="outlined"
                         color="success"
                         onClick={() => {
-                            // TODO: Fetch Route Data
+                            api.get("/route");
                         }}
                     >
                         Fetch MPS Data
@@ -136,7 +141,7 @@ export default function MPSControlSection() {
                         variant="contained"
                         color="error"
                         onClick={() => {
-                            // TODO: handle arming.
+                            api.post("/drone/arm").then(() => (clientSideState.armed = true));
                             setModalState(false);
                         }}
                     >
