@@ -2,9 +2,8 @@ import { Coords } from "../types/Coords";
 import { getStorageValue, setStorageValue } from "./useLocalStorage";
 
 export const defaultCoords: Coords = {
-    // ALMA AIRPORT, QC
-    long: -71.6505103,
-    lat: 48.5086187,
+    long: -122.518576,
+    lat: 49.310631,
 };
 
 function validCoords(coords: Coords) {
