@@ -1,27 +1,19 @@
 import { Coords } from "../types/Coords";
-import { getStorageValue, setStorageValue } from "./useLocalStorage";
 
 export const defaultCoords: Coords = {
-    long: -122.518576,
-    lat: 49.310631,
+    // UBC
+    long: -123.246,
+    lat: 49.2606,
 };
 
-function validCoords(coords: Coords) {
-    return (
-        coords.lat !== null &&
-        coords.long !== null &&
-        coords.lat <= 90 &&
-        coords.lat >= -90 &&
-        coords.long <= 180 &&
-        coords.long >= -180
-    );
+export function validCoords(coords: Coords) {
+    return coords.lat !== null && coords.long !== null && checkLat(coords.lat) && checkLong(coords.long);
 }
 
-export function getDefaultCoords() {
-    // let coords = getStorageValue<Coords>("coords", { long: -9999, lat: -9999 });
-    // if (!validCoords(coords)) {
-    //     setStorageValue("coords", defaultCoords);
-    //     coords = defaultCoords;
-    // }
-    return defaultCoords;
+export function checkLat(lat: number) {
+    return lat <= 90 && lat >= -90;
+}
+
+export function checkLong(long: number) {
+    return long <= 180 && long >= -180;
 }

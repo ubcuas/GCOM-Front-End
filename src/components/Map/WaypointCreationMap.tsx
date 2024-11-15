@@ -3,9 +3,13 @@
 import { Place } from "@mui/icons-material";
 import { Fragment, useState } from "react";
 import { Layer, LayerProps, Map, MapLayerMouseEvent, Marker, Source } from "react-map-gl/maplibre";
-import { addToQueuedWaypoints, editWaypointAtIndex, selectQueuedWaypoints } from "../../store/slices/appSlice";
+import {
+    addToQueuedWaypoints,
+    editWaypointAtIndex,
+    selectMapCenterCoords,
+    selectQueuedWaypoints,
+} from "../../store/slices/appSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { getDefaultCoords } from "../../utils/coords";
 import WaypointItem from "../WaypointItem";
 import { roundTo } from "../../utils/routeTo";
 import { Box } from "@mui/material";
@@ -24,7 +28,7 @@ type CreationMapProps = {
 };
 
 export default function WaypointCreationMap({ handleDelete, handleEdit, editState }: CreationMapProps) {
-    const coords = getDefaultCoords();
+    const coords = useAppSelector(selectMapCenterCoords);
     const clientWPQueue = useAppSelector(selectQueuedWaypoints);
     const dispatch = useAppDispatch();
     const [selectedWaypoints, setSelectedWaypoints] = useState<boolean[]>(clientWPQueue.map(() => false));

@@ -1,8 +1,20 @@
-import { Action, ThunkAction, configureStore } from "@reduxjs/toolkit";
+import { Action, Middleware, ThunkAction, configureStore } from "@reduxjs/toolkit";
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
 import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
 import dataReducer from "./slices/dataSlice";
 import appReducer from "./slices/appSlice";
+
+const localStorageMiddleware: Middleware = (store) => (next) => (action) => {
+    const result = next(action);
+    const typedAction = action as Action<string>;
+
+    // Store appSlice in localStorage on update.
+    if (typedAction.type.startsWith("app/")) {
+        localStorage.setItem("appSlice", JSON.stringify(store.getState().app));
+    }
+
+    return result;
+};
 
 const store = configureStore({
     reducer: {
@@ -10,6 +22,7 @@ const store = configureStore({
         app: appReducer,
         // more TBD
     },
+    middleware: (getDefaultMiddleware) => [...getDefaultMiddleware(), localStorageMiddleware],
 });
 
 export default store;
