@@ -52,7 +52,7 @@ export default function MapView() {
                 mapStyle={
                     window.navigator.onLine
                         ? "https://api.maptiler.com/maps/basic-v2/style.json?key=ioE7W2lCif3DO9oj1YJh"
-                        : "http://0.0.0.0:8000/api/map-tiles/osmbright"
+                        : "http://localhost:8000/api/map-tiles/osmbright"
                 }
                 doubleClickZoom={false}
             >
