@@ -2,29 +2,29 @@ import { Box, Paper, SelectChangeEvent, Stack, Typography } from "@mui/material"
 import { useState } from "react";
 import SettingItem from "../components/SettingItem";
 import {
-    selectAutoClearWaypoints,
-    selectBypassStatus,
-    selectPreferredTheme,
-    selectSocketStatus,
+    selectAppSlice,
     setAutoClearWaypoints,
     setBypassStatus,
+    setMapCenterCoords,
     setPreferredTheme,
     setSocketStatus,
 } from "../store/slices/appSlice";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { StringCoords } from "../types/Coords";
-import { defaultCoords as hardCodeDefault } from "../utils/coords";
+import { checkLat, checkLong, validCoords } from "../utils/coords";
 
 export default function Settings() {
     const dispatch = useAppDispatch();
-    const theme = useAppSelector(selectPreferredTheme);
-    const socketStatus = useAppSelector(selectSocketStatus);
-    const isBypassed = useAppSelector(selectBypassStatus);
-    const autoClearWaypoints = useAppSelector(selectAutoClearWaypoints);
+    const settings = useAppSelector(selectAppSlice);
 
     const [coords, setCoords] = useState<StringCoords>({
-        lat: hardCodeDefault.lat.toString(),
-        long: hardCodeDefault.long.toString(),
+        lat: settings.mapCenterCoords.lat.toString(),
+        long: settings.mapCenterCoords.long.toString(),
+    });
+
+    const getCoordError = (coords: StringCoords) => ({
+        lat: !checkLat(parseFloat(coords.lat)),
+        long: !checkLong(parseFloat(coords.long)),
     });
 
     const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,11 +40,21 @@ export default function Settings() {
         dispatch(setAutoClearWaypoints(event.target.checked));
     };
     const handleDefaultCoordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        // early return if the input is not a number
         if (/[^0-9.-]/.test(event.target.value)) {
             return;
         }
-        event.target.id === "longitude" && setCoords({ ...coords, long: event.target.value });
-        event.target.id === "latitude" && setCoords({ ...coords, lat: event.target.value });
+        // allow changes to input even if its not a valid coordinate
+        const newCoords =
+            event.target.id === "longitude"
+                ? { ...coords, long: event.target.value }
+                : { ...coords, lat: event.target.value };
+        setCoords(newCoords);
+        // ONLY update store coords if the input is a valid coordinate.
+        const parsedCoords = { lat: parseFloat(newCoords.lat), long: parseFloat(newCoords.long) };
+        if (validCoords(parsedCoords)) {
+            dispatch(setMapCenterCoords(parsedCoords));
+        }
     };
 
     return (
@@ -72,13 +82,13 @@ export default function Settings() {
                 </Typography>
                 <Stack gap={1}>
                     <SettingItem
-                        checked={theme === "dark"}
+                        checked={settings.preferredTheme === "dark"}
                         name="Dark Theme"
                         type="toggle"
                         onChange={handleThemeChange}
                     />
                     <SettingItem
-                        checked={socketStatus}
+                        checked={settings.telemetrySockets}
                         name="Socket Telemetry"
                         type="toggle"
                         onChange={handleSocketChange}
@@ -86,14 +96,14 @@ export default function Settings() {
                     <SettingItem
                         type="toggle"
                         name="Auto-Clear Posted WPs"
-                        checked={autoClearWaypoints}
+                        checked={settings.autoClearWaypoints}
                         onChange={handleAutoClearChange}
                     />
                     <SettingItem
                         type="select"
                         name="Bypass Arming Restriction"
                         options={["Enforced", "Bypassed"]}
-                        value={!isBypassed ? "Enforced" : "Bypassed"}
+                        value={!settings.bypassArmingRestriction ? "Enforced" : "Bypassed"}
                         onChange={handleBypassChange}
                         optionColors={["", "error.dark"]}
                     />
@@ -103,6 +113,7 @@ export default function Settings() {
                         name="Map Default Center Longitude"
                         value={coords.long}
                         onChange={handleDefaultCoordChange}
+                        error={getCoordError(coords).long}
                     />
                     <SettingItem
                         id="latitude"
@@ -110,6 +121,7 @@ export default function Settings() {
                         name="Map Default Center Latitude"
                         value={coords.lat}
                         onChange={handleDefaultCoordChange}
+                        error={getCoordError(coords).lat}
                     />
                 </Stack>
             </Paper>
