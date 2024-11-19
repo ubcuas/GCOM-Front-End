@@ -47,12 +47,12 @@ export default function MapView() {
                 initialViewState={{
                     longitude: coords.long,
                     latitude: coords.lat,
-                    zoom: 14,
+                    zoom: 10,
                 }}
                 mapStyle={
                     window.navigator.onLine
                         ? "https://api.maptiler.com/maps/basic-v2/style.json?key=ioE7W2lCif3DO9oj1YJh"
-                        : "./src/mapStyles/osmbright.json"
+                        : "http://localhost:8000/api/map-tiles/osmbright"
                 }
                 doubleClickZoom={false}
             >
