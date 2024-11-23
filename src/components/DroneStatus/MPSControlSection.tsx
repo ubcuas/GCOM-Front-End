@@ -1,6 +1,8 @@
-import { Box, Button, Modal, Paper, Switch, TextField, Typography } from "@mui/material";
+import { Box, Button, Modal, Paper, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import api from "../../api/api.ts";
+import { armDrone } from "../../api/endpoints.ts";
+import { manualUpdateMPSQueue } from "../../store/slices/dataSlice.ts";
 
 export default function MPSControlSection() {
     const [clientSideState, setClientSideState] = useState({
@@ -24,7 +26,14 @@ export default function MPSControlSection() {
                         variant="outlined"
                         color="success"
                         onClick={() => {
-                            api.post("/drone/arm").then(() => (clientSideState.armed = false));
+                            armDrone().then((response) => {
+                                if (response.status === 200) {
+                                    setClientSideState((prevState) => ({
+                                        ...prevState,
+                                        armed: false,
+                                    }));
+                                }
+                            });
                         }}
                     >
                         Disarm Drone
@@ -36,7 +45,14 @@ export default function MPSControlSection() {
                         color="error"
                         onClick={() => {
                             setModalState(true);
-                            api.post("/drone/arm").then(() => (clientSideState.armed = true));
+                            armDrone().then((response) => {
+                                if (response.status === 200) {
+                                    setClientSideState((prevState) => ({
+                                        ...prevState,
+                                        armed: true,
+                                    }));
+                                }
+                            });
                         }}
                     >
                         Arm Drone
@@ -102,7 +118,9 @@ export default function MPSControlSection() {
                         variant="outlined"
                         color="success"
                         onClick={() => {
-                            api.get("/route");
+                            api.get("/route").then((response) => {
+                                manualUpdateMPSQueue(response.data);
+                            });
                         }}
                     >
                         Fetch MPS Data
@@ -141,8 +159,15 @@ export default function MPSControlSection() {
                         variant="contained"
                         color="error"
                         onClick={() => {
-                            api.post("/drone/arm").then(() => (clientSideState.armed = true));
                             setModalState(false);
+                            armDrone().then((response) => {
+                                if (response.status === 200) {
+                                    setClientSideState((prevState) => ({
+                                        ...prevState,
+                                        armed: true,
+                                    }));
+                                }
+                            });
                         }}
                     >
                         Yes

@@ -4,11 +4,11 @@ import api from "./api";
 // TODO: Implement new endpoint logic
 
 export const armDrone = async () => {
-    return;
+    return await api.post("/drone/arm");
 };
 
 export const disarmDrone = async () => {
-    return;
+    return await api.post("/drone/arm");
 };
 
 export const takeoffDrone = async (altitude?: number) => {
