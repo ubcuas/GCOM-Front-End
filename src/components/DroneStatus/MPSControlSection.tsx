@@ -1,5 +1,8 @@
-import { Box, Button, Modal, Paper, Switch, TextField, Typography } from "@mui/material";
+import { Box, Button, Modal, Paper, TextField, Typography } from "@mui/material";
 import { useState } from "react";
+import api from "../../api/api.ts";
+import { armDrone, getRoute } from "../../api/endpoints.ts";
+import { manualUpdateMPSQueue } from "../../store/slices/dataSlice.ts";
 
 export default function MPSControlSection() {
     const [clientSideState, setClientSideState] = useState({
@@ -23,7 +26,14 @@ export default function MPSControlSection() {
                         variant="outlined"
                         color="success"
                         onClick={() => {
-                            // TODO: Disarm button handling
+                            armDrone(false).then((response) => {
+                                if (response.status === 200) {
+                                    setClientSideState((prevState) => ({
+                                        ...prevState,
+                                        armed: false,
+                                    }));
+                                }
+                            });
                         }}
                     >
                         Disarm Drone
@@ -35,6 +45,14 @@ export default function MPSControlSection() {
                         color="error"
                         onClick={() => {
                             setModalState(true);
+                            armDrone(true).then((response) => {
+                                if (response.status === 200) {
+                                    setClientSideState((prevState) => ({
+                                        ...prevState,
+                                        armed: true,
+                                    }));
+                                }
+                            });
                         }}
                     >
                         Arm Drone
@@ -55,8 +73,11 @@ export default function MPSControlSection() {
                     id="takeoffAltitude"
                     type="number"
                     label="Take Off Altitude (ft)"
-                    onChange={() => {
-                        // TODO: Take off altitude handling
+                    onChange={(e) => {
+                        setClientSideState((prevState) => ({
+                            ...prevState,
+                            takeoffAltitude: parseFloat(e.target.value),
+                        }));
                     }}
                     value={clientSideState.takeoffAltitude === 0 ? "" : clientSideState.takeoffAltitude}
                 />
@@ -64,7 +85,7 @@ export default function MPSControlSection() {
                     variant="contained"
                     color="error"
                     onClick={() => {
-                        // TODO: Takeoff button handling
+                        api.post("/drone/takeoff", { altitude: clientSideState.takeoffAltitude });
                     }}
                 >
                     Takeoff
@@ -97,7 +118,9 @@ export default function MPSControlSection() {
                         variant="outlined"
                         color="success"
                         onClick={() => {
-                            // TODO: Fetch Route Data
+                            getRoute().then((response) => {
+                                manualUpdateMPSQueue(response);
+                            });
                         }}
                     >
                         Fetch MPS Data
@@ -136,8 +159,15 @@ export default function MPSControlSection() {
                         variant="contained"
                         color="error"
                         onClick={() => {
-                            // TODO: handle arming.
                             setModalState(false);
+                            armDrone(true).then((response) => {
+                                if (response.status === 200) {
+                                    setClientSideState((prevState) => ({
+                                        ...prevState,
+                                        armed: true,
+                                    }));
+                                }
+                            });
                         }}
                     >
                         Yes
