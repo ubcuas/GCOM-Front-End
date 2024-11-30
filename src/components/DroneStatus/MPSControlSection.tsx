@@ -1,7 +1,7 @@
 import { Box, Button, Modal, Paper, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import api from "../../api/api.ts";
-import { armDrone } from "../../api/endpoints.ts";
+import { armDrone, getRoute } from "../../api/endpoints.ts";
 import { manualUpdateMPSQueue } from "../../store/slices/dataSlice.ts";
 
 export default function MPSControlSection() {
@@ -26,7 +26,7 @@ export default function MPSControlSection() {
                         variant="outlined"
                         color="success"
                         onClick={() => {
-                            armDrone().then((response) => {
+                            armDrone(false).then((response) => {
                                 if (response.status === 200) {
                                     setClientSideState((prevState) => ({
                                         ...prevState,
@@ -45,7 +45,7 @@ export default function MPSControlSection() {
                         color="error"
                         onClick={() => {
                             setModalState(true);
-                            armDrone().then((response) => {
+                            armDrone(true).then((response) => {
                                 if (response.status === 200) {
                                     setClientSideState((prevState) => ({
                                         ...prevState,
@@ -118,8 +118,8 @@ export default function MPSControlSection() {
                         variant="outlined"
                         color="success"
                         onClick={() => {
-                            api.get("/route").then((response) => {
-                                manualUpdateMPSQueue(response.data);
+                            getRoute().then((response) => {
+                                manualUpdateMPSQueue(response);
                             });
                         }}
                     >
@@ -160,7 +160,7 @@ export default function MPSControlSection() {
                         color="error"
                         onClick={() => {
                             setModalState(false);
-                            armDrone().then((response) => {
+                            armDrone(true).then((response) => {
                                 if (response.status === 200) {
                                     setClientSideState((prevState) => ({
                                         ...prevState,
