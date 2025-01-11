@@ -4,19 +4,19 @@ import { Fragment, useEffect } from "react";
 import Map, { Layer, LayerProps, Marker, Source } from "react-map-gl/maplibre";
 import {
     initializeMpsWaypointMapState,
+    selectMapCenterCoords,
     selectMpsWaypointMapState,
     toggleMpsWaypointMapState,
 } from "../../store/slices/appSlice";
 import { selectAircraftStatus, selectMPSWaypoints } from "../../store/slices/dataSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { getDefaultCoords } from "../../utils/coords";
 import WaypointItem from "../WaypointItem";
 
 export default function MapView() {
     const mpsWaypoints = useAppSelector(selectMPSWaypoints);
     const mpsWaypointMapState = useAppSelector(selectMpsWaypointMapState);
     const aircraftStatus = useAppSelector(selectAircraftStatus);
-    const coords = getDefaultCoords();
+    const coords = useAppSelector(selectMapCenterCoords);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -47,12 +47,12 @@ export default function MapView() {
                 initialViewState={{
                     longitude: coords.long,
                     latitude: coords.lat,
-                    zoom: 14,
+                    zoom: 10,
                 }}
                 mapStyle={
                     window.navigator.onLine
                         ? "https://api.maptiler.com/maps/basic-v2/style.json?key=ioE7W2lCif3DO9oj1YJh"
-                        : "./src/mapStyles/osmbright.json"
+                        : "http://localhost:8000/api/map-tiles/osmbright"
                 }
                 doubleClickZoom={false}
             >
