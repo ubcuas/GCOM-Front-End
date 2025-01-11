@@ -1,6 +1,5 @@
 import { Waypoint } from "../types/Waypoint";
 import api from "./api";
-import { AxiosResponse } from "axios";
 
 // TODO: Implement new endpoint logic
 

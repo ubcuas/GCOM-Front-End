@@ -1,7 +1,6 @@
 import { Box, Button, Modal, Paper, TextField, Typography } from "@mui/material";
 import { useState } from "react";
-import api from "../../api/api.ts";
-import { armDrone, getRoute } from "../../api/endpoints.ts";
+import { armDrone, getRoute, takeoffDrone } from "../../api/endpoints.ts";
 import { manualUpdateMPSQueue } from "../../store/slices/dataSlice.ts";
 
 export default function MPSControlSection() {
@@ -77,7 +76,7 @@ export default function MPSControlSection() {
                     variant="contained"
                     color="error"
                     onClick={() => {
-                        api.post("/drone/takeoff", { altitude: clientSideState.takeoffAltitude });
+                        takeoffDrone(clientSideState.takeoffAltitude);
                     }}
                 >
                     Takeoff
