@@ -45,14 +45,6 @@ export default function MPSControlSection() {
                         color="error"
                         onClick={() => {
                             setModalState(true);
-                            armDrone(true).then((response) => {
-                                if (response.status === 200) {
-                                    setClientSideState((prevState) => ({
-                                        ...prevState,
-                                        armed: true,
-                                    }));
-                                }
-                            });
                         }}
                     >
                         Arm Drone
