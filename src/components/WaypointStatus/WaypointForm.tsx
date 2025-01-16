@@ -1,8 +1,14 @@
 import { Button, Grid, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { WaypointEditState } from "../../types/Waypoint";
-import { useAppDispatch } from "../../store/store";
-import { addToQueuedWaypoints, editWaypointAtIndex } from "../../store/slices/appSlice";
+import { Waypoint, WaypointEditState } from "../../types/Waypoint";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import {
+    addToQueuedWaypoints,
+    clearQueuedWaypoints,
+    editWaypointAtIndex,
+    openSnackbar,
+    selectAutoClearWaypoints,
+} from "../../store/slices/appSlice";
 import { FormErrors, FormKeys, FormState } from "../../types/WaypointForm";
 import parseWaypointForm from "../../utils/parseWaypointForm";
 
@@ -11,6 +17,7 @@ import parseWaypointForm from "../../utils/parseWaypointForm";
 type WaypointFormProps = {
     editState: WaypointEditState;
     clearEditState: () => void;
+    addWaypoint: (waypoint: Waypoint) => Promise<void>;
 };
 
 const defaultFormState: FormState = {
@@ -27,8 +34,9 @@ const defaultFormState: FormState = {
     param4: "",
 };
 
-export default function WaypointForm({ editState, clearEditState }: WaypointFormProps) {
+export default function WaypointForm({ editState, clearEditState, addWaypoint }: WaypointFormProps) {
     const dispatch = useAppDispatch();
+    const autoClearWaypoints = useAppSelector(selectAutoClearWaypoints);
     const [formState, setFormState] = useState<FormState>(defaultFormState);
 
     const [formErrors, setFormErrors] = useState<FormErrors>({
@@ -87,10 +95,19 @@ export default function WaypointForm({ editState, clearEditState }: WaypointForm
         });
     };
 
-    const handleFormSubmit = () => {
-        if (checkReqFields(["lat", "long", "alt"])) {
+    const handleFormSubmit = async () => {
+        try {
+            if (!checkReqFields(["lat", "long", "alt"])) return;
+
             const waypoint = parseWaypointForm(formState);
-            dispatch(addToQueuedWaypoints(waypoint));
+            await addWaypoint(waypoint);
+
+            if (autoClearWaypoints) {
+                dispatch(clearQueuedWaypoints());
+            }
+        } catch (error) {
+            const message = (error as Error).message;
+            dispatch(openSnackbar(message));
         }
     };
 
