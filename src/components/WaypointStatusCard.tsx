@@ -29,8 +29,11 @@ export default function WaypointStatusCard() {
     });
 
     const handleDeleteWaypoint = (index: number) => {
-        dispatch(removeOneFromWaypoints(index));
-        clearEditState();
+        const waypointId = waypoints?.[index].id;
+        if (waypointId) {
+            deleteWaypoint(waypointId);
+            clearEditState();
+        }
     };
 
     const handleEditWaypoint = (index: number) => {

@@ -34,7 +34,7 @@ export const updateWaypointQuery = async (waypoint: Waypoint): Promise<AxiosResp
 };
 
 export const deleteWaypointQuery = async (id: string): Promise<AxiosResponse> => {
-    return api.delete(`/waypoint/${id}`);
+    return api.delete(`/waypoint/${id}/`);
 };
 
 export const reorderWaypointsQuery = async (waypointIds: string[]): Promise<AxiosResponse> => {
