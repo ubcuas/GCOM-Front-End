@@ -1,6 +1,6 @@
 import { Waypoint } from "./Waypoint";
 
-export type FormState = Record<keyof Omit<Waypoint, "id">, string>;
+export type FormState = Record<keyof Omit<Waypoint, "id" | "order">, string>;
 
 export type FormErrors = {
     lat: boolean;

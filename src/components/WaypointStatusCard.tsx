@@ -142,6 +142,7 @@ export default function WaypointStatusCard() {
                                 editState={editState}
                                 clearEditState={clearEditState}
                                 addWaypoint={createWaypoint}
+                                confirmUpdateWaypoint={editWaypoint}
                             />
                             <Button color="error" variant="outlined" fullWidth onClick={() => setModalOpen(true)}>
                                 Delete ALL Queued Waypoints

@@ -18,6 +18,7 @@ type WaypointFormProps = {
     editState: WaypointEditState;
     clearEditState: () => void;
     addWaypoint: (waypoint: Waypoint) => Promise<void>;
+    confirmUpdateWaypoint: (waypoint: Waypoint) => Promise<void>;
 };
 
 const defaultFormState: FormState = {
@@ -34,7 +35,12 @@ const defaultFormState: FormState = {
     param4: "",
 };
 
-export default function WaypointForm({ editState, clearEditState, addWaypoint }: WaypointFormProps) {
+export default function WaypointForm({
+    editState,
+    clearEditState,
+    addWaypoint,
+    confirmUpdateWaypoint,
+}: WaypointFormProps) {
     const dispatch = useAppDispatch();
     const autoClearWaypoints = useAppSelector(selectAutoClearWaypoints);
     const [formState, setFormState] = useState<FormState>(defaultFormState);
@@ -116,14 +122,11 @@ export default function WaypointForm({ editState, clearEditState, addWaypoint }:
         setFormState(defaultFormState);
     };
 
-    const handleFinishEditing = () => {
+    const handleFinishEditing = async () => {
         const waypoint = parseWaypointForm(formState);
-        dispatch(
-            editWaypointAtIndex({
-                index: editState.index,
-                waypoint,
-            }),
-        );
+        // The form does not store the waypoint id so we need to add it back in.
+        waypoint.id = editState.waypoint!.id;
+        await confirmUpdateWaypoint(waypoint);
         cancelEditing();
     };
 

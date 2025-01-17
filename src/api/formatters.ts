@@ -1,13 +1,13 @@
 import { Waypoint } from "../types/Waypoint";
 
-export const serializeWaypointForGCOM = (waypoint: Waypoint, order: number) => {
+export const serializeWaypointForGCOM = (waypoint: Waypoint) => {
     return {
         name: waypoint.name,
         latitude: waypoint.lat,
         longitude: waypoint.long,
         altitude: waypoint.alt,
         radius: waypoint.radius,
-        order: order,
+        order: waypoint.order,
         route: 1,
     };
 };

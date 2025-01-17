@@ -25,13 +25,14 @@ export const getWaypointsQuery = async (): Promise<Waypoint[]> => {
     return a.data;
 };
 
-export const createWaypointQuery = async (waypoint: Waypoint, order: number): Promise<AxiosResponse> => {
-    const formattedWaypoint = serializeWaypointForGCOM(waypoint, order);
-    return api.post("/waypoint/", formattedWaypoint);
+export const createWaypointQuery = async (waypoint: Waypoint): Promise<AxiosResponse> => {
+    const serializedWaypoint = serializeWaypointForGCOM(waypoint);
+    return api.post("/waypoint/", serializedWaypoint);
 };
 
 export const updateWaypointQuery = async (waypoint: Waypoint): Promise<AxiosResponse> => {
-    return api.put(`/waypoint/${waypoint.id}`, waypoint);
+    const serializedWaypoint = serializeWaypointForGCOM(waypoint);
+    return api.patch(`/waypoint/${waypoint.id}/`, serializedWaypoint);
 };
 
 export const deleteWaypointQuery = async (id: string): Promise<AxiosResponse> => {

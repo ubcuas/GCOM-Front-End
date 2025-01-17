@@ -23,6 +23,7 @@ export type Waypoint = {
     param2?: number;
     param3?: number;
     param4?: number;
+    order?: number;
 };
 
 export type WaypointEditState = {
