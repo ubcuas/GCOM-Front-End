@@ -31,8 +31,8 @@ export const useWaypoints = () => {
     };
 
     const editWaypoint = async (waypoint: Waypoint) => {
-        setWaypoints((wp) => wp?.map((w) => (w.id === waypoint.id ? waypoint : w)) || []);
         await updateWaypointQuery(waypoint);
+        setWaypoints((wp) => wp?.map((w) => (w.id === waypoint.id ? waypoint : w)) || []);
     };
 
     const reorderWaypoints = async (waypointIds: string[]) => {
