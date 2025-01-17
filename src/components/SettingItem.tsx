@@ -22,6 +22,7 @@ type TextFieldSettingItemProps = {
     type: "text";
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     value: string;
+    error?: boolean;
 };
 
 type SettingItemProps = ToggleSettingItemProps | SelectSettingItemProps | TextFieldSettingItemProps;
@@ -69,11 +70,19 @@ function SelectSettingItem({ name, onChange, options, value, optionColors }: Sel
     );
 }
 
-function TextFieldSettingItem({ name, onChange, value, id }: TextFieldSettingItemProps) {
+function TextFieldSettingItem({ name, onChange, value, id, error }: TextFieldSettingItemProps) {
     return (
         <>
             <Typography variant="body1">{name}</Typography>
-            <TextField id={id} size="small" sx={{ width: 120 }} onChange={onChange} type="text" value={value} />
+            <TextField
+                error={error}
+                id={id}
+                size="small"
+                sx={{ width: 120 }}
+                onChange={onChange}
+                type="text"
+                value={value}
+            />
         </>
     );
 }
