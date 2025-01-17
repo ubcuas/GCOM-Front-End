@@ -19,7 +19,7 @@ export const useWaypoints = () => {
 
     const createWaypoint = async (waypoint: Waypoint) => {
         if (waypoints !== null) {
-            await createWaypointQuery(waypoint);
+            await createWaypointQuery(waypoint, waypoints.length);
             setWaypoints([...waypoints, waypoint]);
         }
     };

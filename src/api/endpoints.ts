@@ -1,7 +1,7 @@
 import { Waypoint } from "../types/Waypoint";
 import api from "./api";
 import { AxiosResponse } from "axios";
-import { formatWaypointForGCOM } from "./formatters";
+import { serializeWaypointForGCOM } from "./formatters";
 
 export const armDrone = async (arm: boolean) => {
     return await api.post("/drone/arm", { arm });
@@ -21,11 +21,12 @@ export const getRoute = async (): Promise<Waypoint[]> => {
 
 export const getWaypointsQuery = async (): Promise<Waypoint[]> => {
     const a = await api.get("/waypoint");
+    console.log(a.data);
     return a.data;
 };
 
-export const createWaypointQuery = async (waypoint: Waypoint): Promise<AxiosResponse> => {
-    const formattedWaypoint = formatWaypointForGCOM(waypoint);
+export const createWaypointQuery = async (waypoint: Waypoint, order: number): Promise<AxiosResponse> => {
+    const formattedWaypoint = serializeWaypointForGCOM(waypoint, order);
     return api.post("/waypoint/", formattedWaypoint);
 };
 
