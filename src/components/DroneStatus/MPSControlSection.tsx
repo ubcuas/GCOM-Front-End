@@ -1,5 +1,9 @@
 import { Box, Button, Modal, Paper, Switch, TextField, Typography } from "@mui/material";
 import { useState } from "react";
+import api from "../../api/api.ts";
+import { armDrone, getCoordinatesOfInterest, getRoute } from "../../api/endpoints.ts";
+import { manualUpdateMPSQueue } from "../../store/slices/dataSlice.ts";
+import { CoordinateOfInterest } from "../../types/Coords.ts";
 
 export default function MPSControlSection() {
     const [clientSideState, setClientSideState] = useState({
@@ -7,6 +11,39 @@ export default function MPSControlSection() {
         takeoffAltitude: 0,
     });
     const [modalState, setModalState] = useState(false);
+
+    function makeKMLFile(coordsOfInterest: Promise<CoordinateOfInterest[]>) {
+        coordsOfInterest.then((coords) => {
+            const kmlContent = `<?xml version="1.0" encoding="UTF-8"?>
+            <kml xmlns="http://www.opengis.net/kml/2.2">
+               <Document>
+                  <name>Coordinates of Interest</name>
+                  ${coords
+                      .map(
+                          (cord, index) => `
+                        <Placemark>
+                           <name>${cord.name || `Location ${index + 1}`}</name>
+                           <description>${cord.description || `Description for Location ${index + 1}`}</description>
+                           <Point>
+                              <coordinates>${cord.long},${cord.lat},0</coordinates>
+                           </Point>
+                        </Placemark>`,
+                      )
+                      .join("")}
+               </Document>
+            </kml>`;
+
+            const blob = new Blob([kmlContent], { type: "application/vnd.google-earth.kml+xml" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "coordinates_of_interest.kml";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+    }
 
     return (
         <Box
@@ -64,7 +101,7 @@ export default function MPSControlSection() {
                     variant="contained"
                     color="error"
                     onClick={() => {
-                        // TODO: Takeoff button handling
+                        api.post("/drone/takeoff", { altitude: clientSideState.takeoffAltitude });
                     }}
                 >
                     Takeoff
@@ -101,6 +138,18 @@ export default function MPSControlSection() {
                         }}
                     >
                         Fetch MPS Data
+                    </Button>
+                    <Button
+                        sx={{
+                            flexGrow: 1,
+                        }}
+                        variant="outlined"
+                        color="info"
+                        onClick={() => {
+                            makeKMLFile(getCoordinatesOfInterest());
+                        }}
+                    >
+                        Generate KML File
                     </Button>
                     {/* <Box
                         sx={{
