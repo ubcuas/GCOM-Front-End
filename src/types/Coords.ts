@@ -7,3 +7,10 @@ export type StringCoords = {
     lat: string;
     long: string;
 };
+
+export type CoordinateOfInterest = {
+    lat: number;
+    long: number;
+    name: string;
+    description: string;
+};
