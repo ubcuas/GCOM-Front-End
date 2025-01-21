@@ -188,23 +188,13 @@ export default function WaypointForm({
                     onWheel={preventScroll}
                 />
             </Grid>
-            <Grid item xs={12} lg={6}>
+            <Grid item xs={12} lg={12}>
                 <TextField
                     fullWidth
                     id="name"
                     label="Name"
                     autoComplete="off"
                     value={formState.name}
-                    onChange={handleFormChange}
-                />
-            </Grid>
-            <Grid item xs={12} lg={6}>
-                <TextField
-                    fullWidth
-                    id="remarks"
-                    label="Remarks"
-                    autoComplete="off"
-                    value={formState.remarks}
                     onChange={handleFormChange}
                 />
             </Grid>
