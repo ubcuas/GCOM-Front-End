@@ -8,7 +8,7 @@ import { defaultCoords } from "../../utils/coords";
 // REDUX SLICE
 
 type AppState = {
-    queuedWaypoints: Waypoint[];
+    waypoints: Waypoint[];
     preferredTheme: "light" | "dark";
     globalSnackbar: {
         message: string;
@@ -25,7 +25,7 @@ type AppState = {
 const initialState: AppState = localStorage.getItem("appSlice")
     ? JSON.parse(localStorage.getItem("appSlice")!)
     : {
-          queuedWaypoints: [],
+          waypoints: [],
           preferredTheme: "dark",
           globalSnackbar: {
               message: "",
@@ -43,20 +43,8 @@ const appSlice = createSlice({
     name: "app",
     initialState,
     reducers: {
-        addToQueuedWaypoints: (state, action: PayloadAction<Waypoint>) => {
-            state.queuedWaypoints.push(action.payload);
-        },
-        setQueuedWaypoints: (state, action: PayloadAction<Waypoint[]>) => {
-            state.queuedWaypoints = action.payload;
-        },
-        clearQueuedWaypoints: (state) => {
-            state.queuedWaypoints = [];
-        },
-        removeOneFromWaypoints: (state, action: PayloadAction<number>) => {
-            state.queuedWaypoints.splice(action.payload, 1);
-        },
-        editWaypointAtIndex: (state, action: PayloadAction<{ index: number; waypoint: Waypoint }>) => {
-            state.queuedWaypoints[action.payload.index] = action.payload.waypoint;
+        setWaypoints: (state, action: PayloadAction<Waypoint[]>) => {
+            state.waypoints = action.payload;
         },
         setPreferredTheme: (state, action: PayloadAction<"light" | "dark">) => {
             state.preferredTheme = action.payload;
@@ -103,11 +91,7 @@ const appSlice = createSlice({
 });
 
 export const {
-    addToQueuedWaypoints,
-    setQueuedWaypoints,
-    clearQueuedWaypoints,
-    removeOneFromWaypoints,
-    editWaypointAtIndex,
+    setWaypoints,
     setPreferredTheme,
     openSnackbar,
     closeSnackbar,
@@ -123,7 +107,7 @@ export const {
 
 export const selectAppSlice = (state: RootState) => state.app;
 
-export const selectQueuedWaypoints = (state: RootState) => state.app.queuedWaypoints;
+export const selectWaypoints = (state: RootState) => state.app.waypoints;
 export const selectPreferredTheme = (state: RootState) => state.app.preferredTheme;
 export const selectSnackbar = (state: RootState) => state.app.globalSnackbar;
 export const selectSocketStatus = (state: RootState) => state.app.telemetrySockets;

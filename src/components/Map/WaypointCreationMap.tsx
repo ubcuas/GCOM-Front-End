@@ -1,19 +1,15 @@
 // Honestly its just easier to have this in a separate file rather than having it be in with MapView.tsx
 
-import { Place } from "@mui/icons-material";
+import { AddHomeWork, Place } from "@mui/icons-material";
 import { Fragment, useState } from "react";
 import { Layer, LayerProps, Map, MapLayerMouseEvent, Marker, Source } from "react-map-gl/maplibre";
-import {
-    addToQueuedWaypoints,
-    editWaypointAtIndex,
-    selectMapCenterCoords,
-    selectQueuedWaypoints,
-} from "../../store/slices/appSlice";
+import { selectMapCenterCoords, selectWaypoints } from "../../store/slices/appSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import WaypointItem from "../WaypointItem";
 import { roundTo } from "../../utils/routeTo";
 import { Box } from "@mui/material";
-import { WaypointEditState } from "../../types/Waypoint";
+import { Waypoint, WaypointEditState } from "../../types/Waypoint";
+import { useWaypoints } from "../../utils/useWaypoints";
 
 type DraggedMarker = {
     long: number;
@@ -23,20 +19,27 @@ type DraggedMarker = {
 
 type CreationMapProps = {
     handleDelete: (index: number) => void;
-    handleEdit: (index: number) => void;
-    editState: WaypointEditState;
+    startEditing: (index: number) => void;
+    submitWaypoint: (wp: Waypoint) => void;
+    setEditingCoords: (coords: { lat: number; long: number }) => void;
+    editingIndex: number;
 };
 
-export default function WaypointCreationMap({ handleDelete, handleEdit, editState }: CreationMapProps) {
+export default function WaypointCreationMap({
+    handleDelete,
+    startEditing,
+    editingIndex,
+    setEditingCoords,
+    submitWaypoint,
+}: CreationMapProps) {
     const coords = useAppSelector(selectMapCenterCoords);
-    const clientWPQueue = useAppSelector(selectQueuedWaypoints);
-    const dispatch = useAppDispatch();
-    const [selectedWaypoints, setSelectedWaypoints] = useState<boolean[]>(clientWPQueue.map(() => false));
+    const { waypoints } = useWaypoints();
+    const [selectedWaypoints, setSelectedWaypoints] = useState<boolean[]>(waypoints?.map(() => false) || []);
     const [draggedMarkerData, setDraggedMarkerData] = useState<DraggedMarker | null>(null);
 
     const routeData: GeoJSON.GeoJSON = {
         type: "LineString",
-        coordinates: clientWPQueue.map((waypoint) => [waypoint.long, waypoint.lat]),
+        coordinates: waypoints?.map((waypoint) => [waypoint.long, waypoint.lat]) || [],
     };
     const routeStyle: LayerProps = {
         id: "mps-route",
@@ -49,13 +52,15 @@ export default function WaypointCreationMap({ handleDelete, handleEdit, editStat
 
     const createNewWaypoint = (event: MapLayerMouseEvent) => {
         if (event.originalEvent.detail !== 2) return;
-        dispatch(
-            addToQueuedWaypoints({
-                id: "-1",
-                lat: roundTo(event.lngLat.lat, 7),
-                long: roundTo(event.lngLat.lng, 7),
-            }),
-        );
+        const wp = {
+            lat: roundTo(event.lngLat.lat, 7),
+            long: roundTo(event.lngLat.lng, 7),
+            alt: 0,
+            radius: 123123,
+            name: "New Waypoint",
+            id: "-1",
+        };
+        submitWaypoint(wp);
         setSelectedWaypoints((prev) => [...prev, false]);
     };
 
@@ -77,7 +82,7 @@ export default function WaypointCreationMap({ handleDelete, handleEdit, editStat
             mapStyle={
                 window.navigator.onLine
                     ? "https://api.maptiler.com/maps/basic-v2/style.json?key=ioE7W2lCif3DO9oj1YJh"
-                    : "./src/mapStyles/osmbright.json"
+                    : "http://localhost:8000/api/map-tiles/osmbright"
             }
             onClick={createNewWaypoint}
             doubleClickZoom={false}
@@ -85,7 +90,7 @@ export default function WaypointCreationMap({ handleDelete, handleEdit, editStat
                 minHeight: "500px",
             }}
         >
-            {clientWPQueue.map((waypoint, i) => {
+            {waypoints?.map((waypoint, i) => {
                 return (
                     <Fragment key={i}>
                         <Marker
@@ -94,7 +99,14 @@ export default function WaypointCreationMap({ handleDelete, handleEdit, editStat
                                 e.originalEvent.stopPropagation();
                                 handleSelectWaypoint(i);
                             }}
+                            onDragStart={(e) => {
+                                startEditing(i);
+                            }}
                             onDrag={(e) => {
+                                setEditingCoords({
+                                    lat: e.lngLat.lat,
+                                    long: e.lngLat.lng,
+                                });
                                 setDraggedMarkerData({
                                     long: e.lngLat.lng,
                                     lat: e.lngLat.lat,
@@ -102,16 +114,12 @@ export default function WaypointCreationMap({ handleDelete, handleEdit, editStat
                                 });
                             }}
                             onDragEnd={() => {
-                                dispatch(
-                                    editWaypointAtIndex({
-                                        index: i,
-                                        waypoint: {
-                                            ...waypoint,
-                                            lat: roundTo(draggedMarkerData!.lat, 7),
-                                            long: roundTo(draggedMarkerData!.long, 7),
-                                        },
-                                    }),
-                                );
+                                const wp = {
+                                    ...waypoint,
+                                    lat: roundTo(draggedMarkerData!.lat, 7),
+                                    long: roundTo(draggedMarkerData!.long, 7),
+                                };
+                                submitWaypoint(wp);
                                 setDraggedMarkerData(null);
                             }}
                             latitude={
@@ -172,7 +180,7 @@ export default function WaypointCreationMap({ handleDelete, handleEdit, editStat
                                         width: "220px",
                                         top: "10px",
                                         border: "4px solid",
-                                        borderColor: i === editState.index ? "primary.main" : "transparent",
+                                        borderColor: i === editingIndex ? "primary.main" : "transparent",
                                     }}
                                     waypoint={waypoint}
                                     handleDelete={() => {
@@ -182,7 +190,6 @@ export default function WaypointCreationMap({ handleDelete, handleEdit, editStat
                                             return prev;
                                         });
                                     }}
-                                    handleEdit={() => handleEdit(i)}
                                 />
                             </Marker>
                         )}
