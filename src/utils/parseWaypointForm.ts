@@ -7,18 +7,22 @@ const parseOptionalFloat = (field: string) => {
 };
 
 export default function parseWaypointForm(formState: FormState): Waypoint {
+    const lat = parseFloat(formState.lat);
+    const long = parseFloat(formState.long);
+
+    if (lat > 90 || lat < -90 || long > 180 || long < -180) {
+        throw new Error(
+            "Invalid latitude/longitude values. Must be between -90 and 90 for latitude and -180 and 180 for longitude.",
+        );
+    }
+
     return {
-        lat: parseFloat(formState.lat),
-        long: parseFloat(formState.long),
+        lat: lat,
+        long: long,
         alt: parseOptionalFloat(formState.alt),
         radius: parseOptionalFloat(formState.radius),
         name: formState.name.trim(),
         remarks: formState.remarks.trim(),
-        command: formState.command.trim(),
-        param1: parseOptionalFloat(formState.param1),
-        param2: parseOptionalFloat(formState.param2),
-        param3: parseOptionalFloat(formState.param3),
-        param4: parseOptionalFloat(formState.param4),
         id: "-1",
     };
 }
