@@ -7,10 +7,14 @@ import {
     reorderWaypointsQuery,
     updateWaypointQuery,
 } from "../api/endpoints";
+import { useAppDispatch, useAppSelector } from "../store/store";
+import { selectWaypoints, setWaypoints as setWaypointsSlice } from "../store/slices/appSlice";
 
 export const useWaypoints = () => {
     // Null signifies that waypoints have not been fetched yet
-    const [waypoints, setWaypoints] = useState<Waypoint[] | null>(null);
+    const dispatch = useAppDispatch();
+    const waypoints = useAppSelector(selectWaypoints);
+    const setWaypoints = (waypoints: Waypoint[]) => dispatch(setWaypointsSlice(waypoints));
 
     const fetchAndSetWaypoints = async () => setWaypoints(await getWaypointsQuery());
     useEffect(() => {
@@ -31,28 +35,49 @@ export const useWaypoints = () => {
 
     const deleteWaypoint = async (id: string) => {
         await deleteWaypointQuery(id);
-        setWaypoints((wp) => wp?.filter((waypoint) => waypoint.id !== id) || []);
+        setWaypoints(waypoints?.filter((waypoint) => waypoint.id !== id) || []);
     };
 
     const editWaypoint = async (waypoint: Waypoint) => {
-        await updateWaypointQuery(waypoint);
-        setWaypoints((wp) => wp?.map((w) => (w.id === waypoint.id ? waypoint : w)) || []);
+        // Update needs to be instant so that changes update on the map when we drag
+        // Before the server responds
+        // So if stuff goes wrong, we roll the changes back
+        const waypointSnapshot = [...waypoints];
+        try {
+            setWaypoints(waypoints?.map((w) => (w.id === waypoint.id ? waypoint : w)) || []);
+            await updateWaypointQuery(waypoint);
+        } catch {
+            setWaypoints(waypointSnapshot);
+        }
+    };
+
+    const clearWaypoints = async () => {
+        const waypointSnapshot = [...waypoints];
+        try {
+            for (const waypoint of waypoints) {
+                await deleteWaypointQuery(waypoint.id);
+            }
+            setWaypoints([]);
+        } catch (error) {
+            console.error(error);
+            setWaypoints(waypointSnapshot);
+        }
     };
 
     const reorderWaypoints = async (waypointIds: string[]) => {
         await reorderWaypointsQuery(waypointIds);
 
         // Reorders waypoints by id
-        setWaypoints((curr) => {
-            return waypointIds.reduce((acc, id) => {
-                const wp = curr?.find((w) => w.id === id);
+        setWaypoints(
+            waypointIds.reduce((acc, id) => {
+                const wp = waypoints?.find((w) => w.id === id);
                 if (!wp) return acc;
 
                 acc.push(wp);
                 return acc;
-            }, [] as Waypoint[]);
-        });
+            }, [] as Waypoint[]),
+        );
     };
 
-    return { waypoints, createWaypoint, deleteWaypoint, editWaypoint, reorderWaypoints };
+    return { waypoints, createWaypoint, deleteWaypoint, editWaypoint, reorderWaypoints, clearWaypoints };
 };
