@@ -51,6 +51,7 @@ export default function WaypointStatusCard() {
     };
 
     // This could be for editing an existing waypoint or creating a new one
+    // Depending on whether isEditing is true
     const handleSubmitWaypointForm = (waypoint: Waypoint) => {
         if (isEditing) {
             waypoint.id = editState.waypoint!.id;
