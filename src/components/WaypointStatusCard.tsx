@@ -96,6 +96,16 @@ export default function WaypointStatusCard() {
                                 startEditing={startWaypointEditing}
                                 editingIndex={editState.index}
                                 submitWaypoint={handleSubmitWaypointForm}
+                                setEditingCoords={({ lat, long }: { lat: number; long: number }) => {
+                                    setEditState((curr) => ({
+                                        ...curr,
+                                        waypoint: curr.waypoint && {
+                                            ...curr.waypoint,
+                                            lat,
+                                            long,
+                                        },
+                                    }));
+                                }}
                             />
                         ) : waypoints?.length === 0 ? (
                             <Box
@@ -144,19 +154,20 @@ export default function WaypointStatusCard() {
                         )}
                     </Grid>
                     <Grid item xs={12} md={6}>
-                        <Stack
-                            sx={{
-                                height: "100%",
-                            }}
-                            justifyContent={"space-between"}
-                        >
+                        <Stack justifyContent={"space-between"}>
                             <WaypointForm
                                 isEditing={isEditing}
                                 cancelEditing={clearEditState}
                                 submitForm={handleSubmitWaypointForm}
                                 initialEditingState={editState.waypoint}
                             />
-                            <Button color="error" variant="outlined" fullWidth onClick={() => setModalOpen(true)}>
+                            <Button
+                                color="error"
+                                variant="outlined"
+                                fullWidth
+                                onClick={() => setModalOpen(true)}
+                                sx={{ my: 1 }}
+                            >
                                 Delete ALL Queued Waypoints
                             </Button>
                         </Stack>

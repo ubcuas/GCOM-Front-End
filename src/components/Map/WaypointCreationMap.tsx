@@ -21,6 +21,7 @@ type CreationMapProps = {
     handleDelete: (index: number) => void;
     startEditing: (index: number) => void;
     submitWaypoint: (wp: Waypoint) => void;
+    setEditingCoords: (coords: { lat: number; long: number }) => void;
     editingIndex: number;
 };
 
@@ -28,6 +29,7 @@ export default function WaypointCreationMap({
     handleDelete,
     startEditing,
     editingIndex,
+    setEditingCoords,
     submitWaypoint,
 }: CreationMapProps) {
     const coords = useAppSelector(selectMapCenterCoords);
@@ -101,6 +103,10 @@ export default function WaypointCreationMap({
                                 startEditing(i);
                             }}
                             onDrag={(e) => {
+                                setEditingCoords({
+                                    lat: e.lngLat.lat,
+                                    long: e.lngLat.lng,
+                                });
                                 setDraggedMarkerData({
                                     long: e.lngLat.lng,
                                     lat: e.lngLat.lat,
