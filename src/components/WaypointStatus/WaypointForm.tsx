@@ -2,23 +2,18 @@ import { Button, Grid, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Waypoint, WaypointEditState } from "../../types/Waypoint";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import {
-    addToQueuedWaypoints,
-    clearQueuedWaypoints,
-    editWaypointAtIndex,
-    openSnackbar,
-    selectAutoClearWaypoints,
-} from "../../store/slices/appSlice";
+import { openSnackbar, selectAutoClearWaypoints } from "../../store/slices/appSlice";
 import { FormErrors, FormKeys, FormState } from "../../types/WaypointForm";
 import parseWaypointForm from "../../utils/parseWaypointForm";
+import { useWaypoints } from "../../utils/useWaypoints";
 
 // TODO: Needs a bit of cleaning up, im sure there are better logical flows for this form.
 
 type WaypointFormProps = {
-    editState: WaypointEditState;
-    clearEditState: () => void;
-    addWaypoint: (waypoint: Waypoint) => Promise<void>;
-    confirmUpdateWaypoint: (waypoint: Waypoint) => Promise<void>;
+    isEditing: boolean;
+    cancelEditing: () => void;
+    submitForm: (waypoint: Waypoint) => void;
+    initialEditingState?: Waypoint;
 };
 
 const defaultFormState: FormState = {
@@ -28,19 +23,9 @@ const defaultFormState: FormState = {
     name: "",
     radius: "",
     remarks: "",
-    command: "",
-    param1: "",
-    param2: "",
-    param3: "",
-    param4: "",
 };
 
-export default function WaypointForm({
-    editState,
-    clearEditState,
-    addWaypoint,
-    confirmUpdateWaypoint,
-}: WaypointFormProps) {
+export default function WaypointForm({ isEditing, cancelEditing, submitForm, initialEditingState }: WaypointFormProps) {
     const dispatch = useAppDispatch();
     const autoClearWaypoints = useAppSelector(selectAutoClearWaypoints);
     const [formState, setFormState] = useState<FormState>(defaultFormState);
@@ -52,25 +37,20 @@ export default function WaypointForm({
     });
 
     useEffect(() => {
-        if (editState.waypoint) {
+        if (isEditing) {
             // TODO: bit ugly, could be improved in the future.
             setFormState({
-                lat: editState.waypoint.lat ? String(editState.waypoint.lat) : "",
-                long: editState.waypoint.long ? String(editState.waypoint.long) : "",
-                alt: editState.waypoint.alt ? String(editState.waypoint.alt) : "",
-                name: editState.waypoint.name ?? "No Name",
-                radius: editState.waypoint.radius ? String(editState.waypoint.radius) : "",
-                remarks: editState.waypoint.remarks ?? "",
-                command: editState.waypoint.command ?? "",
-                param1: editState.waypoint.param1 ? String(editState.waypoint.param1) : "",
-                param2: editState.waypoint.param2 ? String(editState.waypoint.param2) : "",
-                param3: editState.waypoint.param3 ? String(editState.waypoint.param3) : "",
-                param4: editState.waypoint.param4 ? String(editState.waypoint.param4) : "",
+                lat: initialEditingState?.lat ? String(initialEditingState.lat) : "",
+                long: initialEditingState?.long ? String(initialEditingState.long) : "",
+                alt: initialEditingState?.alt ? String(initialEditingState.alt) : "",
+                name: initialEditingState?.name ?? "No Name",
+                radius: initialEditingState?.radius ? String(initialEditingState.radius) : "",
+                remarks: initialEditingState?.remarks ?? "",
             });
         } else {
             setFormState(defaultFormState);
         }
-    }, [editState.index]);
+    }, [isEditing, initialEditingState]);
 
     const checkReqFields = (keys: FormKeys[]): boolean => {
         // TODO: This function (and FormError) can be updated so that it also checks Lat/Long are within correct bounds.
@@ -106,10 +86,10 @@ export default function WaypointForm({
             if (!checkReqFields(["lat", "long", "alt"])) return;
 
             const waypoint = parseWaypointForm(formState);
-            await addWaypoint(waypoint);
+            submitForm(waypoint);
 
-            if (autoClearWaypoints) {
-                dispatch(clearQueuedWaypoints());
+            if (isEditing) {
+                cancelEditing();
             }
         } catch (error) {
             const message = (error as Error).message;
@@ -117,23 +97,10 @@ export default function WaypointForm({
         }
     };
 
-    const cancelEditing = () => {
-        clearEditState();
-        setFormState(defaultFormState);
-    };
-
-    const handleFinishEditing = async () => {
-        const waypoint = parseWaypointForm(formState);
-        // The form does not store the waypoint id so we need to add it back in.
-        waypoint.id = editState.waypoint!.id;
-        await confirmUpdateWaypoint(waypoint);
-        cancelEditing();
-    };
-
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
-                <Typography variant="h6">{editState.waypoint ? "Edit" : "Create"} Waypoint</Typography>
+                <Typography variant="h6">{isEditing ? "Edit" : "Create"} Waypoint</Typography>
             </Grid>
             <Grid item xs={12} lg={6}>
                 <TextField
@@ -198,7 +165,7 @@ export default function WaypointForm({
                     onChange={handleFormChange}
                 />
             </Grid>
-            {editState.waypoint ? (
+            {isEditing ? (
                 <>
                     <Grid item xs={12} lg={6}>
                         <Button color="secondary" fullWidth variant="outlined" onClick={cancelEditing}>
@@ -206,7 +173,7 @@ export default function WaypointForm({
                         </Button>
                     </Grid>
                     <Grid item xs={12} lg={6}>
-                        <Button fullWidth variant="outlined" onClick={handleFinishEditing}>
+                        <Button fullWidth variant="outlined" onClick={handleFormSubmit}>
                             Edit Waypoint
                         </Button>
                     </Grid>

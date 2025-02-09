@@ -2,12 +2,10 @@ import { Box, Button, Grid, Modal, Paper, Stack, Typography } from "@mui/materia
 import { useState } from "react";
 import { getWaypointsQuery } from "../api/endpoints";
 import {
-    clearQueuedWaypoints,
     openSnackbar,
-    removeOneFromWaypoints,
     selectAutoClearWaypoints,
     selectMapViewOpen,
-    selectQueuedWaypoints,
+    selectWaypoints,
     setMapViewOpen,
 } from "../store/slices/appSlice";
 import { useAppDispatch, useAppSelector } from "../store/store";
@@ -22,11 +20,12 @@ export default function WaypointStatusCard() {
     const dispatch = useAppDispatch();
     const mapViewOpen = useAppSelector(selectMapViewOpen);
     const [modalOpen, setModalOpen] = useState(false);
-    const { waypoints, createWaypoint, deleteWaypoint, editWaypoint, reorderWaypoints } = useWaypoints();
+    const { waypoints, createWaypoint, deleteWaypoint, editWaypoint, clearWaypoints } = useWaypoints();
     const [editState, setEditState] = useState<WaypointEditState>({
         index: -1,
         waypoint: undefined,
     });
+    const isEditing = editState.waypoint != undefined;
 
     const handleDeleteWaypoint = (index: number) => {
         const waypointId = waypoints?.[index].id;
@@ -36,18 +35,30 @@ export default function WaypointStatusCard() {
         }
     };
 
-    const handleEditWaypoint = (index: number) => {
+    // Handles editing a waypoint
+    // Used by both waypoint map and list
+    const startWaypointEditing = (index: number) => {
         setEditState({
             index,
             waypoint: waypoints?.[index],
         });
     };
-
     const clearEditState = () => {
         setEditState({
             index: -1,
             waypoint: undefined,
         });
+    };
+
+    // This could be for editing an existing waypoint or creating a new one
+    const handleSubmitWaypointForm = (waypoint: Waypoint) => {
+        if (isEditing) {
+            waypoint.id = editState.waypoint!.id;
+            editWaypoint(waypoint);
+            clearEditState();
+        } else {
+            createWaypoint(waypoint);
+        }
     };
 
     const rightButtons = (
@@ -82,8 +93,9 @@ export default function WaypointStatusCard() {
                         {mapViewOpen ? (
                             <WaypointCreationMap
                                 handleDelete={handleDeleteWaypoint}
-                                handleEdit={handleEditWaypoint}
-                                editState={editState}
+                                startEditing={startWaypointEditing}
+                                editingIndex={editState.index}
+                                submitWaypoint={handleSubmitWaypointForm}
                             />
                         ) : waypoints?.length === 0 ? (
                             <Box
@@ -123,7 +135,7 @@ export default function WaypointStatusCard() {
                                                         index === editState.index ? "primary.main" : "transparent",
                                                 }}
                                                 handleDelete={() => handleDeleteWaypoint(index)}
-                                                handleEdit={() => handleEditWaypoint(index)}
+                                                handleEdit={() => startWaypointEditing(index)}
                                             />
                                         );
                                     })
@@ -139,10 +151,10 @@ export default function WaypointStatusCard() {
                             justifyContent={"space-between"}
                         >
                             <WaypointForm
-                                editState={editState}
-                                clearEditState={clearEditState}
-                                addWaypoint={createWaypoint}
-                                confirmUpdateWaypoint={editWaypoint}
+                                isEditing={isEditing}
+                                cancelEditing={clearEditState}
+                                submitForm={handleSubmitWaypointForm}
+                                initialEditingState={editState.waypoint}
                             />
                             <Button color="error" variant="outlined" fullWidth onClick={() => setModalOpen(true)}>
                                 Delete ALL Queued Waypoints
@@ -171,7 +183,7 @@ export default function WaypointStatusCard() {
                         variant="contained"
                         color="error"
                         onClick={() => {
-                            dispatch(clearQueuedWaypoints());
+                            clearWaypoints();
                             setModalOpen(false);
                         }}
                     >
